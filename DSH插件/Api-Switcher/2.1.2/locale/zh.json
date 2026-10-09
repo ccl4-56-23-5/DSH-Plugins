@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "api-switcher",
+    "description": "管理API供应商、按需启用模型，在原生模型菜单中搜索名称、ID或供应商并切换。"
+  }
+}
