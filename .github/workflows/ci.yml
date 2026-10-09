@@ -1,0 +1,32 @@
+name: api-switcher checks
+on:
+  push:
+    paths: ['DSH插件/Api-Switcher/**', '.github/workflows/ci.yml']
+  pull_request:
+    paths: ['DSH插件/Api-Switcher/**', '.github/workflows/ci.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [20, 24]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: 'DSH插件/Api-Switcher/2.1.1'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+          package-manager-cache: false
+      - run: node scripts/run-tests.mjs
+      - run: node scripts/check-project.mjs
+      - run: node scripts/build-release.mjs .work/ci-dist
+      - run: node scripts/unpack-release.mjs .work/ci-dist/dsh-api-switcher-2.1.1.tgz .work/ci-unpacked
+      - run: node Verify-Package.mjs .work/ci-dist/dsh-api-switcher-2.1.1.tgz .work/ci-unpacked/package
