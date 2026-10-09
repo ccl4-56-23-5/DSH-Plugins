@@ -7,8 +7,17 @@
   "referenceSHA256": "C1D8CED2D461348D14128178DC7950AB037583AEE27516DFA69EC0F7D5DEF3B2",
   "export": "High-quality bicubic resize only",
   "files": {
-    "lib/assets/logo.png": {"sha256": "86152882fbeb706905fedb79d4b5ac6edddacb36f6a0ca6e3aca61715c5022cd", "bytes": 305736},
-    "lib/assets/icon.png": {"sha256": "105a1c06a5d675164d44fe89306ef49357e21951e6f02e9f8999632c3ac2144f", "bytes": 88192},
-    "assets/logo-master.png": {"sha256": "c711ccefd77d17b8e604e7abf0739397e6d5d173a8e1973eceea9dac4ca831ca", "bytes": 1274161}
+    "lib/assets/logo.png": {
+      "sha256": "86152882fbeb706905fedb79d4b5ac6edddacb36f6a0ca6e3aca61715c5022cd",
+      "bytes": 305736
+    },
+    "lib/assets/icon.png": {
+      "sha256": "105a1c06a5d675164d44fe89306ef49357e21951e6f02e9f8999632c3ac2144f",
+      "bytes": 88192
+    },
+    "assets/logo-master.png": {
+      "sha256": "c711ccefd77d17b8e604e7abf0739397e6d5d173a8e1973eceea9dac4ca831ca",
+      "bytes": 1274161
+    }
   }
 }
