@@ -1,2 +1,11 @@
-# DSH-Plugins
-DSH插件源码、完整文档与版本化安装包。api-switcher：供应商管理、模型启用、搜索与API切换。
+# DSH插件
+
+本仓库按插件及语义化版本保存完整源码、文档与发行文件。
+
+| 插件 | 当前版本 | 下载 |
+| --- | --- | --- |
+| [api-switcher](DSH插件/Api-Switcher/2.1.1/README.md) | 2.1.1 | [Windows安装包](DSH插件/Api-Switcher/2.1.1/dist/dsh-api-switcher-2.1.1-Windows.zip) |
+
+目录：`DSH插件/Api-Switcher/<版本号>`。每个版本均是独立可构建项目，安装包位于该版本的`dist/`。用户凭据、profile配置、日志及部署备份不收入仓库。
+
+[许可](LICENSE) · [安全说明](DSH插件/Api-Switcher/2.1.1/SECURITY.md) · [贡献指南](DSH插件/Api-Switcher/2.1.1/CONTRIBUTING.md)

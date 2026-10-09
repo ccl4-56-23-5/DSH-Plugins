@@ -1,0 +1,9 @@
+.work/
+node_modules/
+*.log
+.env
+.env.*
+.credentials.yaml
+state.json
+profiles/
+deployment-backups/
