@@ -1,4 +1,6 @@
 .work/
+.test-tmp/
+test-results/
 node_modules/
 *.log
 .env

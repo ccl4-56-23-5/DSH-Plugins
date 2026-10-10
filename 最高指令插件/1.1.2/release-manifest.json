@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "project": "dsh-top-directive",
+  "version": "1.1.2",
+  "packagingRevision": "20261010-shared-mascot",
+  "repository": "https://github.com/ccl4-56-23-5/DSH-Plugins",
+  "sourcePath": "最高指令插件/1.1.2",
+  "releaseTag": "top-directive-v1.1.2",
+  "assets": [
+    {
+      "file": "dsh-top-directive-1.1.2.tgz",
+      "bytes": 415965,
+      "sha256": "c1f1341937ef0f6576ac474efddedc5c3f12819153dae70616f6552997f63298"
+    },
+    {
+      "file": "Install-DSH.ps1",
+      "bytes": 3396,
+      "sha256": "cfd9cb23f023273654c7da109fb8cf9c989d999dcddedd8728df32f67a7c2ad4"
+    }
+  ],
+  "packageFileSHA256": {
+    "LICENSE": "c1b158215dfb329ba947611ef4735d49b854482794c74b3af63670ca31783ae5",
+    "README.md": "893e248bf0d16a38e25da0bf38e492b731d86645889ca7a4c6e483118b855426",
+    "THIRD_PARTY_NOTICES.md": "e9a73a02178dd3438d0c6c48a847893a9eac9ba4dc974ecc765ee011a584896c",
+    "cordis.patch.yml": "22f53e23b30e7692eedb962e695e290e530802e001bcff3b704e7b66d039247e",
+    "docs/ARCHITECTURE.md": "b28d7cd63f1d2e6e67b3a458dbae3c3da2db50c8e615e331da2622a84a192dc0",
+    "docs/BRANDING.md": "1a9afe1d7ef039a9a8151fbe6109f92b297ca13ad41faa39e0a0f71b62027c33",
+    "docs/DEVELOPMENT.md": "7dd8565f3082383bac70ae1b33576637db4e4c15bad037a9b3059f77175ea4a8",
+    "docs/INSTALLATION.md": "951c7706eb3f315229d59d329700c7de77e1a4e7456060c7e327a999ca3cc26e",
+    "docs/USER_GUIDE.md": "989fc9c354bb66d8e6aeda85a5253c2c3782c75fb49569db5234e7ab078920c9",
+    "docs/VALIDATION.md": "55a705b5b986539f05fcbb2d1a0cc1235067ad9b6d946096b2bb5c8719446f24",
+    "docs/screenshots/provenance.json": "a31805c46f51719b38e95233a55d9d86d4daf54c924c7595c46f877457c4f04e",
+    "docs/screenshots/top-directive-panel.jpg": "e5d21c324a323bd66426d25f18694d6a94fb41de95bd627f10305d04b8a94062",
+    "lib/assets/icon.png": "7a4927c621bfc171d04902681d97ed5721248152df739591e25fc7230fbbec07",
+    "lib/assets/logo.png": "f054474bfcb44f6acaa6266ef0c18981f4e1e253478e68e709722ebec8ef4801",
+    "lib/bridge.js": "b573f0938b4002d8730b06e72d8c6a93f00fa8548d17044dbbc1e434f69917d6",
+    "lib/client.js": "c6dc3ec7220290a3732a727bf247a20a9ee9d28ed7c6e2d4cec5062400ea990a",
+    "lib/contract.js": "bb6aa07ba7e0065059ac1347e6a21c3690cba5fe54f997893c00c5b1622a5a59",
+    "lib/http.js": "19e5e72e2b655baa2f285791c16e1586418dec4124674c7360d8bd83a624d8c1",
+    "lib/index.js": "f5e33f238ba9434c4e305b83235fabdd548e90a422ed3a24b2ea6acd0d0c9e17",
+    "lib/state.js": "033cf6eb57b0185e22f10635e20e5d575ee24c60bbc3ca91ca2c2d5be20c2cf2",
+    "package.json": "cb6c8fbabdfc386592f837f2ed24be9b33661481632e53ca0acaceb8fbf536b7"
+  },
+  "runtimeDependencies": 0,
+  "priorModelAcceptanceVersion": "1.1.1",
+  "modelRetested": false,
+  "latestInstallersOnly": true
+}

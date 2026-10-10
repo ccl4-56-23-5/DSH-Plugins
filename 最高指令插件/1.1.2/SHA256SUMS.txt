@@ -1,0 +1,3 @@
+c1f1341937ef0f6576ac474efddedc5c3f12819153dae70616f6552997f63298  dsh-top-directive-1.1.2.tgz
+cfd9cb23f023273654c7da109fb8cf9c989d999dcddedd8728df32f67a7c2ad4  Install-DSH.ps1
+0c4728038e3dab12775b0827b2a8c34d351babeeea3d4cc5ffbf3de035315dd5  release-manifest.json

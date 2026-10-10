@@ -1,0 +1,24 @@
+{
+  "version": "1.1.2",
+  "date": "2026-10-10",
+  "method": "Codex built-in imagegen, transparent background",
+  "target": "Highest Directive crown/document emblem with the same prominent lower-right DaFeiYu whale-girl mascot as API Switcher",
+  "reference": "https://github.com/ccl4-56-23-5/DSH-Plugins/blob/main/Api-Switcher%E6%8F%92%E4%BB%B6/2.1.4/lib/assets/logo.png",
+  "referenceSHA256": "86152882fbeb706905fedb79d4b5ac6edddacb36f6a0ca6e3aca61715c5022cd",
+  "export": "High-quality Lanczos resize only",
+  "prompt": "Use case: logo-brand\nAsset type: transparent square icon for the DSH Highest Directive plugin, companion to the supplied API Switcher logo.\nInput image 1 is a style and mascot identity reference, NOT the target logo to replace. Create a new distinct main emblem for the Highest Directive plugin: a clean, bold upright document/command symbol with a small crown above it, rendered in the same polished blue/cyan gradient icon style as the reference, legible as a small desktop plugin icon. Use the reference's SAME chibi '大肥鱼' whale-girl mascot at the LOWER RIGHT, at the SAME prominent relative size as the reference. Preserve her navy and blue wavy hair, curved ahoge, white frilled whale/maid headpiece, right-side blue ribbon, huge blue eyes, cheerful open mouth, two little hands resting along the lower rim, and recognisable face and proportions. The mascot should overlap the lower-right part of the emblem, not sit in a separate badge. Main emblem occupies the upper-left two-thirds with enough breathing room; mascot occupies the lower-right two-thirds. Crisp dark-blue outlines and careful edges. No letters, no words, no watermark. Fully transparent background, no square tile, no colored backing plate, no frame, no cast shadow outside the subject. The final artwork should fill a square canvas, with all hair and hands uncropped and a small transparent margin.\n",
+  "files": {
+    "assets/logo-master.png": {
+      "sha256": "6c6dc8a6930901baa812f3f5e3a0cf959dba1846081648a33d58f01132a4c8c4",
+      "bytes": 1389530
+    },
+    "lib/assets/logo.png": {
+      "sha256": "f054474bfcb44f6acaa6266ef0c18981f4e1e253478e68e709722ebec8ef4801",
+      "bytes": 272726
+    },
+    "lib/assets/icon.png": {
+      "sha256": "7a4927c621bfc171d04902681d97ed5721248152df739591e25fc7230fbbec07",
+      "bytes": 84206
+    }
+  }
+}
