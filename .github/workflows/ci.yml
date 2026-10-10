@@ -1,9 +1,9 @@
 name: api-switcher checks
 on:
   push:
-    paths: ['DSH插件/Api-Switcher/**', '.github/workflows/ci.yml']
+    paths: ['Api-Switcher插件/**', '.github/workflows/ci.yml']
   pull_request:
-    paths: ['DSH插件/Api-Switcher/**', '.github/workflows/ci.yml']
+    paths: ['Api-Switcher插件/**', '.github/workflows/ci.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -16,7 +16,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     defaults:
       run:
-        working-directory: 'DSH插件/Api-Switcher/2.1.3'
+        working-directory: 'Api-Switcher插件/2.1.3'
     steps:
       - uses: actions/checkout@v7
         with:
