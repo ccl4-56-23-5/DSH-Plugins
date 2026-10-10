@@ -1,0 +1,11 @@
+# dsh-top-directive bundle patch.
+#
+# DSH 在装配 profile 时按 bundle 层叠加载 patch：本文件把「最高指令」插件行插进配置树。
+# 安装方式（任选其一）：
+#   dsh plugin --profile <profile> add dsh-top-directive
+#   dsh plugin --profile <profile> add link:<本目录绝对路径>
+#
+# 如果你已在 profile 的 cordis.patch.yml 里手工挂载过同一插件，请删除手工行以避免重复挂载。
+- insert:
+    - id: top-directive
+      name: dsh-top-directive

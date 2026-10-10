@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "project": "dsh-top-directive",
+  "version": "1.1.1",
+  "packagingRevision": "20261010-repository-organization",
+  "repository": "https://github.com/ccl4-56-23-5/DSH-Plugins",
+  "sourcePath": "最高指令插件/1.1.1",
+  "releaseTag": "top-directive-v1.1.1",
+  "assets": [
+    {
+      "file": "dsh-top-directive-1.1.1.tgz",
+      "bytes": 13557,
+      "sha256": "9d4037905b79aba2c97a208bdddc0e0b7c9d805b79994f4d66bfa69893bce811"
+    },
+    {
+      "file": "Install-DSH.ps1",
+      "bytes": 3396,
+      "sha256": "d1522b47298c22c444eeb951b0c2269f0885d4866c25c77c743a2e77b04ecb15"
+    }
+  ],
+  "testedAt": "2026-10-03",
+  "testedDshVersion": "0.2.0-rc.2",
+  "testedModel": "DeepSeek-V41-Flash / Low",
+  "publicationChecksOnly": true,
+  "runtimeFilesUnchanged": [
+    {
+      "path": "最高指令插件/1.1.1/lib/bridge.js",
+      "sha256": "b573f0938b4002d8730b06e72d8c6a93f00fa8548d17044dbbc1e434f69917d6",
+      "unchanged": true
+    },
+    {
+      "path": "最高指令插件/1.1.1/lib/client.js",
+      "sha256": "a9a8b78cb69e2fb9a0a4ad6a19d7f01fa10804c3b67f0985fd3305c4af262b28",
+      "unchanged": true
+    },
+    {
+      "path": "最高指令插件/1.1.1/lib/contract.js",
+      "sha256": "bb6aa07ba7e0065059ac1347e6a21c3690cba5fe54f997893c00c5b1622a5a59",
+      "unchanged": true
+    },
+    {
+      "path": "最高指令插件/1.1.1/lib/http.js",
+      "sha256": "19e5e72e2b655baa2f285791c16e1586418dec4124674c7360d8bd83a624d8c1",
+      "unchanged": true
+    },
+    {
+      "path": "最高指令插件/1.1.1/lib/index.js",
+      "sha256": "62dd1c76288314d2adeada17358484fcd2e8354052625d470f03ee22dd387b18",
+      "unchanged": true
+    },
+    {
+      "path": "最高指令插件/1.1.1/lib/state.js",
+      "sha256": "033cf6eb57b0185e22f10635e20e5d575ee24c60bbc3ca91ca2c2d5be20c2cf2",
+      "unchanged": true
+    }
+  ],
+  "latestInstallersOnly": true
+}
