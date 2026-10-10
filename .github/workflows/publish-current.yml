@@ -28,6 +28,8 @@ jobs:
             const work = path.resolve(process.env.GITHUB_WORKSPACE);
             const bundle = path.join(work, 'DSH-Plugins-Publish-Source.zip');
             const bytes = fs.readFileSync(bundle);
+            const bootstrap = path.join(work, '.github/workflows/publish-current.yml');
+            const bootstrapBytes = fs.readFileSync(bootstrap);
             assert.equal(createHash('sha256').update(bytes).digest('hex'), 'f618b008b6ba10c5705d4444a5eee49dd2cf9272bf72b20b51219f7425326829');
             fs.mkdirSync(path.join(work, '.work/import'), { recursive: true });
             const copy = path.join(work, '.work/import/source.zip');
@@ -52,10 +54,12 @@ jobs:
             assert.equal(git(['write-tree']), '53bc1617af56ef52997129954c02b50cd5aa5766');
             git(['checkout-index', '--all', '--force']);
             execFileSync('node', ['scripts/verify-all.mjs'], { cwd: work, stdio: 'inherit' });
+            fs.mkdirSync(path.dirname(bootstrap), { recursive: true });
+            fs.writeFileSync(bootstrap, bootstrapBytes);
+            git(['add', '-f', '.github/workflows/publish-current.yml']);
             git(['config', 'user.name', 'github-actions[bot]']);
             git(['config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com']);
             git(['commit', '-m', 'fix: publish MiMo switcher 2.1.4 and branded top directive 1.1.2']);
             git(['push', 'origin', 'HEAD:main']);
-            await github.rest.actions.createWorkflowDispatch({ ...context.repo, workflow_id: 'ci.yml', ref: 'main' });
-            core.info('Verified source committed; package checks and release publication dispatched.');
+            core.info('Verified source committed. Remove this temporary workflow through the repository UI to start final checks.');
 
