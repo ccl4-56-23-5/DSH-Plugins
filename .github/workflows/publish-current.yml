@@ -1,0 +1,60 @@
+name: Import verified DSH release source
+on: workflow_dispatch
+permissions:
+  contents: write
+  actions: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - uses: actions/github-script@v9
+        with:
+          script: |
+            const assert = require('node:assert/strict');
+            const fs = require('node:fs');
+            const path = require('node:path');
+            const { createHash } = require('node:crypto');
+            const { execFileSync } = require('node:child_process');
+            assert.equal(context.repo.owner, 'ccl4-56-23-5');
+            assert.equal(context.repo.repo, 'DSH-Plugins');
+            assert.equal(context.ref, 'refs/heads/main');
+            const head = await github.rest.repos.getBranch({ ...context.repo, branch: 'main' });
+            assert.equal(head.data.commit.sha, context.sha, 'Main changed; rerun from current main.');
+            const work = path.resolve(process.env.GITHUB_WORKSPACE);
+            const bundle = path.join(work, 'DSH-Plugins-Publish-Source.zip');
+            const bytes = fs.readFileSync(bundle);
+            assert.equal(createHash('sha256').update(bytes).digest('hex'), 'e1c32ab2e15384c1a818a3d6b794b7caae253b91870fbc3af35f3427fcca7291');
+            fs.mkdirSync(path.join(work, '.work/import'), { recursive: true });
+            const copy = path.join(work, '.work/import/source.zip');
+            fs.writeFileSync(copy, bytes);
+            const git = args => execFileSync('git', args, { cwd: work, stdio: 'pipe' }).toString().trim();
+            git(['rm', '-r', '--ignore-unmatch', '.']);
+            execFileSync('python3', ['-c', `import pathlib,sys,zipfile
+            root=pathlib.Path(sys.argv[1]).resolve()
+            with zipfile.ZipFile(sys.argv[2]) as z:
+              assert len(z.infolist()) == 105
+              for i in z.infolist():
+                p=pathlib.PurePosixPath(i.filename)
+                assert not p.is_absolute() and '..' not in p.parts and '.git' not in p.parts
+                assert not i.is_dir() and (i.external_attr >> 16 & 0o170000) != 0o120000
+                target=(root/i.filename).resolve()
+                assert target.is_relative_to(root)
+                target.parent.mkdir(parents=True,exist_ok=True)
+                target.write_bytes(z.read(i))
+            `, work, copy], { cwd: work, stdio: 'inherit' });
+            git(['add', '--all']);
+            git(['add', '-f', 'Api-Switcher插件/2.1.4/dist']);
+            assert.equal(git(['write-tree']), '81ac2925f5e2df90dce4490da1390e0d6a570de9');
+            git(['checkout-index', '--all', '--force']);
+            execFileSync('node', ['scripts/verify-all.mjs'], { cwd: work, stdio: 'inherit' });
+            git(['config', 'user.name', 'github-actions[bot]']);
+            git(['config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com']);
+            git(['commit', '-m', 'fix: publish MiMo switcher 2.1.4 and branded top directive 1.1.2']);
+            git(['push', 'origin', 'HEAD:main']);
+            await github.rest.actions.createWorkflowDispatch({ ...context.repo, workflow_id: 'ci.yml', ref: 'main' });
+            core.info('Verified source committed; package checks and release publication dispatched.');
