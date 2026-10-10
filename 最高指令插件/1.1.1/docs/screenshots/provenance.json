@@ -1,0 +1,11 @@
+{
+  "capturedAt": "2026-10-10T10:20:32.2659903+08:00",
+  "component": "dsh-top-directive@1.1.1",
+  "file": "docs/screenshots/top-directive-panel.jpg",
+  "sha256": "E5D21C324A323BD66426D25F18694D6A94FB41DE95BD627F10305D04B8A94062",
+  "kind": "documentation demo",
+  "frontendSourceSHA256": "A9A8B78CB69E2FB9A0A4AD6A19D7F01FA10804C3B67F0985FD3305C4AF262B28",
+  "runtime": "React and ReactDOM 18.3.1",
+  "data": "Isolated example prompt; no profile connection, filesystem save or model calls",
+  "container": "Documentation preview, not DSH desktop chrome"
+}
