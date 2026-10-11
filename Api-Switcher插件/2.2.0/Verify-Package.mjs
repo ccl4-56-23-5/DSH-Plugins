@@ -24,7 +24,7 @@ for (let offset = 0; offset + 512 <= bytes.length;) {
 }
 const manifest = JSON.parse(files.get('package.json'))
 assert.equal(manifest.name, 'dsh-api-switcher')
-assert.equal(manifest.version, '2.1.5')
+assert.equal(manifest.version, '2.2.0')
 assert.ok(files.has('lib/client.js') && files.has('lib/core.js') && files.has('cordis.patch.yml'), 'Incomplete package')
 assert.equal(manifest.title, 'api-switcher')
 const icon = files.get(manifest.icon)

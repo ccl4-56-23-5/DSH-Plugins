@@ -11,10 +11,10 @@ Windows安装包包括TGZ、安装器、逐文件校验脚本、文档、logo与
 1. 下载对应版本的Windows ZIP和`SHA256SUMS.txt`，核对ZIP的SHA-256。
 2. 解压全部文件到本地目录，保留TGZ、安装器和清单在同一文件夹。
 3. 结束DSH中正在运行的请求或任务，运行`安装.cmd`。
-4. 安装器退出并重启DSH后，在插件管理确认显示`api-switcher`、版本`2.1.5`；打开模型菜单和设置确认新logo。
+4. 安装器退出并重启DSH后，在插件管理确认显示`api-switcher`、版本`2.2.0`；打开模型菜单和设置确认新logo。
 
 ```powershell
-Get-FileHash -LiteralPath .\dsh-api-switcher-2.1.5-Windows.zip -Algorithm SHA256
+Get-FileHash -LiteralPath .\dsh-api-switcher-2.2.0-Windows.zip -Algorithm SHA256
 ```
 
 校验值只校验文件完整性；应从可信仓库下载程序和清单。
@@ -36,7 +36,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Install-DSH.ps1 `
 
 ## 手动导入
 
-可在DSH插件管理中导入`dsh-api-switcher-2.1.5.tgz`。这是插件运行包，不是完整源码。使用DSH管理器安装时，备份、重启和依赖策略由管理器行为决定；本项目Windows安装器的验证记录不自动适用于该操作。
+可在DSH插件管理中导入`dsh-api-switcher-2.2.0.tgz`。这是插件运行包，不是完整源码。使用DSH管理器安装时，备份、重启和依赖策略由管理器行为决定；本项目Windows安装器的验证记录不自动适用于该操作。
 
 ## 升级与备份
 
@@ -48,7 +48,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Install-DSH.ps1 `
 
 ## 回滚
 
-2.1.5与2.1.0使用相同数据格式。通常结束DSH任务后，运行旧版完整Windows安装包即可回滚，继续保留当前供应商设置和凭据。
+2.2.0与2.1.0使用相同数据格式。通常结束DSH任务后，运行旧版完整Windows安装包即可回滚，继续保留当前供应商设置和凭据。
 
 只有profile或插件元数据损坏时才使用备份恢复：退出DSH，先备份当前配置，再按需恢复备份中的profile文件及`api-switcher-state.json`为原`api-switcher\state.json`，随后运行对应旧版安装包。恢复会回到备份时的配置；不要把凭据文件或最高优先级提示词用旧副本覆盖。跨数据格式版本的回滚需要另行核对迁移兼容性。
 

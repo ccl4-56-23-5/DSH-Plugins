@@ -243,3 +243,104 @@ test('discovered image input survives an unknown catalog entry and repeated save
   await f.controller.save({expectedRevision:state.revision,source:state.sources.find(s=>s.id==='existing')})
   assert.equal(f.providers.existing.models[0].reasoningEfforts,false)
 })
+
+test('official MiMo limits migrate into DSH and remain automatic; external edits become manual',async()=>{
+  const f=fixture();f.providers.mimo={api:'openai-completions',baseURL:'https://api.xiaomimimo.com/v1',models:[{id:'mimo-v2.6-pro'}]}
+  writeFileSync(f.filename,JSON.stringify({version:2,initialized:true,managed:['mimo'],favorites:[],providers:{}}))
+  await f.controller.initialize()
+  assert.equal(f.providers.mimo.models[0].contextWindow,1000000);assert.equal(f.providers.mimo.models[0].maxTokens,131072)
+  let state=await f.controller.state(),m=state.sources.find(s=>s.id==='mimo').models[0]
+  assert.equal(m.limitModes.contextWindow,'auto');assert.equal(m.effectiveLimits.contextWindow,1000000)
+  const before=readFileSync(f.filename,'utf8');await f.controller.initialize();assert.equal(readFileSync(f.filename,'utf8'),before)
+  f.providers.mimo.models[0].contextWindow=900000;await f.controller.initialize()
+  m=(await f.controller.state()).sources.find(s=>s.id==='mimo').models[0]
+  assert.equal(m.contextWindow,900000);assert.equal(m.limitModes.contextWindow,'manual')
+})
+
+test('migration preserves existing user limits, custom endpoints and other provider configuration',async()=>{
+  const f=fixture();f.providers.mimo={baseURL:'https://api.xiaomimimo.com/v1',models:[{id:'mimo-v2.6-pro',contextWindow:800000,maxTokens:8192}]}
+  f.providers.mirror={baseURL:'https://proxy.test/v1',models:[{id:'mimo-v2.6-pro'}]}
+  const before=structuredClone(f.providers);writeFileSync(f.filename,JSON.stringify({version:2,initialized:true,managed:['mimo','mirror'],favorites:[],providers:{}}))
+  await f.controller.initialize();assert.deepEqual(f.providers,before)
+})
+
+test('DSH fallback capacities never become saved overrides on unrelated form edits',async()=>{
+  const f=fixture();f.ctx.llm.listModels=async id=>(f.providers[id]?.models||[]).map(m=>({...m,contextWindow:m.contextWindow??262144,maxTokens:m.maxTokens??32768}))
+  const state=await f.controller.state(),src=state.sources.find(s=>s.id==='existing')
+  assert.equal(src.models[0].contextWindow,undefined);assert.equal(src.models[0].effectiveLimits.contextWindow,262144)
+  assert.ok(src.models[0].capacityWarning)
+  await f.controller.save({expectedRevision:state.revision,source:{...src,name:'Renamed'}})
+  assert.equal(f.providers.existing.models[0].contextWindow,undefined);assert.equal(f.providers.existing.models[0].maxTokens,undefined)
+})
+
+test('live discovered capacities survive save, reload and partial subsequent listings',async()=>{
+  const f=fixture();f.ctx.llm.discoverModels=async()=>[{id:'wide',contextWindow:500000,maxTokens:50000}]
+  const found=await f.controller.discover({api:draft.api,baseURL:draft.baseURL})
+  let state=await f.controller.save({expectedRevision:(await f.controller.state()).revision,source:{...draft,models:found.models}})
+  let m=state.sources.find(s=>s.id===draft.id).models[0]
+  assert.equal(m.contextWindow,500000);assert.equal(m.limitModes.contextWindow,'auto')
+  await f.controller.save({expectedRevision:state.revision,source:{...draft,models:[{...m,name:'Renamed'}]}})
+  assert.equal(f.providers[draft.id].models[0].maxTokens,50000)
+})
+
+test('explicit default survives restart and catalog refresh; returning to auto restores official limits',async()=>{
+  const f=fixture(),src={...draft,id:'mimo',baseURL:'https://api.xiaomimimo.com/v1',models:[{id:'mimo-v2.6-pro',limitModes:{contextWindow:'default',maxTokens:'default'}}]}
+  let state=await f.controller.save({expectedRevision:(await f.controller.state()).revision,source:src})
+  await f.controller.initialize();assert.equal(f.providers.mimo.models[0].contextWindow,undefined)
+  state=await f.controller.state()
+  await f.controller.save({expectedRevision:state.revision,source:{...src,models:[{id:'mimo-v2.6-pro',limitModes:{contextWindow:'auto',maxTokens:'auto'}}]}})
+  assert.equal(f.providers.mimo.models[0].contextWindow,1000000)
+})
+
+test('invalid budget pairs are rejected before writes, including catalog/manual combinations',async()=>{
+  const f=fixture(),before=structuredClone(f.providers)
+  await assert.rejects(f.controller.save({expectedRevision:(await f.controller.state()).revision,source:{...draft,models:[{id:'x',contextWindow:1000,maxTokens:1000}]}}))
+  await assert.rejects(f.controller.save({expectedRevision:(await f.controller.state()).revision,source:{...draft,baseURL:'https://api.xiaomimimo.com/v1',models:[{id:'mimo-v2.6-pro',contextWindow:10000,limitModes:{contextWindow:'manual',maxTokens:'auto'}}]}}))
+  assert.deepEqual(f.providers,before)
+})
+
+test('an unavailable configured row is retained and marked unavailable when the host lists only healthy models',async()=>{
+  const f=fixture();f.providers.existing.models.push({id:'invalid',contextWindow:1000,compat:{keep:true}})
+  f.ctx.llm.listModels=async()=>[{id:'old-model'}]
+  const state=await f.controller.state(),src=state.sources[0]
+  assert.equal(src.models.length,2);assert.equal(src.models[1].available,false)
+  await f.controller.save({expectedRevision:state.revision,source:src})
+  assert.equal(f.providers.existing.models[1].compat.keep,true)
+})
+
+test('changed endpoint never carries stored credential or custom discovery headers',async()=>{
+  const f=fixture();await f.controller.discover({provider:'existing',api:draft.api,baseURL:'https://elsewhere.test/v1',apiKey:'replacement'})
+  assert.equal(f.calls[0].provider,undefined)
+  await assert.rejects(f.controller.save({expectedRevision:(await f.controller.state()).revision,source:{...draft,id:'existing',baseURL:'https://elsewhere.test/v1'}}),e=>e.code==='DRAFT_CREDENTIAL_REQUIRED')
+})
+
+test('discovery errors mask non-sk stored credential values',async()=>{
+  const f=fixture();f.ctx.llm.discoverModels=async()=>{throw Error('failed secret-original-value')}
+  await assert.rejects(f.controller.discover({provider:'existing',api:draft.api,baseURL:draft.baseURL}),e=>!e.message.includes('secret-original-value'))
+})
+
+test('connection test rejects truncated visible text and does not report it as success',async()=>{
+  const f=fixture();f.ctx.llm.stream=async function*(){yield {type:'text-delta',text:'O'};yield {type:'finish',reason:{kind:'max-tokens'}}}
+  assert.equal((await f.controller.test({provider:'existing',model:'old-model'})).success,false)
+})
+
+test('metadata disk failure rolls back settings and credentials atomically',async()=>{
+  const f=fixture(),before=structuredClone(f.providers),keys=[...f.keys]
+  const c=createController(f.ctx,f.filename,{logos:{cached:()=>{},refresh:async()=>{}},writeMetadata:()=>{throw Error('disk full')}})
+  await assert.rejects(c.save({expectedRevision:(await c.state()).revision,source:{...draft,id:'existing'},apiKey:'changed'}),e=>e.code==='METADATA_WRITE_FAILED')
+  assert.deepEqual(f.providers,before);assert.deepEqual([...f.keys],keys)
+})
+
+test('session switching reports partial success if saving defaults fails',async()=>{
+  const f=fixture();f.ctx.agentDefaultModel.saveSelection=async()=>{throw Error('disk failure')}
+  await assert.rejects(f.controller.activate({expectedRevision:(await f.controller.state()).revision,provider:'existing',model:'old-model',sessionId:'s'}),e=>e.code==='DEFAULT_NOT_SYNCED'&&e.message.includes('当前会话已切换'))
+  assert.equal(f.selections.length,1)
+})
+
+test('real DSH model-info shape supplies effective capacity and output defaults instead of list-row guesses',async()=>{
+  const f=fixture();f.ctx.llm.listModels=async()=>[{id:'old-model',inputModalities:['text']}]
+  f.ctx.llm.resolveModelInfo=async()=>({id:'old-model',context:{contextWindow:262144},defaultMaxTokens:4096,reasoning:{efforts:[{id:'off'},{id:'high'}]}})
+  const m=(await f.controller.state()).sources[0].models[0]
+  assert.equal(m.contextWindow,undefined);assert.equal(m.effectiveLimits.contextWindow,262144);assert.equal(m.effectiveLimits.maxTokens,4096)
+  assert.deepEqual(m.reasoningEfforts,['off','high'])
+})

@@ -15,6 +15,7 @@ test('HTTP boundary rejects cross-site writes, wrong content types, malformed JS
   const plain = await fetch(url + 'sources', { method: 'POST', body: '{}' }); assert.equal(plain.status, 415)
   const malformed = await fetch(url + 'sources', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '[' }); assert.equal(malformed.status, 400)
   const unknown = await fetch(url + 'constructor', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' }); assert.equal(unknown.status, 404)
+  const lookalike = await fetch(url + 'sources', {method:'POST',headers:{'content-type':'application/json-not-json'},body:'{}'}); assert.equal(lookalike.status,415)
   assert.equal(saves, 0)
   const brand=await fetch(url+'brand');assert.equal(brand.headers.get('content-type'),'image/png');assert.ok(brand.headers.get('content-security-policy').includes('sandbox'));const png=Buffer.from(await brand.arrayBuffer());assert.equal(png.subarray(0,8).toString('hex'),'89504e470d0a1a0a');assert.equal(png[25],6);assert.equal(png.readUInt32BE(16),512)
   const styles=await fetch(url+'styles');assert.equal(styles.status,200);assert.ok(styles.headers.get('content-type').startsWith('text/css'))

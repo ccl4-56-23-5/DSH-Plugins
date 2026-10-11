@@ -48,7 +48,7 @@ test('settings version follows host metadata across upgrades and loading',()=>{
 
 test('new MiMo template permits checking Flash through a filtered list and saving it with a blank key', async () => {
   let plugin, cursor = 0
-  const state = { version: '2.1.5', revision: 'test', sources: [], active: null, presets, protocols, catalogs: { mimo: mimoCatalog } }
+  const state = { version: '2.2.0', revision: 'test', sources: [], active: null, presets, protocols, catalogs: { mimo: mimoCatalog } }
   const cells = [state, '', 'light', 'new', { id: '', name: '新供应商', baseURL: '', website: '', api: 'openai-completions', apiKey: '', enabled: false, editable: true, models: [] }, 'connection']
   const requests = []
   const React = {
@@ -92,4 +92,17 @@ test('new MiMo template permits checking Flash through a filtered list and savin
   assert.deepEqual(requests[0].body.source.models.filter(m => m.enabled).map(m => m.id), ['mimo-v2.6-flash'])
   assert.equal(cells[4].credential.configured, false)
   assert.equal(button('保存配置').props.disabled, true)
+})
+
+test('editing a name keeps the original settings revision even after background refresh',async()=>{
+  let plugin,cursor=0;const initial={revision:'original',sources:[],presets:[],protocols:[],active:null}
+  const src={id:'x',name:'X',api:'openai-completions',baseURL:'https://example.test/v1',enabled:true,editable:true,models:[{id:'x',enabled:true}],expectedRevision:'original'}
+  const cells=[{...initial,revision:'refreshed'},'', 'light','x',src,'connection'];const requests=[]
+  const React={createElement:(type,props,...children)=>({type,props,children}),Fragment:'fragment',useEffect:()=>{},useRef:value=>({current:value}),useState:value=>{const i=cursor++;if(!(i in cells))cells[i]=typeof value==='function'?value():value;return[cells[i],next=>{cells[i]=typeof next==='function'?next(cells[i]):next}]}}
+  const document={documentElement:{dataset:{theme:'light'},className:''}}
+  const fetch=async(_url,o)=>{requests.push(JSON.parse(o.body));return{json:async()=>({ok:false,error:{message:'conflict'}})}}
+  vm.runInNewContext(readFileSync(new URL('../lib/client.js',import.meta.url),'utf8'),{window:{__ModuleLoader__:{load:d=>{plugin=d.factory(()=>React)}}},document,Set,Map,JSON,URL,fetch})
+  const nodes=[];function walk(n){if(!n||typeof n!=='object')return;if(Array.isArray(n)){n.forEach(walk);return}nodes.push(n);(n.children||[]).forEach(walk)}walk(plugin.ProviderSettings())
+  await nodes.find(n=>n.children?.includes('保存配置')&&n.props?.onClick).props.onClick()
+  assert.equal(requests[0].expectedRevision,'original')
 })

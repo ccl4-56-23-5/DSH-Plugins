@@ -14,7 +14,7 @@ export function trusted(req) {
   return true
 }
 async function readBody(req) {
-  if (!(req.headers?.['content-type'] || '').toLowerCase().startsWith('application/json')) throw fault('写入请求必须使用application/json。', 415, 'JSON_REQUIRED')
+  if (!((req.headers?.['content-type'] || '').split(';')[0].trim().toLowerCase() === 'application/json')) throw fault('写入请求必须使用application/json。', 415, 'JSON_REQUIRED')
   const chunks = []; let length = 0
   for await (const chunk of req) {
     const bytes = Buffer.from(chunk); length += bytes.length

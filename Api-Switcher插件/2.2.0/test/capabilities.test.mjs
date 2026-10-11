@@ -37,3 +37,20 @@ test('editing an unknown model name does not create a text-only input or reasoni
   assert.equal(saved.reasoningEfforts,undefined);assert.equal(saved.name,'renamed');assert.equal(saved.input,undefined);assert.equal(saved.inputMode,'auto')
   assert.equal(c.plugin.capabilityLabel({input:['text'],inputEvidence:'unknown'}),'能力待确认')
 })
+
+test('capacity synchronization is independent of manual image capability and preserves individual manual limits',()=>{
+  const {plugin}=client()
+  const before=[{id:'x',name:'mine',enabled:true,inputMode:'manual',input:['text'],contextWindow:200000,maxTokens:4096,limitModes:{contextWindow:'auto',maxTokens:'manual'}}]
+  const merged=plain(plugin.mergeModels(before,[{id:'x',contextWindow:1000000,maxTokens:131072,limitEvidence:{contextWindow:'discovery'},input:['text','image']}]))
+  assert.equal(merged[0].contextWindow,1000000);assert.equal(merged[0].maxTokens,4096);assert.deepEqual(merged[0].input,['text']);assert.equal(merged[0].name,'mine')
+  assert.deepEqual(plain(plugin.mergeModels(merged,[{id:'x'}])),merged)
+})
+
+test('capacity discovery accepts only positive integers, normalizes IDs and never applies official limits to proxy names',()=>{
+  let rows=normalizeDiscovered([{id:' x ',contextWindow:-1,maxTokens:NaN},{id:'x'},{id:'bad\n'},{id:2}], 'https://example.test/v1')
+  assert.equal(rows.length,2);assert.equal(rows[0].id,'x');assert.equal(rows[0].contextWindow,undefined)
+  rows=normalizeDiscovered([{id:'mimo-v2.6-pro'}],'https://proxy.test/v1');assert.equal(rows[0].contextWindow,undefined)
+  rows=normalizeDiscovered([{id:'mimo-v2.6-pro'}],'https://api.xiaomimimo.com/v1');assert.equal(rows[0].contextWindow,1000000);assert.equal(rows[0].maxTokens,131072)
+  assert.equal(catalogFor('https://api.xiaomimimo.com/v1?proxy=yes'),undefined)
+  assert.throws(()=>normalizeDiscovered({},'https://example.test'))
+})

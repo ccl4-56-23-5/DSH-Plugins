@@ -1,6 +1,6 @@
 {
   "name": "dsh-api-switcher",
-  "version": "2.1.5",
+  "version": "2.2.0",
   "description": "按供应商管理API、启用模型，并在原生模型菜单中搜索和切换。",
   "title": "api-switcher",
   "icon": "lib/assets/icon.png",
@@ -50,9 +50,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/ccl4-56-23-5/DSH-Plugins.git",
-    "directory": "Api-Switcher插件/2.1.5"
+    "directory": "Api-Switcher插件/2.2.0"
   },
-  "homepage": "https://github.com/ccl4-56-23-5/DSH-Plugins/tree/main/Api-Switcher%E6%8F%92%E4%BB%B6/2.1.5",
+  "homepage": "https://github.com/ccl4-56-23-5/DSH-Plugins/tree/main/Api-Switcher%E6%8F%92%E4%BB%B6/2.2.0",
   "bugs": {
     "url": "https://github.com/ccl4-56-23-5/DSH-Plugins/issues"
   }

@@ -40,7 +40,7 @@ export default async function publish({github,context,core}) {
     const assets=names.map(name=>({name,data:readFileSync(join(plugin.releaseDirectory,name))}));
     assets.push({name:sourceName,data:readFileSync(sourcePath)});
     assets.push({name:'SHA256SUMS.txt',data:Buffer.from(assets.map(item=>`${hash(item.data)}  ${item.name}`).join('\n')+'\n')});
-    const body=isApi ? '修复MiMo图片输入与模型能力声明、同步字段和旧配置迁移。审查236个内置条目，未知能力明确标注；自动同步保留手动设置。40项离线测试通过。含Windows安装ZIP、TGZ、独立源码ZIP和SHA-256；实际验证范围见docs/VALIDATION.md。' : '新增最高指令透明logo和插件图标，右下角使用与Api-Switcher一致的大肥鱼角色。提示词保存与会话桥沿用1.1.1；通过宿主、图片路由和打包检查。下载TGZ与Install-DSH.ps1放在同一目录，退出DSH后运行安装器。真实模型的历史验收范围见源码docs/VALIDATION.md。';
+    const body=isApi ? '修复模型上下文和输出容量的发现、同步及DSH传递；MiMo官方容量自动补齐，保留手动配置。新增宿主生效值、配置回滚、并发编辑与凭据边界保护，截断回复不再视为连接成功。离线回归、已安装DSH适配器联调及桌面真实回复通过。含Windows安装ZIP、TGZ、独立源码ZIP和SHA-256；实际验证范围见docs/VALIDATION.md。' : '新增最高指令透明logo和插件图标，右下角使用与Api-Switcher一致的大肥鱼角色。提示词保存与会话桥沿用1.1.1；通过宿主、图片路由和打包检查。下载TGZ与Install-DSH.ps1放在同一目录，退出DSH后运行安装器。真实模型的历史验收范围见源码docs/VALIDATION.md。';
     let release;
     try { release=(await github.rest.repos.getReleaseByTag({...scope,tag:plugin.tag})).data; }
     catch(error) { if(error.status!==404)throw error; release=(await github.rest.repos.createRelease({...scope,tag_name:plugin.tag,target_commitish:context.sha,name:`${plugin.directory}${plugin.version}`,body,draft:true,prerelease:false})).data; }

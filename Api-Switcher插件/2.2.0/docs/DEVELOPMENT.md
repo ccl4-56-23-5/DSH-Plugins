@@ -21,7 +21,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Build-Release.ps1
 脚本优先使用PATH中的Node，缺少时使用`-DshRoot`指定DSH自带Node。也可传`-NodeExe`和`-OutputDir`。构建结果在源码`dist/`或指定项目目录，包含TGZ、一键安装文件、完整文档、512px logo、Windows ZIP和SHA256清单；ZIP不包含它自己，外部清单包含ZIP哈希。
 
 ```powershell
-node .\Verify-Package.mjs .\dist\dsh-api-switcher-2.1.5.tgz '<解包后的package目录>'
+node .\Verify-Package.mjs .\dist\dsh-api-switcher-2.2.0.tgz '<解包后的package目录>'
 ```
 
 同一校验脚本也可检查实际安装目录。不要把源码目录直接当作任意第三方打包工具的安装结果，因为打包工具可能规范化`package.json`。
@@ -38,7 +38,7 @@ node .\Verify-Package.mjs .\dist\dsh-api-switcher-2.1.5.tgz '<解包后的packag
 DSH-Plugins/
   Api-Switcher插件/
     README.md              # 插件索引及最新版本入口
-    2.1.5/
+    2.2.0/
       README.md
       package.json
       lib/
@@ -59,7 +59,7 @@ DSH-Plugins/
       LICENSE
 ```
 
-源项目忽略生成的`dist/`，GitHub发行快照有意纳入经校验的四个发行文件；下一版本替换本项目版本目录，仅保留最新版源码与安装包；保留其他插件，历史变更通过Git提交追溯。仓库级`.github/workflows/ci.yml`对发布版本运行离线测试、项目检查和TGZ构建。可另外创建`api-switcher-v2.1.5`标签与GitHub Release，但标签不是安装包。
+源项目忽略生成的`dist/`，GitHub发行快照有意纳入经校验的四个发行文件；下一版本替换本项目版本目录，仅保留最新版源码与安装包；保留其他插件，历史变更通过Git提交追溯。仓库级`.github/workflows/ci.yml`对发布版本运行离线测试、项目检查和TGZ构建。可另外创建`api-switcher-v2.2.0`标签与GitHub Release，但标签不是安装包。
 
 ## 发布流程
 

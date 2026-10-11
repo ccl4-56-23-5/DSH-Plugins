@@ -1,12 +1,14 @@
 # api-switcher
 
+2.2.0修复模型容量发现、同步和DSH传递，增加自动/手动/默认模式及宿主生效值，保护配置与凭据回滚。详见[能力与容量](docs/CAPABILITIES.md)。
+
 <p align="center"><img src="lib/assets/logo.png" width="192" alt="api-switcher透明logo"></p>
 
 **在一个设置页管理API供应商，在发送按钮旁选择模型。** api-switcher把供应商配置、模型启用和搜索整合进DSH的原生模型切换位置，适合同时使用官方API、兼容接口、聚合供应商和DSH原生账号。
 
-当前版本：**2.1.5**。本版修复MiMo模型未选择推理等级时无法保存、供应商logo获取和图片logo底色，新增小米MiMo配置模板。内部包名保持`dsh-api-switcher`，升级保留已有配置。
+当前版本：**2.2.0**。本版修复MiMo模型未选择推理等级时无法保存、供应商logo获取和图片logo底色，新增小米MiMo配置模板。内部包名保持`dsh-api-switcher`，升级保留已有配置。
 
-[下载2.1.5](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/api-switcher-v2.1.5)。WindowsZIP和TGZ由构建脚本生成。[使用指南](docs/USER_GUIDE.md) · [安装说明](docs/INSTALLATION.md) · [更新记录](CHANGELOG.md)
+[下载2.2.0](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/api-switcher-v2.2.0)。WindowsZIP和TGZ由构建脚本生成。[使用指南](docs/USER_GUIDE.md) · [安装说明](docs/INSTALLATION.md) · [更新记录](CHANGELOG.md)
 
 ## 可以做什么
 
@@ -26,7 +28,7 @@
 
 ## 界面与操作
 
-以下4张沿用2.1.3的**演示截图**：使用当时真实前端组件与样式、隔离的示例供应商配置。2.1.5新增MiMo模板并修复透明logo。供应商认证状态、模型勾选和图标均为演示数据；API/DS字母图标为占位图。会话截图周围的输入区是示意容器，截图不代表真实DSH桌面或付费模型响应已通过验收。截图中没有用户Key、聊天记录或个人配置。
+以下4张沿用2.1.3的**演示截图**：使用当时真实前端组件与样式、隔离的示例供应商配置。2.2.0新增MiMo模板并修复透明logo。供应商认证状态、模型勾选和图标均为演示数据；API/DS字母图标为占位图。会话截图周围的输入区是示意容器，截图不代表真实DSH桌面或付费模型响应已通过验收。截图中没有用户Key、聊天记录或个人配置。
 
 ### 1. 统一配置供应商
 
@@ -56,7 +58,7 @@
 
 ## 快速安装
 
-1. 在本版Release下载`dsh-api-switcher-2.1.5-Windows.zip`并解压。
+1. 在本版Release下载`dsh-api-switcher-2.2.0-Windows.zip`并解压。
 2. 结束DSH中正在运行的任务，双击`安装.cmd`。
 3. 安装器校验SHA-256，备份配置，离线安装插件并重启DSH。
 4. 点击发送按钮旁的模型名称，选择“管理供应商”；也可进入“插件管理→api-switcher→设置”。
@@ -93,7 +95,7 @@
 | 测试连接 | 经界面确认后发送真实模型请求，可能计费 |
 | 在DSH中发送消息 | 由DSH向选中的供应商和模型发送，按该来源规则计费 |
 
-本次修复未发送真实模型对话，MiMo密钥由用户后续填写。2.1.5完成情况与实际桌面验证边界见[验证记录](docs/VALIDATION.md)。
+本次修复未发送真实模型对话，MiMo密钥由用户后续填写。2.2.0完成情况与实际桌面验证边界见[验证记录](docs/VALIDATION.md)。
 
 ## 完整文档
 
@@ -130,4 +132,4 @@ node scripts/build-release.mjs
 
 ## 输入能力修复
 
-2.1.5修复MiMo图片输入声明，并审查全部内置模型。同步会更新自动能力并保留手动设置；缺少可靠能力来源时显示“能力待确认”。详见[能力核对与迁移](docs/CAPABILITIES.md)。
+2.2.0修复MiMo图片输入声明，并审查全部内置模型。同步会更新自动能力并保留手动设置；缺少可靠能力来源时显示“能力待确认”。详见[能力核对与迁移](docs/CAPABILITIES.md)。
