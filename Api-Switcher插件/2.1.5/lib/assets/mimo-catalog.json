@@ -1,0 +1,34 @@
+{
+  "source": "https://mimo.mi.com/docs/en-US/api/model/list-models",
+  "verifiedAt": "2026-10-11",
+  "models": [
+    {
+      "id": "mimo-v2.6-flash",
+      "name": "MiMo-V2.6-Flash",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "https://mimo.mi.com/docs/en-US/quick-start/usage-guide/multimodal-understanding/image-understanding"
+    },
+    {
+      "id": "mimo-v2.6-pro",
+      "name": "MiMo-V2.6-Pro",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "https://mimo.mi.com/docs/en-US/quick-start/usage-guide/multimodal-understanding/image-understanding"
+    },
+    {
+      "id": "mimo-v2.6-pro-ultraspeed",
+      "name": "MiMo-V2.6-Pro-UltraSpeed",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "https://mimo.mi.com/docs/en-US/quick-start/usage-guide/multimodal-understanding/image-understanding"
+    }
+  ],
+  "capabilitiesSource": "https://mimo.mi.com/docs/en-US/quick-start/usage-guide/multimodal-understanding/image-understanding"
+}
