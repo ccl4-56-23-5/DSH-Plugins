@@ -1,0 +1,368 @@
+{
+  "date": "2026-10-12",
+  "purpose": "Neutral counting question, no tools, isolated sessions, no user content",
+  "tests": [
+    {
+      "test": 0,
+      "provider": "mimo",
+      "model": "mimo-v2.6-flash",
+      "finish": {
+        "kind": "completed"
+      },
+      "usage": {
+        "inputTokens": 2804,
+        "outputTokens": 110,
+        "totalTokens": 2914
+      },
+      "content": [
+        {
+          "type": "text",
+          "characters": 116
+        }
+      ],
+      "reply": "喵，245个。计算说明：1到1000中7的倍数142个、11的倍数90个、77的倍数12个，按容斥原理能被7或11整除的为142+90−12=220个，再减去同时被二者整除的12个得245个（或直接142+90−2×12=245）。"
+    },
+    {
+      "test": 1,
+      "provider": "mimo",
+      "model": "mimo-v2.6-flash",
+      "finish": {
+        "kind": "completed"
+      },
+      "usage": {
+        "inputTokens": 2802,
+        "outputTokens": 238,
+        "totalTokens": 3040
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "characters": 291
+        },
+        {
+          "type": "text",
+          "characters": 107
+        }
+      ],
+      "reply": "喵\n\n**208**\n\n说明：1–1000 中 7 的倍数 142 个、11 的倍数 90 个，用容斥减去 77 的倍数 12 个得 220 个，再减去同时被二者整除的 12 个，即 220 − 12 = 208。"
+    },
+    {
+      "test": 2,
+      "provider": "gptchat",
+      "model": "gpt-5.4",
+      "finish": {
+        "kind": "completed"
+      },
+      "usage": {
+        "inputTokens": 2804,
+        "outputTokens": 82,
+        "totalTokens": 2886
+      },
+      "content": [
+        {
+          "type": "text",
+          "characters": 100
+        }
+      ],
+      "reply": "喵195。1到1000中7的倍数有⌊1000/7⌋=142个，11的倍数有⌊1000/11⌋=90个，同时是二者倍数即77的倍数有⌊1000/77⌋=12个，所以所求为142+90-2×12=195。"
+    },
+    {
+      "test": 3,
+      "provider": "gptchat",
+      "model": "gpt-5.4",
+      "finish": {
+        "kind": "completed"
+      },
+      "usage": {
+        "inputTokens": 2804,
+        "outputTokens": 392,
+        "totalTokens": 3196
+      },
+      "content": [
+        {
+          "type": "text",
+          "characters": 100
+        }
+      ],
+      "reply": "喵 208；因为1到1000中7的倍数有⌊1000/7⌋=142个，11的倍数有⌊1000/11⌋=90个，同时是7和11倍数的有⌊1000/77⌋=12个，所以所求为142+90-2×12=208。"
+    },
+    {
+      "test": 4,
+      "provider": "claude",
+      "model": "claude-sonnet-4-6",
+      "finish": {
+        "kind": "error",
+        "error": {
+          "message": "404 {\"error\":{\"message\":\"Invalid URL (POST /v1/v1/messages)\",\"localized_message\":\"\",\"type\":\"invalid_request_error\",\"param\":\"\",\"code\":\"\"}}",
+          "code": "INVALID_REQUEST"
+        }
+      }
+    },
+    {
+      "test": 5,
+      "provider": "claude",
+      "model": "claude-sonnet-4-6",
+      "finish": {
+        "kind": "completed"
+      },
+      "usage": {
+        "inputTokens": 3,
+        "outputTokens": 286,
+        "totalTokens": 3415,
+        "cacheWriteTokens": 3126
+      },
+      "content": [
+        {
+          "type": "text",
+          "characters": 341
+        }
+      ],
+      "reply": "喵～\n\n**答案：220个**\n\n**计算说明：** 用容斥原理——1到1000中7的倍数有⌊1000/7⌋=142个，11的倍数有⌊1000/11⌋=90个，77（7×11）的倍数有⌊1000/77⌋=12个；被7或11整除的共142+90−12=220个，再减去同时被两者整除的12个，得220−12×2+12……修正：题目要求\"被7或11整除但**不**同时被两者整除\"，即纯7倍数+纯11倍数=(142−12)+(90−12)=130+78=**208个**。\n\n---\n\n> 修正最终答案：**208个**\n>\n> 说明：1到1000中纯被7整除（不被11整除）的有142−12=130个，纯被11整除（不被7整除）的有90−12=78个，两者之和为130+78=208。"
+    },
+    {
+      "test": 6,
+      "provider": "claude",
+      "model": "claude-sonnet-4-6",
+      "finish": {
+        "kind": "completed"
+      },
+      "usage": {
+        "inputTokens": 3,
+        "outputTokens": 403,
+        "totalTokens": 3532,
+        "cacheWriteTokens": 3126
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "characters": 458
+        },
+        {
+          "type": "text",
+          "characters": 134
+        }
+      ],
+      "reply": "喵～\n\n**208个**\n\n用容斥原理：⌊1000/7⌋ = 142，⌊1000/11⌋ = 90，同时被7和11整除（即被77整除）⌊1000/77⌋ = 12；去掉两端重叠得 (142 − 12) + (90 − 12) = 130 + 78 = **208**。"
+    },
+    {
+      "test": 7,
+      "provider": "mimo",
+      "model": "mimo-v2.6-pro",
+      "finish": {
+        "kind": "completed"
+      },
+      "usage": {
+        "inputTokens": 2804,
+        "outputTokens": 58,
+        "totalTokens": 2862
+      },
+      "content": [
+        {
+          "type": "text",
+          "characters": 59
+        }
+      ],
+      "reply": "喵\n\n158；用容斥原理：⌊1000/7⌋+⌊1000/11⌋−2⌊1000/77⌋=142+90−2×12=158。"
+    },
+    {
+      "test": 8,
+      "provider": "mimo",
+      "model": "mimo-v2.6-pro",
+      "finish": {
+        "kind": "completed"
+      },
+      "usage": {
+        "inputTokens": 2802,
+        "outputTokens": 248,
+        "totalTokens": 3050
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "characters": 318
+        },
+        {
+          "type": "text",
+          "characters": 110
+        }
+      ],
+      "reply": "喵\n\n**208**\n\n计算说明：能被 7 整除的有 142 个、能被 11 整除的有 90 个、同时被二者整除（即被 77 整除）的有 12 个，故恰被其中一个整除的个数为 142 + 90 − 2×12 = 208。"
+    },
+    {
+      "test": 9,
+      "provider": "mimo",
+      "model": "mimo-v2.6-pro-ultraspeed",
+      "finish": {
+        "kind": "completed"
+      },
+      "usage": {
+        "inputTokens": 2807,
+        "outputTokens": 67,
+        "totalTokens": 2874
+      },
+      "content": [
+        {
+          "type": "text",
+          "characters": 75
+        }
+      ],
+      "reply": "喵～\n\n**204**\n\n计算说明：⌊1000/7⌋=142、⌊1000/11⌋=90、⌊1000/77⌋=12，故 142+90−2×12=204。"
+    },
+    {
+      "test": 10,
+      "provider": "mimo",
+      "model": "mimo-v2.6-pro-ultraspeed",
+      "finish": {
+        "kind": "completed"
+      },
+      "usage": {
+        "inputTokens": 2805,
+        "outputTokens": 381,
+        "totalTokens": 3186
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "characters": 758
+        },
+        {
+          "type": "text",
+          "characters": 116
+        }
+      ],
+      "reply": "喵\n\n**208**\n\n计算说明：1–1000 中 7 的倍数有 142 个、11 的倍数有 90 个、77（=7×11）的倍数有 12 个，故只被 7 或只被 11 整除的个数为 (142−12) + (90−12) = 208。"
+    },
+    {
+      "test": 11,
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash-ga-260731",
+      "finish": {
+        "kind": "completed"
+      },
+      "usage": {
+        "inputTokens": 2822,
+        "outputTokens": 105,
+        "totalTokens": 2927
+      },
+      "content": [
+        {
+          "type": "text",
+          "characters": 161
+        }
+      ],
+      "reply": "喵~ 最终数量是 **208**。\n\n计算说明：1到1000中，能被7或11整除但不能同时被二者整除的整数个数 = 能被7整除的个数(⌊1000/7⌋=142) + 能被11整除的个数(⌊1000/11⌋=90) − 2×能被77整除的个数(⌊1000/77⌋=12) = 142 + 90 − 24 = **208**。"
+    },
+    {
+      "test": 12,
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash-ga-260731",
+      "finish": {
+        "kind": "completed"
+      },
+      "usage": {
+        "inputTokens": 2901,
+        "outputTokens": 191,
+        "totalTokens": 3092
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "characters": 217
+        },
+        {
+          "type": "text",
+          "characters": 81
+        }
+      ],
+      "reply": "喵～最终数量：208。计算说明：1~1000中能被7整除的有142个、能被11整除的有90个，减去同时被77整除的12个的两倍，即142+90−2×12=208。"
+    },
+    {
+      "test": 13,
+      "provider": "gpt",
+      "model": "gpt-5.4",
+      "finish": {
+        "kind": "completed"
+      },
+      "usage": {
+        "inputTokens": 2804,
+        "outputTokens": 166,
+        "totalTokens": 2970
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "characters": 0
+        },
+        {
+          "type": "text",
+          "characters": 52
+        }
+      ],
+      "reply": "喵208，计算为⌊1000/7⌋+⌊1000/11⌋−2⌊1000/77⌋=142+90−24=208。"
+    },
+    {
+      "test": 14,
+      "provider": "gpt",
+      "model": "gpt-5.4",
+      "finish": {
+        "kind": "completed"
+      },
+      "usage": {
+        "inputTokens": 2804,
+        "outputTokens": 433,
+        "totalTokens": 3237
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "characters": 0
+        },
+        {
+          "type": "text",
+          "characters": 78
+        }
+      ],
+      "reply": "喵，208；计算：1到1000中7的倍数有142个、11的倍数有90个、同时是二者倍数（77的倍数）有12个，所以所求个数为142+90−2×12=208。"
+    },
+    {
+      "test": 15,
+      "provider": "gptchat",
+      "model": "gpt-5.5",
+      "finish": {
+        "kind": "completed"
+      },
+      "usage": {
+        "inputTokens": 2804,
+        "outputTokens": 60,
+        "totalTokens": 2864
+      },
+      "content": [
+        {
+          "type": "text",
+          "characters": 78
+        }
+      ],
+      "reply": "喵 260。计算说明：1到1000中7的倍数有142个、11的倍数有90个、77的倍数有12个，只被7或11之一整除的数量为142+90-2×12=260。"
+    },
+    {
+      "test": 16,
+      "provider": "gptchat",
+      "model": "gpt-5.5",
+      "finish": {
+        "kind": "completed"
+      },
+      "usage": {
+        "inputTokens": 2804,
+        "outputTokens": 205,
+        "totalTokens": 3009
+      },
+      "content": [
+        {
+          "type": "text",
+          "characters": 55
+        }
+      ],
+      "reply": "喵 208。计算说明：⌊1000/7⌋+⌊1000/11⌋−2⌊1000/77⌋=142+90−24=208。"
+    }
+  ]
+}

@@ -5,7 +5,7 @@ DSH桌面插件集合。每个项目只保留当前最新版的源码和安装�
 | 插件 | 当前版本 | 功能 | 下载与安装 |
 |---|---|---|---|
 | [最高指令插件](最高指令插件/README.md) | 1.1.2 | 全局初始提示词，多行输入、即时开关、原文保存 | [安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/top-directive-v1.1.2) · [安装指南](最高指令插件/1.1.2/docs/INSTALLATION.md) |
-| [Api-Switcher插件](Api-Switcher插件/README.md) | 2.2.0 | 多供应商管理、模型选择、搜索和连接测试 | [安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/api-switcher-v2.2.0) · [安装指南](Api-Switcher插件/2.2.0/docs/INSTALLATION.md) |
+| [Api-Switcher插件](Api-Switcher插件/README.md) | 2.3.0 | 多供应商管理、模型选择、搜索和连接测试 | [安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/api-switcher-v2.3.0) · [安装指南](Api-Switcher插件/2.3.0/docs/INSTALLATION.md) |
 
 | [使用统计定制版](Token用量插件/README.md) | 1.0.0 | 保留历史数据、方块热力图、纯柱状趋势、左侧入口 | [安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/token-usage-v1.0.0) · [说明](Token用量插件/1.0.0/README.md) |
 | [DSH控制桥插件](DSH控制桥插件/README.md) | 1.0.0 | 宿主API、动态Remote接口、DOM控件树，配合Codex端无截图操控 | [安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/dsh-control-v1.0.0) · [说明](DSH控制桥插件/1.0.0/README.md) |
@@ -15,7 +15,7 @@ DSH桌面插件集合。每个项目只保留当前最新版的源码和安装�
 ```text
 DSH-Plugins/
 ├─ 最高指令插件/1.1.2/
-└─ Api-Switcher插件/2.2.0/
+└─ Api-Switcher插件/2.3.0/
 ```
 
 点击项目名称查看功能图文、使用说明和开发文档。最高指令安装文件位于其版本目录；Api-Switcher安装文件位于其版本目录的`dist/`。也可从上表的Release入口下载。
@@ -26,6 +26,6 @@ Codex控制DSH的插件单独保存在[Codex-Plugins](https://github.com/ccl4-56
 
 默认分支和Release仅保留各插件最新版；Git提交历史用于追溯。版本更新时替换本项目版本目录，更新文档、下载链接与SHA-256，保留其他项目。
 
-本次仓库整理核对目录、安装包和源文件哈希；实际运行验收范围分别见[最高指令验证记录](最高指令插件/1.1.2/docs/VALIDATION.md)和[Api-Switcher验证记录](Api-Switcher插件/2.2.0/docs/VALIDATION.md)。
+本次仓库整理核对目录、安装包和源文件哈希；实际运行验收范围分别见[最高指令验证记录](最高指令插件/1.1.2/docs/VALIDATION.md)和[Api-Switcher验证记录](Api-Switcher插件/2.3.0/docs/VALIDATION.md)。
 
 [MIT许可](LICENSE)。第三方素材与依赖的许可见各项目声明。

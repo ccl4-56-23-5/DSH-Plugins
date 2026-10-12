@@ -1,0 +1,1329 @@
+{
+  "ok": true,
+  "count": 145,
+  "results": [
+    {
+      "id": "mimo-v2.6-flash",
+      "api": "openai-completions",
+      "effort": "off",
+      "url": "/v1/chat/completions",
+      "thinking": {
+        "type": "disabled"
+      }
+    },
+    {
+      "id": "mimo-v2.6-flash",
+      "api": "openai-completions",
+      "effort": "high",
+      "url": "/v1/chat/completions",
+      "thinking": {
+        "type": "enabled"
+      }
+    },
+    {
+      "id": "mimo-v2.6-pro",
+      "api": "openai-completions",
+      "effort": "off",
+      "url": "/v1/chat/completions",
+      "thinking": {
+        "type": "disabled"
+      }
+    },
+    {
+      "id": "mimo-v2.6-pro",
+      "api": "openai-completions",
+      "effort": "high",
+      "url": "/v1/chat/completions",
+      "thinking": {
+        "type": "enabled"
+      }
+    },
+    {
+      "id": "mimo-v2.6-pro-ultraspeed",
+      "api": "openai-completions",
+      "effort": "off",
+      "url": "/v1/chat/completions",
+      "thinking": {
+        "type": "disabled"
+      }
+    },
+    {
+      "id": "mimo-v2.6-pro-ultraspeed",
+      "api": "openai-completions",
+      "effort": "high",
+      "url": "/v1/chat/completions",
+      "thinking": {
+        "type": "enabled"
+      }
+    },
+    {
+      "id": "mimo-v2.6-flash",
+      "api": "openai-responses",
+      "effort": "off",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "none"
+      }
+    },
+    {
+      "id": "mimo-v2.6-flash",
+      "api": "openai-responses",
+      "effort": "high",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "high",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "mimo-v2.6-pro",
+      "api": "openai-responses",
+      "effort": "off",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "none"
+      }
+    },
+    {
+      "id": "mimo-v2.6-pro",
+      "api": "openai-responses",
+      "effort": "high",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "high",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "mimo-v2.6-pro-ultraspeed",
+      "api": "openai-responses",
+      "effort": "off",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "none"
+      }
+    },
+    {
+      "id": "mimo-v2.6-pro-ultraspeed",
+      "api": "openai-responses",
+      "effort": "high",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "high",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "deepseek-flash",
+      "api": "openai-completions",
+      "effort": "off",
+      "url": "/v1/chat/completions",
+      "thinking": {
+        "type": "disabled"
+      }
+    },
+    {
+      "id": "deepseek-flash",
+      "api": "openai-completions",
+      "effort": "low",
+      "url": "/v1/chat/completions",
+      "thinking": {
+        "type": "enabled"
+      },
+      "reasoning_effort": "low"
+    },
+    {
+      "id": "deepseek-flash",
+      "api": "openai-completions",
+      "effort": "high",
+      "url": "/v1/chat/completions",
+      "thinking": {
+        "type": "enabled"
+      },
+      "reasoning_effort": "high"
+    },
+    {
+      "id": "deepseek-flash",
+      "api": "openai-completions",
+      "effort": "max",
+      "url": "/v1/chat/completions",
+      "thinking": {
+        "type": "enabled"
+      },
+      "reasoning_effort": "max"
+    },
+    {
+      "id": "deepseek-v4-pro",
+      "api": "openai-completions",
+      "effort": "off",
+      "url": "/v1/chat/completions",
+      "thinking": {
+        "type": "disabled"
+      }
+    },
+    {
+      "id": "deepseek-v4-pro",
+      "api": "openai-completions",
+      "effort": "low",
+      "url": "/v1/chat/completions",
+      "thinking": {
+        "type": "enabled"
+      },
+      "reasoning_effort": "low"
+    },
+    {
+      "id": "deepseek-v4-pro",
+      "api": "openai-completions",
+      "effort": "high",
+      "url": "/v1/chat/completions",
+      "thinking": {
+        "type": "enabled"
+      },
+      "reasoning_effort": "high"
+    },
+    {
+      "id": "deepseek-v4-pro",
+      "api": "openai-completions",
+      "effort": "max",
+      "url": "/v1/chat/completions",
+      "thinking": {
+        "type": "enabled"
+      },
+      "reasoning_effort": "max"
+    },
+    {
+      "id": "deepseek-v4-flash-ga-260731",
+      "api": "openai-completions",
+      "effort": "off",
+      "url": "/v1/chat/completions",
+      "thinking": {
+        "type": "disabled"
+      }
+    },
+    {
+      "id": "deepseek-v4-flash-ga-260731",
+      "api": "openai-completions",
+      "effort": "high",
+      "url": "/v1/chat/completions",
+      "thinking": {
+        "type": "enabled"
+      }
+    },
+    {
+      "id": "gpt-5",
+      "api": "openai-completions",
+      "effort": "minimal",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "minimal"
+    },
+    {
+      "id": "gpt-5",
+      "api": "openai-completions",
+      "effort": "low",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "low"
+    },
+    {
+      "id": "gpt-5",
+      "api": "openai-completions",
+      "effort": "medium",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "medium"
+    },
+    {
+      "id": "gpt-5",
+      "api": "openai-completions",
+      "effort": "high",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "high"
+    },
+    {
+      "id": "gpt-5-mini",
+      "api": "openai-completions",
+      "effort": "minimal",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "minimal"
+    },
+    {
+      "id": "gpt-5-mini",
+      "api": "openai-completions",
+      "effort": "low",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "low"
+    },
+    {
+      "id": "gpt-5-mini",
+      "api": "openai-completions",
+      "effort": "medium",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "medium"
+    },
+    {
+      "id": "gpt-5-mini",
+      "api": "openai-completions",
+      "effort": "high",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "high"
+    },
+    {
+      "id": "gpt-5-nano",
+      "api": "openai-completions",
+      "effort": "minimal",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "minimal"
+    },
+    {
+      "id": "gpt-5-nano",
+      "api": "openai-completions",
+      "effort": "low",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "low"
+    },
+    {
+      "id": "gpt-5-nano",
+      "api": "openai-completions",
+      "effort": "medium",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "medium"
+    },
+    {
+      "id": "gpt-5-nano",
+      "api": "openai-completions",
+      "effort": "high",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "high"
+    },
+    {
+      "id": "gpt-5",
+      "api": "openai-responses",
+      "effort": "minimal",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "minimal",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5",
+      "api": "openai-responses",
+      "effort": "low",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "low",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5",
+      "api": "openai-responses",
+      "effort": "medium",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "medium",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5",
+      "api": "openai-responses",
+      "effort": "high",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "high",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5-mini",
+      "api": "openai-responses",
+      "effort": "minimal",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "minimal",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5-mini",
+      "api": "openai-responses",
+      "effort": "low",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "low",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5-mini",
+      "api": "openai-responses",
+      "effort": "medium",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "medium",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5-mini",
+      "api": "openai-responses",
+      "effort": "high",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "high",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5-nano",
+      "api": "openai-responses",
+      "effort": "minimal",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "minimal",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5-nano",
+      "api": "openai-responses",
+      "effort": "low",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "low",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5-nano",
+      "api": "openai-responses",
+      "effort": "medium",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "medium",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5-nano",
+      "api": "openai-responses",
+      "effort": "high",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "high",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.1",
+      "api": "openai-completions",
+      "effort": "off",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "none"
+    },
+    {
+      "id": "gpt-5.1",
+      "api": "openai-completions",
+      "effort": "low",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "low"
+    },
+    {
+      "id": "gpt-5.1",
+      "api": "openai-completions",
+      "effort": "medium",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "medium"
+    },
+    {
+      "id": "gpt-5.1",
+      "api": "openai-completions",
+      "effort": "high",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "high"
+    },
+    {
+      "id": "gpt-5.1",
+      "api": "openai-responses",
+      "effort": "off",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "none"
+      }
+    },
+    {
+      "id": "gpt-5.1",
+      "api": "openai-responses",
+      "effort": "low",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "low",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.1",
+      "api": "openai-responses",
+      "effort": "medium",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "medium",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.1",
+      "api": "openai-responses",
+      "effort": "high",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "high",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.2",
+      "api": "openai-completions",
+      "effort": "off",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "none"
+    },
+    {
+      "id": "gpt-5.2",
+      "api": "openai-completions",
+      "effort": "low",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "low"
+    },
+    {
+      "id": "gpt-5.2",
+      "api": "openai-completions",
+      "effort": "medium",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "medium"
+    },
+    {
+      "id": "gpt-5.2",
+      "api": "openai-completions",
+      "effort": "high",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "high"
+    },
+    {
+      "id": "gpt-5.2",
+      "api": "openai-completions",
+      "effort": "xhigh",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "xhigh"
+    },
+    {
+      "id": "gpt-5.4",
+      "api": "openai-completions",
+      "effort": "off",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "none"
+    },
+    {
+      "id": "gpt-5.4",
+      "api": "openai-completions",
+      "effort": "low",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "low"
+    },
+    {
+      "id": "gpt-5.4",
+      "api": "openai-completions",
+      "effort": "medium",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "medium"
+    },
+    {
+      "id": "gpt-5.4",
+      "api": "openai-completions",
+      "effort": "high",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "high"
+    },
+    {
+      "id": "gpt-5.4",
+      "api": "openai-completions",
+      "effort": "xhigh",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "xhigh"
+    },
+    {
+      "id": "gpt-5.4-mini",
+      "api": "openai-completions",
+      "effort": "off",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "none"
+    },
+    {
+      "id": "gpt-5.4-mini",
+      "api": "openai-completions",
+      "effort": "low",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "low"
+    },
+    {
+      "id": "gpt-5.4-mini",
+      "api": "openai-completions",
+      "effort": "medium",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "medium"
+    },
+    {
+      "id": "gpt-5.4-mini",
+      "api": "openai-completions",
+      "effort": "high",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "high"
+    },
+    {
+      "id": "gpt-5.4-mini",
+      "api": "openai-completions",
+      "effort": "xhigh",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "xhigh"
+    },
+    {
+      "id": "gpt-5.4-nano",
+      "api": "openai-completions",
+      "effort": "off",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "none"
+    },
+    {
+      "id": "gpt-5.4-nano",
+      "api": "openai-completions",
+      "effort": "low",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "low"
+    },
+    {
+      "id": "gpt-5.4-nano",
+      "api": "openai-completions",
+      "effort": "medium",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "medium"
+    },
+    {
+      "id": "gpt-5.4-nano",
+      "api": "openai-completions",
+      "effort": "high",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "high"
+    },
+    {
+      "id": "gpt-5.4-nano",
+      "api": "openai-completions",
+      "effort": "xhigh",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "xhigh"
+    },
+    {
+      "id": "gpt-5.2",
+      "api": "openai-responses",
+      "effort": "off",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "none"
+      }
+    },
+    {
+      "id": "gpt-5.2",
+      "api": "openai-responses",
+      "effort": "low",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "low",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.2",
+      "api": "openai-responses",
+      "effort": "medium",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "medium",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.2",
+      "api": "openai-responses",
+      "effort": "high",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "high",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.2",
+      "api": "openai-responses",
+      "effort": "xhigh",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "xhigh",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.4",
+      "api": "openai-responses",
+      "effort": "off",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "none"
+      }
+    },
+    {
+      "id": "gpt-5.4",
+      "api": "openai-responses",
+      "effort": "low",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "low",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.4",
+      "api": "openai-responses",
+      "effort": "medium",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "medium",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.4",
+      "api": "openai-responses",
+      "effort": "high",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "high",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.4",
+      "api": "openai-responses",
+      "effort": "xhigh",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "xhigh",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.4-mini",
+      "api": "openai-responses",
+      "effort": "off",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "none"
+      }
+    },
+    {
+      "id": "gpt-5.4-mini",
+      "api": "openai-responses",
+      "effort": "low",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "low",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.4-mini",
+      "api": "openai-responses",
+      "effort": "medium",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "medium",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.4-mini",
+      "api": "openai-responses",
+      "effort": "high",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "high",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.4-mini",
+      "api": "openai-responses",
+      "effort": "xhigh",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "xhigh",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.4-nano",
+      "api": "openai-responses",
+      "effort": "off",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "none"
+      }
+    },
+    {
+      "id": "gpt-5.4-nano",
+      "api": "openai-responses",
+      "effort": "low",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "low",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.4-nano",
+      "api": "openai-responses",
+      "effort": "medium",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "medium",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.4-nano",
+      "api": "openai-responses",
+      "effort": "high",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "high",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.4-nano",
+      "api": "openai-responses",
+      "effort": "xhigh",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "xhigh",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.5",
+      "api": "openai-completions",
+      "effort": "off",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "none"
+    },
+    {
+      "id": "gpt-5.5",
+      "api": "openai-completions",
+      "effort": "low",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "low"
+    },
+    {
+      "id": "gpt-5.5",
+      "api": "openai-completions",
+      "effort": "medium",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "medium"
+    },
+    {
+      "id": "gpt-5.5",
+      "api": "openai-completions",
+      "effort": "high",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "high"
+    },
+    {
+      "id": "gpt-5.5",
+      "api": "openai-completions",
+      "effort": "xhigh",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "xhigh"
+    },
+    {
+      "id": "gpt-5.5",
+      "api": "openai-responses",
+      "effort": "off",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "none"
+      }
+    },
+    {
+      "id": "gpt-5.5",
+      "api": "openai-responses",
+      "effort": "low",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "low",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.5",
+      "api": "openai-responses",
+      "effort": "medium",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "medium",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.5",
+      "api": "openai-responses",
+      "effort": "high",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "high",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.5",
+      "api": "openai-responses",
+      "effort": "xhigh",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "xhigh",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.4",
+      "api": "openai-responses",
+      "effort": "off",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "none"
+      }
+    },
+    {
+      "id": "gpt-5.4",
+      "api": "openai-responses",
+      "effort": "low",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "low",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.4",
+      "api": "openai-responses",
+      "effort": "medium",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "medium",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.4",
+      "api": "openai-responses",
+      "effort": "high",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "high",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.4",
+      "api": "openai-responses",
+      "effort": "xhigh",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "xhigh",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.5",
+      "api": "openai-responses",
+      "effort": "off",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "none"
+      }
+    },
+    {
+      "id": "gpt-5.5",
+      "api": "openai-responses",
+      "effort": "low",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "low",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.5",
+      "api": "openai-responses",
+      "effort": "medium",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "medium",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.5",
+      "api": "openai-responses",
+      "effort": "high",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "high",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.5",
+      "api": "openai-responses",
+      "effort": "xhigh",
+      "url": "/v1/responses",
+      "reasoning": {
+        "effort": "xhigh",
+        "summary": "auto"
+      }
+    },
+    {
+      "id": "gpt-5.4",
+      "api": "openai-completions",
+      "effort": "off",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "none"
+    },
+    {
+      "id": "gpt-5.4",
+      "api": "openai-completions",
+      "effort": "low",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "low"
+    },
+    {
+      "id": "gpt-5.4",
+      "api": "openai-completions",
+      "effort": "medium",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "medium"
+    },
+    {
+      "id": "gpt-5.4",
+      "api": "openai-completions",
+      "effort": "high",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "high"
+    },
+    {
+      "id": "gpt-5.4",
+      "api": "openai-completions",
+      "effort": "xhigh",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "xhigh"
+    },
+    {
+      "id": "gpt-5.5",
+      "api": "openai-completions",
+      "effort": "off",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "none"
+    },
+    {
+      "id": "gpt-5.5",
+      "api": "openai-completions",
+      "effort": "low",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "low"
+    },
+    {
+      "id": "gpt-5.5",
+      "api": "openai-completions",
+      "effort": "medium",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "medium"
+    },
+    {
+      "id": "gpt-5.5",
+      "api": "openai-completions",
+      "effort": "high",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "high"
+    },
+    {
+      "id": "gpt-5.5",
+      "api": "openai-completions",
+      "effort": "xhigh",
+      "url": "/v1/chat/completions",
+      "reasoning_effort": "xhigh"
+    },
+    {
+      "id": "claude-opus-4-6",
+      "api": "anthropic-messages",
+      "effort": "off",
+      "url": "/v1/messages?beta=true",
+      "thinking": {
+        "type": "disabled"
+      }
+    },
+    {
+      "id": "claude-opus-4-6",
+      "api": "anthropic-messages",
+      "effort": "low",
+      "url": "/v1/messages?beta=true",
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized"
+      },
+      "output_config": {
+        "effort": "low"
+      }
+    },
+    {
+      "id": "claude-opus-4-6",
+      "api": "anthropic-messages",
+      "effort": "medium",
+      "url": "/v1/messages?beta=true",
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized"
+      },
+      "output_config": {
+        "effort": "medium"
+      }
+    },
+    {
+      "id": "claude-opus-4-6",
+      "api": "anthropic-messages",
+      "effort": "high",
+      "url": "/v1/messages?beta=true",
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized"
+      },
+      "output_config": {
+        "effort": "high"
+      }
+    },
+    {
+      "id": "claude-opus-4-6",
+      "api": "anthropic-messages",
+      "effort": "max",
+      "url": "/v1/messages?beta=true",
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized"
+      },
+      "output_config": {
+        "effort": "max"
+      }
+    },
+    {
+      "id": "claude-opus-4-7",
+      "api": "anthropic-messages",
+      "effort": "off",
+      "url": "/v1/messages?beta=true",
+      "thinking": {
+        "type": "disabled"
+      }
+    },
+    {
+      "id": "claude-opus-4-7",
+      "api": "anthropic-messages",
+      "effort": "low",
+      "url": "/v1/messages?beta=true",
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized"
+      },
+      "output_config": {
+        "effort": "low"
+      }
+    },
+    {
+      "id": "claude-opus-4-7",
+      "api": "anthropic-messages",
+      "effort": "medium",
+      "url": "/v1/messages?beta=true",
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized"
+      },
+      "output_config": {
+        "effort": "medium"
+      }
+    },
+    {
+      "id": "claude-opus-4-7",
+      "api": "anthropic-messages",
+      "effort": "high",
+      "url": "/v1/messages?beta=true",
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized"
+      },
+      "output_config": {
+        "effort": "high"
+      }
+    },
+    {
+      "id": "claude-opus-4-7",
+      "api": "anthropic-messages",
+      "effort": "xhigh",
+      "url": "/v1/messages?beta=true",
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized"
+      },
+      "output_config": {
+        "effort": "xhigh"
+      }
+    },
+    {
+      "id": "claude-opus-4-7",
+      "api": "anthropic-messages",
+      "effort": "max",
+      "url": "/v1/messages?beta=true",
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized"
+      },
+      "output_config": {
+        "effort": "max"
+      }
+    },
+    {
+      "id": "claude-opus-4-8",
+      "api": "anthropic-messages",
+      "effort": "off",
+      "url": "/v1/messages?beta=true",
+      "thinking": {
+        "type": "disabled"
+      }
+    },
+    {
+      "id": "claude-opus-4-8",
+      "api": "anthropic-messages",
+      "effort": "low",
+      "url": "/v1/messages?beta=true",
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized"
+      },
+      "output_config": {
+        "effort": "low"
+      }
+    },
+    {
+      "id": "claude-opus-4-8",
+      "api": "anthropic-messages",
+      "effort": "medium",
+      "url": "/v1/messages?beta=true",
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized"
+      },
+      "output_config": {
+        "effort": "medium"
+      }
+    },
+    {
+      "id": "claude-opus-4-8",
+      "api": "anthropic-messages",
+      "effort": "high",
+      "url": "/v1/messages?beta=true",
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized"
+      },
+      "output_config": {
+        "effort": "high"
+      }
+    },
+    {
+      "id": "claude-opus-4-8",
+      "api": "anthropic-messages",
+      "effort": "xhigh",
+      "url": "/v1/messages?beta=true",
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized"
+      },
+      "output_config": {
+        "effort": "xhigh"
+      }
+    },
+    {
+      "id": "claude-opus-4-8",
+      "api": "anthropic-messages",
+      "effort": "max",
+      "url": "/v1/messages?beta=true",
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized"
+      },
+      "output_config": {
+        "effort": "max"
+      }
+    },
+    {
+      "id": "claude-sonnet-4-6",
+      "api": "anthropic-messages",
+      "effort": "off",
+      "url": "/v1/messages?beta=true",
+      "thinking": {
+        "type": "disabled"
+      }
+    },
+    {
+      "id": "claude-sonnet-4-6",
+      "api": "anthropic-messages",
+      "effort": "low",
+      "url": "/v1/messages?beta=true",
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized"
+      },
+      "output_config": {
+        "effort": "low"
+      }
+    },
+    {
+      "id": "claude-sonnet-4-6",
+      "api": "anthropic-messages",
+      "effort": "medium",
+      "url": "/v1/messages?beta=true",
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized"
+      },
+      "output_config": {
+        "effort": "medium"
+      }
+    },
+    {
+      "id": "claude-sonnet-4-6",
+      "api": "anthropic-messages",
+      "effort": "high",
+      "url": "/v1/messages?beta=true",
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized"
+      },
+      "output_config": {
+        "effort": "high"
+      }
+    }
+  ]
+}

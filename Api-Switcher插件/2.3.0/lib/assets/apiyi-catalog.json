@@ -1,0 +1,1909 @@
+{
+  "source": "https://docs.apiyi.com/model-registry.json",
+  "generatedAt": "2026-10-08T22:04:49.516Z",
+  "verifiedAt": "2026-10-09T07:17:14.334Z",
+  "models": [
+    {
+      "id": "MiniMax-M2.5",
+      "name": "MiniMax-M2.5",
+      "vendor": "MiniMax",
+      "group": "MiniMax",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "MiniMax-M2.5-lightning",
+      "name": "MiniMax-M2.5-lightning",
+      "vendor": "MiniMax",
+      "group": "MiniMax",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "MiniMax-M2.7",
+      "name": "MiniMax-M2.7",
+      "vendor": "MiniMax",
+      "group": "MiniMax",
+      "input": [
+        "text"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: minimax,minimax-cn"
+    },
+    {
+      "id": "MiniMax-M2.7-highspeed",
+      "name": "MiniMax-M2.7-highspeed",
+      "vendor": "MiniMax",
+      "group": "MiniMax",
+      "input": [
+        "text"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: minimax,minimax-cn"
+    },
+    {
+      "id": "MiniMax-M3",
+      "name": "MiniMax-M3",
+      "vendor": "MiniMax",
+      "group": "MiniMax",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: minimax,minimax-cn"
+    },
+    {
+      "id": "bge-m3",
+      "name": "bge-m3",
+      "vendor": "BAAI",
+      "group": "BAAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "chat-latest",
+      "name": "chat-latest",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-fable-5",
+      "name": "claude-fable-5",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: anthropic"
+    },
+    {
+      "id": "claude-fable-5-1",
+      "name": "claude-fable-5-1",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: anthropic"
+    },
+    {
+      "id": "claude-fable-5-1-thinking",
+      "name": "claude-fable-5-1-thinking",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-fable-5-thinking",
+      "name": "claude-fable-5-thinking",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-haiku-4-5-20251001",
+      "name": "claude-haiku-4-5-20251001",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: anthropic"
+    },
+    {
+      "id": "claude-haiku-4-5-20251001-thinking",
+      "name": "claude-haiku-4-5-20251001-thinking",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-haiku-5-5",
+      "name": "claude-haiku-5-5",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-haiku-5-5-thinking",
+      "name": "claude-haiku-5-5-thinking",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-opus-4-1-20250805",
+      "name": "claude-opus-4-1-20250805",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-opus-4-1-20250805-thinking",
+      "name": "claude-opus-4-1-20250805-thinking",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-opus-4-20250514",
+      "name": "claude-opus-4-20250514",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-opus-4-20250514-thinking",
+      "name": "claude-opus-4-20250514-thinking",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-opus-4-5-20251101",
+      "name": "claude-opus-4-5-20251101",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: anthropic"
+    },
+    {
+      "id": "claude-opus-4-5-20251101-thinking",
+      "name": "claude-opus-4-5-20251101-thinking",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-opus-4-6",
+      "name": "claude-opus-4-6",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: anthropic"
+    },
+    {
+      "id": "claude-opus-4-6-thinking",
+      "name": "claude-opus-4-6-thinking",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-opus-4-7",
+      "name": "claude-opus-4-7",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: anthropic"
+    },
+    {
+      "id": "claude-opus-4-7-thinking",
+      "name": "claude-opus-4-7-thinking",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-opus-4-8",
+      "name": "claude-opus-4-8",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: anthropic"
+    },
+    {
+      "id": "claude-opus-4-8-thinking",
+      "name": "claude-opus-4-8-thinking",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-opus-5",
+      "name": "claude-opus-5",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: anthropic"
+    },
+    {
+      "id": "claude-opus-5-5",
+      "name": "claude-opus-5-5",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: anthropic"
+    },
+    {
+      "id": "claude-opus-5-5-thinking",
+      "name": "claude-opus-5-5-thinking",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-opus-5-thinking",
+      "name": "claude-opus-5-thinking",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-sonnet-4-20250514",
+      "name": "claude-sonnet-4-20250514",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-sonnet-4-20250514-thinking",
+      "name": "claude-sonnet-4-20250514-thinking",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-sonnet-4-5-20250929",
+      "name": "claude-sonnet-4-5-20250929",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: anthropic"
+    },
+    {
+      "id": "claude-sonnet-4-5-20250929-thinking",
+      "name": "claude-sonnet-4-5-20250929-thinking",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-sonnet-4-6",
+      "name": "claude-sonnet-4-6",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: anthropic"
+    },
+    {
+      "id": "claude-sonnet-4-6-thinking",
+      "name": "claude-sonnet-4-6-thinking",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-sonnet-5",
+      "name": "claude-sonnet-5",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: anthropic"
+    },
+    {
+      "id": "claude-sonnet-5-5",
+      "name": "claude-sonnet-5-5",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-sonnet-5-5-thinking",
+      "name": "claude-sonnet-5-5-thinking",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "claude-sonnet-5-thinking",
+      "name": "claude-sonnet-5-thinking",
+      "vendor": "Anthropic",
+      "group": "Anthropic",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "deepseek-flash",
+      "name": "deepseek-flash",
+      "vendor": "DeepSeek",
+      "group": "DeepSeek",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: deepseek"
+    },
+    {
+      "id": "deepseek-r1",
+      "name": "deepseek-r1",
+      "vendor": "DeepSeek",
+      "group": "DeepSeek",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "deepseek-v3",
+      "name": "deepseek-v3",
+      "vendor": "DeepSeek",
+      "group": "DeepSeek",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "deepseek-v3.1",
+      "name": "deepseek-v3.1",
+      "vendor": "DeepSeek",
+      "group": "DeepSeek",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "deepseek-v3.2",
+      "name": "deepseek-v3.2",
+      "vendor": "DeepSeek",
+      "group": "DeepSeek",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "deepseek-v3.2-exp",
+      "name": "deepseek-v3.2-exp",
+      "vendor": "DeepSeek",
+      "group": "DeepSeek",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "deepseek-v4-1-flash-260910",
+      "name": "deepseek-v4-1-flash-260910",
+      "vendor": "DeepSeek",
+      "group": "DeepSeek",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "deepseek-v4-flash",
+      "name": "deepseek-v4-flash",
+      "vendor": "DeepSeek",
+      "group": "DeepSeek",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "deepseek-v4-flash-0731",
+      "name": "deepseek-v4-flash-0731",
+      "vendor": "DeepSeek",
+      "group": "DeepSeek",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "deepseek-v4-flash-260425",
+      "name": "deepseek-v4-flash-260425",
+      "vendor": "DeepSeek",
+      "group": "DeepSeek",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "deepseek-v4-flash-ga-260731",
+      "name": "deepseek-v4-flash-ga-260731",
+      "vendor": "DeepSeek",
+      "group": "DeepSeek",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "deepseek-v4-flash-vision-exp",
+      "name": "deepseek-v4-flash-vision-exp",
+      "vendor": "DeepSeek",
+      "group": "DeepSeek",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "deepseek-v4-pro",
+      "name": "deepseek-v4-pro",
+      "vendor": "DeepSeek",
+      "group": "DeepSeek",
+      "input": [
+        "text"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: deepseek"
+    },
+    {
+      "id": "deepseek-v4-pro-0813",
+      "name": "deepseek-v4-pro-0813",
+      "vendor": "DeepSeek",
+      "group": "DeepSeek",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "deepseek-v4-pro-260425",
+      "name": "deepseek-v4-pro-260425",
+      "vendor": "DeepSeek",
+      "group": "DeepSeek",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "deepseek-v4.1-flash",
+      "name": "deepseek-v4.1-flash",
+      "vendor": "DeepSeek",
+      "group": "DeepSeek",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "dola-seed-2-1-turbo-260628",
+      "name": "dola-seed-2-1-turbo-260628",
+      "vendor": "ByteDance",
+      "group": "ByteDance",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "doubao-seed-1-6-250615",
+      "name": "doubao-seed-1-6-250615",
+      "vendor": "ByteDance",
+      "group": "ByteDance",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "doubao-seed-1-6-251015",
+      "name": "doubao-seed-1-6-251015",
+      "vendor": "ByteDance",
+      "group": "ByteDance",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "doubao-seed-1-8-251228",
+      "name": "doubao-seed-1-8-251228",
+      "vendor": "ByteDance",
+      "group": "ByteDance",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "gemini-2.5-flash",
+      "name": "gemini-2.5-flash",
+      "vendor": "Google",
+      "group": "Google",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: google"
+    },
+    {
+      "id": "gemini-2.5-flash-lite",
+      "name": "gemini-2.5-flash-lite",
+      "vendor": "Google",
+      "group": "Google",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: google"
+    },
+    {
+      "id": "gemini-2.5-pro",
+      "name": "gemini-2.5-pro",
+      "vendor": "Google",
+      "group": "Google",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: google"
+    },
+    {
+      "id": "gemini-3-flash-preview",
+      "name": "gemini-3-flash-preview",
+      "vendor": "Google",
+      "group": "Google",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: google"
+    },
+    {
+      "id": "gemini-3-flash-preview-thinking",
+      "name": "gemini-3-flash-preview-thinking",
+      "vendor": "Google",
+      "group": "Google",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "gemini-3-pro-preview",
+      "name": "gemini-3-pro-preview",
+      "vendor": "Google",
+      "group": "Google",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "gemini-3.1-flash-lite",
+      "name": "gemini-3.1-flash-lite",
+      "vendor": "Google",
+      "group": "Google",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: google"
+    },
+    {
+      "id": "gemini-3.1-flash-lite-preview",
+      "name": "gemini-3.1-flash-lite-preview",
+      "vendor": "Google",
+      "group": "Google",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: google"
+    },
+    {
+      "id": "gemini-3.1-pro-preview",
+      "name": "gemini-3.1-pro-preview",
+      "vendor": "Google",
+      "group": "Google",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: google"
+    },
+    {
+      "id": "gemini-3.1-pro-preview-customtools",
+      "name": "gemini-3.1-pro-preview-customtools",
+      "vendor": "Google",
+      "group": "Google",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: google"
+    },
+    {
+      "id": "gemini-3.5-flash",
+      "name": "gemini-3.5-flash",
+      "vendor": "Google",
+      "group": "Google",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: google"
+    },
+    {
+      "id": "gemini-3.5-flash-lite",
+      "name": "gemini-3.5-flash-lite",
+      "vendor": "Google",
+      "group": "Google",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: google"
+    },
+    {
+      "id": "gemini-3.6-flash",
+      "name": "gemini-3.6-flash",
+      "vendor": "Google",
+      "group": "Google",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: google"
+    },
+    {
+      "id": "gemini-3.7-flash",
+      "name": "gemini-3.7-flash",
+      "vendor": "Google",
+      "group": "Google",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: google"
+    },
+    {
+      "id": "gemini-3.8-flash",
+      "name": "gemini-3.8-flash",
+      "vendor": "Google",
+      "group": "Google",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: google"
+    },
+    {
+      "id": "glm-4.5",
+      "name": "glm-4.5",
+      "vendor": "Zhipu",
+      "group": "Zhipu",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "glm-4.5-air",
+      "name": "glm-4.5-air",
+      "vendor": "Zhipu",
+      "group": "Zhipu",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "glm-4.6",
+      "name": "glm-4.6",
+      "vendor": "Zhipu",
+      "group": "Zhipu",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "glm-4.7",
+      "name": "glm-4.7",
+      "vendor": "Zhipu",
+      "group": "Zhipu",
+      "input": [
+        "text"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: zai"
+    },
+    {
+      "id": "glm-5",
+      "name": "glm-5",
+      "vendor": "Zhipu",
+      "group": "Zhipu",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "glm-5-3-flash-260828",
+      "name": "glm-5-3-flash-260828",
+      "vendor": "Zhipu",
+      "group": "Zhipu",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "glm-5.1",
+      "name": "glm-5.1",
+      "vendor": "Zhipu",
+      "group": "Zhipu",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "glm-5.2",
+      "name": "glm-5.2",
+      "vendor": "Zhipu",
+      "group": "Zhipu",
+      "input": [
+        "text"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: zai"
+    },
+    {
+      "id": "glm-5.3",
+      "name": "glm-5.3",
+      "vendor": "Zhipu",
+      "group": "Zhipu",
+      "input": [
+        "text"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: zai"
+    },
+    {
+      "id": "glm-5.3-flash",
+      "name": "glm-5.3-flash",
+      "vendor": "Zhipu",
+      "group": "Zhipu",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: zai"
+    },
+    {
+      "id": "gpt-3.5-turbo",
+      "name": "gpt-3.5-turbo",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "gpt-3.5-turbo-0125",
+      "name": "gpt-3.5-turbo-0125",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "gpt-3.5-turbo-0613",
+      "name": "gpt-3.5-turbo-0613",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "gpt-3.5-turbo-1106",
+      "name": "gpt-3.5-turbo-1106",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "gpt-3.5-turbo-16k",
+      "name": "gpt-3.5-turbo-16k",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "gpt-3.5-turbo-16k-0613",
+      "name": "gpt-3.5-turbo-16k-0613",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "gpt-4.1",
+      "name": "gpt-4.1",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-4.1-2025-04-14",
+      "name": "gpt-4.1-2025-04-14",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "gpt-4.1-mini",
+      "name": "gpt-4.1-mini",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-4.1-mini-2025-04-14",
+      "name": "gpt-4.1-mini-2025-04-14",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "gpt-4.1-nano",
+      "name": "gpt-4.1-nano",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-4.1-nano-2025-04-14",
+      "name": "gpt-4.1-nano-2025-04-14",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "gpt-4o",
+      "name": "gpt-4o",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-4o-2024-05-13",
+      "name": "gpt-4o-2024-05-13",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-4o-2024-08-06",
+      "name": "gpt-4o-2024-08-06",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-4o-2024-11-20",
+      "name": "gpt-4o-2024-11-20",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-4o-mini",
+      "name": "gpt-4o-mini",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-4o-mini-2024-07-18",
+      "name": "gpt-4o-mini-2024-07-18",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "gpt-5",
+      "name": "gpt-5",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-5-2025-08-07",
+      "name": "gpt-5-2025-08-07",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "gpt-5-codex",
+      "name": "gpt-5-codex",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "gpt-5-mini",
+      "name": "gpt-5-mini",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-5-mini-2025-08-07",
+      "name": "gpt-5-mini-2025-08-07",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "gpt-5-nano",
+      "name": "gpt-5-nano",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-5-nano-2025-08-07",
+      "name": "gpt-5-nano-2025-08-07",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "gpt-5.1",
+      "name": "gpt-5.1",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-5.1-codex",
+      "name": "gpt-5.1-codex",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "gpt-5.1-codex-mini",
+      "name": "gpt-5.1-codex-mini",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "gpt-5.2",
+      "name": "gpt-5.2",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-5.4",
+      "name": "gpt-5.4",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-5.4-mini",
+      "name": "gpt-5.4-mini",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-5.4-nano",
+      "name": "gpt-5.4-nano",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-5.4-nano-2026-03-17",
+      "name": "gpt-5.4-nano-2026-03-17",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "gpt-5.5",
+      "name": "gpt-5.5",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-5.6-luna",
+      "name": "gpt-5.6-luna",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-5.6-sol",
+      "name": "gpt-5.6-sol",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-5.6-terra",
+      "name": "gpt-5.6-terra",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-6-astra",
+      "name": "gpt-6-astra",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-6-luna",
+      "name": "gpt-6-luna",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-6-sol",
+      "name": "gpt-6-sol",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "gpt-6.1-sol",
+      "name": "gpt-6.1-sol",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "gpt-oss-120b",
+      "name": "gpt-oss-120b",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "grok-4.20-0309-non-reasoning",
+      "name": "grok-4.20-0309-non-reasoning",
+      "vendor": "xAI",
+      "group": "xAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "grok-4.20-0309-reasoning",
+      "name": "grok-4.20-0309-reasoning",
+      "vendor": "xAI",
+      "group": "xAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "grok-4.20-beta",
+      "name": "grok-4.20-beta",
+      "vendor": "xAI",
+      "group": "xAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "grok-4.20-multi-agent-0309",
+      "name": "grok-4.20-multi-agent-0309",
+      "vendor": "xAI",
+      "group": "xAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "grok-4.20-multi-agent-beta-0309",
+      "name": "grok-4.20-multi-agent-beta-0309",
+      "vendor": "xAI",
+      "group": "xAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "grok-4.3",
+      "name": "grok-4.3",
+      "vendor": "xAI",
+      "group": "xAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: xai"
+    },
+    {
+      "id": "grok-4.5",
+      "name": "grok-4.5",
+      "vendor": "xAI",
+      "group": "xAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: xai"
+    },
+    {
+      "id": "grok-4.6",
+      "name": "grok-4.6",
+      "vendor": "xAI",
+      "group": "xAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: xai"
+    },
+    {
+      "id": "grok-4.7",
+      "name": "grok-4.7",
+      "vendor": "xAI",
+      "group": "xAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: xai"
+    },
+    {
+      "id": "grok-build-0.1",
+      "name": "grok-build-0.1",
+      "vendor": "xAI",
+      "group": "xAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "grok-code-fast",
+      "name": "grok-code-fast",
+      "vendor": "xAI",
+      "group": "xAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "grok-code-fast-1",
+      "name": "grok-code-fast-1",
+      "vendor": "xAI",
+      "group": "xAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "kimi-k2.5",
+      "name": "kimi-k2.5",
+      "vendor": "Moonshot",
+      "group": "Moonshot",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "kimi-k2.6",
+      "name": "kimi-k2.6",
+      "vendor": "Moonshot",
+      "group": "Moonshot",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: moonshotai"
+    },
+    {
+      "id": "kimi-k2.7-code",
+      "name": "kimi-k2.7-code",
+      "vendor": "Moonshot",
+      "group": "Moonshot",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: moonshotai"
+    },
+    {
+      "id": "kimi-k3",
+      "name": "kimi-k3",
+      "vendor": "Moonshot",
+      "group": "Moonshot",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: moonshotai"
+    },
+    {
+      "id": "o1",
+      "name": "o1",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "o1-2024-12-17",
+      "name": "o1-2024-12-17",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "o1-mini",
+      "name": "o1-mini",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "o1-mini-2024-09-12",
+      "name": "o1-mini-2024-09-12",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "o1-preview",
+      "name": "o1-preview",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "o1-preview-2024-09-12",
+      "name": "o1-preview-2024-09-12",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "o3",
+      "name": "o3",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "o3-2025-04-16",
+      "name": "o3-2025-04-16",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "o3-mini",
+      "name": "o3-mini",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "o3-mini-2025-01-31",
+      "name": "o3-mini-2025-01-31",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "o3-pro",
+      "name": "o3-pro",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "o4-mini",
+      "name": "o4-mini",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "input": [
+        "text",
+        "image"
+      ],
+      "inputEvidence": "DSH 0.2.0-rc.2 / pi-ai: openai"
+    },
+    {
+      "id": "o4-mini-2025-04-16",
+      "name": "o4-mini-2025-04-16",
+      "vendor": "OpenAI",
+      "group": "OpenAI",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qvq-max",
+      "name": "qvq-max",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qvq-plus",
+      "name": "qvq-plus",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen-long",
+      "name": "qwen-long",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen-max",
+      "name": "qwen-max",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen-mt-plus",
+      "name": "qwen-mt-plus",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen-mt-turbo",
+      "name": "qwen-mt-turbo",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen-plus",
+      "name": "qwen-plus",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen-plus-2025-07-14",
+      "name": "qwen-plus-2025-07-14",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen-plus-2025-09-11",
+      "name": "qwen-plus-2025-09-11",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen-plus-latest",
+      "name": "qwen-plus-latest",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen-turbo",
+      "name": "qwen-turbo",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen-vl-max",
+      "name": "qwen-vl-max",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen-vl-ocr",
+      "name": "qwen-vl-ocr",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen-vl-ocr-2025-11-20",
+      "name": "qwen-vl-ocr-2025-11-20",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen-vl-ocr-latest",
+      "name": "qwen-vl-ocr-latest",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen-vl-plus",
+      "name": "qwen-vl-plus",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-235b-a22b",
+      "name": "qwen3-235b-a22b",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-235b-a22b-instruct-2507",
+      "name": "qwen3-235b-a22b-instruct-2507",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-235b-a22b-thinking-2507",
+      "name": "qwen3-235b-a22b-thinking-2507",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-30b-a3b",
+      "name": "qwen3-30b-a3b",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-30b-a3b-instruct-2507",
+      "name": "qwen3-30b-a3b-instruct-2507",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-30b-a3b-thinking-2507",
+      "name": "qwen3-30b-a3b-thinking-2507",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-32b",
+      "name": "qwen3-32b",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-coder-480b-a35b-instruct",
+      "name": "qwen3-coder-480b-a35b-instruct",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-coder-flash",
+      "name": "qwen3-coder-flash",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-coder-plus",
+      "name": "qwen3-coder-plus",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-coder-plus-2025-07-22",
+      "name": "qwen3-coder-plus-2025-07-22",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-coder-plus-2025-09-23",
+      "name": "qwen3-coder-plus-2025-09-23",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-max",
+      "name": "qwen3-max",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-max-2025-09-23",
+      "name": "qwen3-max-2025-09-23",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-max-preview",
+      "name": "qwen3-max-preview",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-next-80b-a3b-instruct",
+      "name": "qwen3-next-80b-a3b-instruct",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-omni-flash",
+      "name": "qwen3-omni-flash",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-omni-flash-2025-09-15",
+      "name": "qwen3-omni-flash-2025-09-15",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-vl-235b-a22b-instruct",
+      "name": "qwen3-vl-235b-a22b-instruct",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-vl-235b-a22b-thinking",
+      "name": "qwen3-vl-235b-a22b-thinking",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-vl-30b-a3b-thinking",
+      "name": "qwen3-vl-30b-a3b-thinking",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-vl-32b-thinking",
+      "name": "qwen3-vl-32b-thinking",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-vl-flash",
+      "name": "qwen3-vl-flash",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-vl-flash-2025-10-15",
+      "name": "qwen3-vl-flash-2025-10-15",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-vl-plus",
+      "name": "qwen3-vl-plus",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3-vl-plus-2025-09-23",
+      "name": "qwen3-vl-plus-2025-09-23",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.5-122b-a10b",
+      "name": "qwen3.5-122b-a10b",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.5-27b",
+      "name": "qwen3.5-27b",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.5-35b-a3b",
+      "name": "qwen3.5-35b-a3b",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.5-397b-a17b",
+      "name": "qwen3.5-397b-a17b",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.5-flash",
+      "name": "qwen3.5-flash",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.5-flash-2026-02-23",
+      "name": "qwen3.5-flash-2026-02-23",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.5-omni-flash",
+      "name": "qwen3.5-omni-flash",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.5-omni-plus",
+      "name": "qwen3.5-omni-plus",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.5-plus",
+      "name": "qwen3.5-plus",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.5-plus-2026-02-15",
+      "name": "qwen3.5-plus-2026-02-15",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.6-27b",
+      "name": "qwen3.6-27b",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.6-35b-a3b",
+      "name": "qwen3.6-35b-a3b",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.6-flash",
+      "name": "qwen3.6-flash",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.6-max-preview",
+      "name": "qwen3.6-max-preview",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.6-plus",
+      "name": "qwen3.6-plus",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.7-flash",
+      "name": "qwen3.7-flash",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.7-max",
+      "name": "qwen3.7-max",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.7-plus",
+      "name": "qwen3.7-plus",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.8-2.4t-a95b",
+      "name": "qwen3.8-2.4t-a95b",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.8-27b",
+      "name": "qwen3.8-27b",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.8-flash",
+      "name": "qwen3.8-flash",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.8-max",
+      "name": "qwen3.8-max",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwen3.8-max-0902",
+      "name": "qwen3.8-max-0902",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "qwq-plus",
+      "name": "qwq-plus",
+      "vendor": "Alibaba",
+      "group": "Alibaba",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "seed-1-6-250615",
+      "name": "seed-1-6-250615",
+      "vendor": "ByteDance",
+      "group": "ByteDance",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "seed-1-6-flash-250615",
+      "name": "seed-1-6-flash-250615",
+      "vendor": "ByteDance",
+      "group": "ByteDance",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "seed-1-6-flash-250715",
+      "name": "seed-1-6-flash-250715",
+      "vendor": "ByteDance",
+      "group": "ByteDance",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "seed-1-8-251228",
+      "name": "seed-1-8-251228",
+      "vendor": "ByteDance",
+      "group": "ByteDance",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "seed-2-0-code-preview-260328",
+      "name": "seed-2-0-code-preview-260328",
+      "vendor": "ByteDance",
+      "group": "ByteDance",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "seed-2-0-lite-260228",
+      "name": "seed-2-0-lite-260228",
+      "vendor": "ByteDance",
+      "group": "ByteDance",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "seed-2-0-lite-260428",
+      "name": "seed-2-0-lite-260428",
+      "vendor": "ByteDance",
+      "group": "ByteDance",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "seed-2-0-mini-260215",
+      "name": "seed-2-0-mini-260215",
+      "vendor": "ByteDance",
+      "group": "ByteDance",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "seed-2-0-mini-260428",
+      "name": "seed-2-0-mini-260428",
+      "vendor": "ByteDance",
+      "group": "ByteDance",
+      "inputEvidence": "unknown"
+    },
+    {
+      "id": "seed-2-0-pro-260328",
+      "name": "seed-2-0-pro-260328",
+      "vendor": "ByteDance",
+      "group": "ByteDance",
+      "inputEvidence": "unknown"
+    }
+  ],
+  "capabilitiesReviewedAt": "2026-10-11",
+  "capabilitiesSource": "Installed DSH 0.2.0-rc.2 pi-ai producer catalogs; exact IDs only, unknown entries are not asserted text-only"
+}
