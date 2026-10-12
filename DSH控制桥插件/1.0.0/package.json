@@ -1,0 +1,9 @@
+{
+  "name": "dsh-control-bridge", "version": "1.0.0", "type": "module",
+  "description": "DSH结构化控制桥：会话、工作区、模型、插件设置与DOM控件操作，无截图识别。",
+  "main": "lib/index.js", "icon": "lib/assets/icon.png", "license": "MIT",
+  "exports": {".": "./lib/index.js", "./client": "./lib/client.js", "./package.json": "./package.json"},
+  "dsh": {"bundle": {"patch": "./cordis.patch.yml"}, "client": {"inject": ["@deepseek-ai/dsh-client-ui-slots"], "platform": "web"}},
+  "files": ["lib", "cordis.patch.yml", "README.md", "LICENSE"],
+  "scripts": {"test": "node --test test/*.test.mjs"}, "engines": {"node": ">=22"}
+}

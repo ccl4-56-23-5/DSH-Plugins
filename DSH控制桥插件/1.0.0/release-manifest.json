@@ -1,0 +1,23 @@
+{
+  "name": "dsh-control-bridge",
+  "version": "1.0.0",
+  "runtimeDependencies": 0,
+  "files": {
+    "dsh-control-bridge-1.0.0.tgz": {
+      "bytes": 408942,
+      "sha256": "1a2c86f1c87c858f14fe7e3d5738d684c8592738f89add7bab290dd1a12f20e8"
+    }
+  },
+  "packageFileSHA256": {
+    "LICENSE": "5ca2920d4f56954100c8f365461aba7b6c6154da49734f7b2703d9275ad49d11",
+    "README.md": "2bf8d63f05d7f53e285a13fa3ef59dcd4c5cd807084e7d115c62ea0d526948a8",
+    "cordis.patch.yml": "700a17d721ea66caf6357272cb944afc135b861d614aa7211726cf13cd7929d2",
+    "lib/assets/icon.png": "255172e7f2ee0e336c5f8af86941ac2039248b5e374cee242ed8dbbdd20a8bc7",
+    "lib/assets/logo.png": "3e22a224c0975ce419e31862db8084795bfd5e99a0ebc72607fb7555ec13f30b",
+    "lib/client.js": "2cd90d53e5961b219b7ae5b31501647043f0170b0cefe3e5ce9159e62868d168",
+    "lib/control.js": "0a84a3ec6b4b7f0856b0683d062fbed73f5a4b8d571b2d12bd2fec8699e3715f",
+    "lib/index.js": "e700af51ae9e6588be59f08c8bf4a0d34e86545c3af111952558998b0b7ea978",
+    "lib/protocol.js": "94d5da45a355d29e20db9faa55cec1ce71ad06131fec49f02112260227c36ab6",
+    "package.json": "4c641fa80d16f206c59317799f66c3082be8b8b18783a40f414fc675f4610b73"
+  }
+}

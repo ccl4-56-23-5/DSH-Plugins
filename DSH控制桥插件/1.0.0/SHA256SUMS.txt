@@ -1,0 +1,6 @@
+1a2c86f1c87c858f14fe7e3d5738d684c8592738f89add7bab290dd1a12f20e8  dsh-control-bridge-1.0.0.tgz
+77863b0ef2a3add49fb78e7d41dd9d641d22e3329d8f6d5ba1c68d228e0f1a05  Install-DSH.ps1
+69af352989d2e140f6c8bae88af3cde80a714f08e686cc862def59ddb119f13f  release-manifest.json
+2bf8d63f05d7f53e285a13fa3ef59dcd4c5cd807084e7d115c62ea0d526948a8  README.md
+07d2129ca6e9f6848f035913e8e6e597071df111a716ff8e492b7836fe75ea8e  VALIDATION.md
+b50b3fd3e3a0f5949bd72d96ab42baa96fcc8b4237fe0698a345f85a84d0ffe9  dsh-control-bridge-1.0.0-Windows.zip

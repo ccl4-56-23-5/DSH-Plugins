@@ -1,0 +1,20 @@
+{
+  "generator": "OpenAI built-in imagegen; derived PNG sizes by Pillow Lanczos",
+  "date": "2026-10-12",
+  "target": "Transparent chain and terminal emblem; same Da Fei Yu character in lower-right, about half icon width.",
+  "reference": "Api-Switcher 2.2.0 assets/logo-master.png",
+  "files": {
+    "assets/logo-master.png": {
+      "bytes": 1484297,
+      "sha256": "fc8a1e5bc64aa36a23392f7748f3ad3b5a3865109f55a55828533dd7e7a42a4e"
+    },
+    "lib/assets/icon.png": {
+      "bytes": 92572,
+      "sha256": "255172e7f2ee0e336c5f8af86941ac2039248b5e374cee242ed8dbbdd20a8bc7"
+    },
+    "lib/assets/logo.png": {
+      "bytes": 301669,
+      "sha256": "3e22a224c0975ce419e31862db8084795bfd5e99a0ebc72607fb7555ec13f30b"
+    }
+  }
+}
