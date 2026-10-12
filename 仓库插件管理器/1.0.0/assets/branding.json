@@ -1,0 +1,21 @@
+{
+  "generator": "OpenAI built-in imagegen; sharp PNG resizing",
+  "date": "2026-10-12",
+  "target": "Front-facing supermarket cart in foreground, same whale maid character centered behind cart, transparent background.",
+  "reference": "Api-Switcher same character identity",
+  "prompt": "正面看着超市手推购物车，后面是鲸鱼娘；双手扶车把；透明背景。",
+  "files": {
+    "assets/logo-master.png": {
+      "bytes": 1270372,
+      "sha256": "6f166caf0474d8ade28604b4f8cd698c9b2ad78290c2fd902deef2587de2bac2"
+    },
+    "lib/assets/icon.png": {
+      "bytes": 90019,
+      "sha256": "190bc310f410dfb42606ca97cc5aed0a7dc678c3e94e2d0202536b4efccf22dc"
+    },
+    "lib/assets/logo.png": {
+      "bytes": 320091,
+      "sha256": "18cf1ea6e3a6c849d6fcd30990794addb57a46949f98a7fe26d9f965d0410839"
+    }
+  }
+}

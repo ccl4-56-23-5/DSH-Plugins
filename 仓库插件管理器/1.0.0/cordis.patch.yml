@@ -1,0 +1,3 @@
+- insert:
+    - id: repo-manager
+      name: dsh-repo-manager
