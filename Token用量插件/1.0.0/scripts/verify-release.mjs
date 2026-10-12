@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+const root=new URL('../',import.meta.url), read=n=>readFileSync(new URL(n,root),'utf8').replace(/^\uFEFF/,'');
+const pkg=JSON.parse(read('package.json'));
+assert.equal(pkg.name,'dsh-usage-statistics-panel');assert.equal(pkg.version,'1.0.0');
+assert.equal(Object.keys(pkg.dependencies||{}).length,0);
+const host=read('lib/index.js'),client=read('lib/client.js');
+assert.ok(host.includes('usage_history'));assert.ok(host.includes('backfilledSessions'));assert.ok(host.includes('liveFirstSeq'));
+assert.ok(client.includes('sidebar.panellist'));assert.ok(client.includes('usage-stats'));assert.ok(client.includes('usage/api/brand'));
+assert.ok(!client.includes('const trendPath ='));assert.ok(!client.includes('trendTipPt'));
+const allowed=['@deepseek-ai/dsh-storage-domain','node:fs'];
+for(const m of host.matchAll(/^import .*? from "([^"]+)";/gm))assert.ok(allowed.includes(m[1]),`Unbundled dependency: ${m[1]}`);
+const branding=JSON.parse(read('assets/branding.json'));
+for(const [name,spec] of Object.entries(branding.files))assert.equal(createHash('sha256').update(readFileSync(new URL(name,root))).digest('hex'),spec.sha256);
+console.log('Usage plugin identity, preserved storage, sidebar, bar-only chart, runtime dependencies and brand hashes verified.');

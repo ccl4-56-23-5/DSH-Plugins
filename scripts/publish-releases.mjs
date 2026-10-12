@@ -32,15 +32,15 @@ export default async function publish({github,context,core}) {
         await verifyDownloads(published);core.info(`Verified unchanged ${plugin.tag}`);continue;
       }
     }
-    const isApi=plugin.pkg.name==='dsh-api-switcher';
-    const sourceName=`DSH-Plugins-${isApi?'Api-Switcher':'Top-Directive'}-${plugin.version}-Source.zip`;
+    const isApi=plugin.pkg.name==='dsh-api-switcher', isUsage=plugin.pkg.name==='dsh-usage-statistics-panel';
+    const sourceName=`DSH-Plugins-${isApi?'Api-Switcher':isUsage?'Token-Usage':'Top-Directive'}-${plugin.version}-Source.zip`;
     const sourcePath=join(destination,sourceName);
     execFileSync('git',['archive','--format=zip',`--prefix=${plugin.pkg.name}-${plugin.version}/`,`--output=${sourcePath}`,`${context.sha}:${plugin.directory}/${plugin.version}`],{cwd:root});
-    const names=isApi?[`${plugin.pkg.name}-${plugin.version}-Windows.zip`,`${plugin.pkg.name}-${plugin.version}.tgz`,'release-manifest.json']:[`${plugin.pkg.name}-${plugin.version}.tgz`,'Install-DSH.ps1','release-manifest.json'];
+    const names=isApi||isUsage?[`${plugin.pkg.name}-${plugin.version}-Windows.zip`,`${plugin.pkg.name}-${plugin.version}.tgz`,'release-manifest.json']:[`${plugin.pkg.name}-${plugin.version}.tgz`,'Install-DSH.ps1','release-manifest.json'];
     const assets=names.map(name=>({name,data:readFileSync(join(plugin.releaseDirectory,name))}));
     assets.push({name:sourceName,data:readFileSync(sourcePath)});
     assets.push({name:'SHA256SUMS.txt',data:Buffer.from(assets.map(item=>`${hash(item.data)}  ${item.name}`).join('\n')+'\n')});
-    const body=isApi ? '修复MiMo图片输入与模型能力声明、同步字段和旧配置迁移。审查236个内置条目，未知能力明确标注；自动同步保留手动设置。40项离线测试通过。含Windows安装ZIP、TGZ、独立源码ZIP和SHA-256；实际验证范围见docs/VALIDATION.md。' : '新增最高指令透明logo和插件图标，右下角使用与Api-Switcher一致的大肥鱼角色。提示词保存与会话桥沿用1.1.1；通过宿主、图片路由和打包检查。下载TGZ与Install-DSH.ps1放在同一目录，退出DSH后运行安装器。真实模型的历史验收范围见源码docs/VALIDATION.md。';
+    const body=isUsage ? '基于HaoyueQin/dsh-usage-statistics-panel0.3.2的MIT定制版。替换现有使用统计并保留历史数据与设置；保留左上角入口和方块热力图，移除缓存命中率折线、百分比轴与图例，新增透明大肥鱼Logo。详见源码README和VALIDATION；Windows ZIP内含安装器、TGZ、manifest与校验文件。' : isApi ? '修复模型上下文和输出容量的发现、同步及DSH传递；MiMo官方容量自动补齐，保留手动配置。新增宿主生效值、配置回滚、并发编辑与凭据边界保护，截断回复不再视为连接成功。离线回归、已安装DSH适配器联调及桌面真实回复通过。含Windows安装ZIP、TGZ、独立源码ZIP和SHA-256；实际验证范围见docs/VALIDATION.md。' : '新增最高指令透明logo和插件图标，右下角使用与Api-Switcher一致的大肥鱼角色。提示词保存与会话桥沿用1.1.1；通过宿主、图片路由和打包检查。下载TGZ与Install-DSH.ps1放在同一目录，退出DSH后运行安装器。真实模型的历史验收范围见源码docs/VALIDATION.md。';
     let release;
     try { release=(await github.rest.repos.getReleaseByTag({...scope,tag:plugin.tag})).data; }
     catch(error) { if(error.status!==404)throw error; release=(await github.rest.repos.createRelease({...scope,tag_name:plugin.tag,target_commitish:context.sha,name:`${plugin.directory}${plugin.version}`,body,draft:true,prerelease:false})).data; }
@@ -62,13 +62,13 @@ export default async function publish({github,context,core}) {
   // Remove old DSH releases only after BOTH latest releases have verified assets.
   const oldReleases=await github.paginate(github.rest.repos.listReleases,{...scope,per_page:100});
   for(const release of oldReleases) {
-    if(!/^(?:api-switcher|top-directive)-v\d+\.\d+\.\d+$/.test(release.tag_name)||kept.has(release.tag_name))continue;
+    if(!/^(?:api-switcher|top-directive|token-usage)-v\d+\.\d+\.\d+$/.test(release.tag_name)||kept.has(release.tag_name))continue;
     await github.rest.repos.deleteRelease({...scope,release_id:release.id}); core.info(`Removed old release ${release.tag_name}`);
   }
   const tags=await github.paginate(github.rest.git.listMatchingRefs,{...scope,ref:'tags/'});
   for(const tag of tags) {
     const name=tag.ref.slice('refs/tags/'.length);
-    if(!/^(?:api-switcher|top-directive)-v\d+\.\d+\.\d+$/.test(name)||kept.has(name))continue;
+    if(!/^(?:api-switcher|top-directive|token-usage)-v\d+\.\d+\.\d+$/.test(name)||kept.has(name))continue;
     await github.rest.git.deleteRef({...scope,ref:`tags/${name}`}); core.info(`Removed old version tag ${name}`);
   }
 }

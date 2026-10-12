@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "date": "2026-10-12",
+  "method": "Codex built-in imagegen with transparent Api-Switcher character reference; Lanczos export",
+  "target": "Preserve whale maid identity, large visible lower-right mascot on transparent background; rising token analytics bars",
+  "referenceSHA256": "c711ccefd77d17b8e604e7abf0739397e6d5d173a8e1973eceea9dac4ca831ca",
+  "files": {
+    "assets/logo-master.png": {
+      "sha256": "5fce1b4d88ad7aa665a1e0ddde311b62b00eac0917234772d90beae0ef96b6f5",
+      "bytes": 1279522
+    },
+    "lib/assets/icon.png": {
+      "sha256": "06b5a39874d82118df1efd5e968dd2f530c4830198a9cf8efbff67f057a0cbc1",
+      "bytes": 81310
+    },
+    "lib/assets/logo.png": {
+      "sha256": "0dbfbdd698c18ae440b6934da43878380ecbdfdd61a118c1532131eda933ed23",
+      "bytes": 257947
+    }
+  }
+}

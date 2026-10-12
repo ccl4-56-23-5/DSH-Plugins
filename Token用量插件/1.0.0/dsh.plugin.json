@@ -1,0 +1,16 @@
+{
+  "id": "dsh-external/dsh-usage-statistics-panel",
+  "version": "1.0.0",
+  "main": "./lib/index.js",
+  "description": "DSH usage statistics: square activity heatmap, stacked daily token bars, model/provider breakdowns and preserved sidebar entry.",
+  "engines": {
+    "dsh": ">=0.1.7-rc.1"
+  },
+  "contributes": {
+    "tools": [],
+    "skills": []
+  },
+  "client": {
+    "main": "./lib/client-registry.js"
+  }
+}

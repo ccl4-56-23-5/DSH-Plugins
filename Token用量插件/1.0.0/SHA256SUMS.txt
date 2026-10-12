@@ -1,0 +1,5 @@
+64a8b8f6cf10e672b76aa0ae19c6355319987ac5be458047f8c0c1db50059a50  dsh-usage-statistics-panel-1.0.0.tgz
+3a5bcb823d44456f01999ee5f4b129887c741a045ede6d10d04a8b8637fef8aa  Install-DSH.ps1
+cfa1e22cd306bc9629fc3ed9c2b3a99c48c63bc0637e27c02b89239fba48df66  安装.cmd
+f1b0f7bee4feb692759c31124355820ed64fe7d45e7255b82285a816379e4d0c  release-manifest.json
+9c66a5fc7550fbfb3a00b2e2b62f6d2be372495e20f66392bad0549d2125e441  dsh-usage-statistics-panel-1.0.0-Windows.zip
