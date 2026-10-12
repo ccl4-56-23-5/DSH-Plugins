@@ -10,7 +10,7 @@ DSH桌面插件集合。每个项目只保留当前最新版的源码和安装�
 | [使用统计定制版](Token用量插件/README.md) | 1.0.0 | 保留历史数据、方块热力图、纯柱状趋势、左侧入口 | [安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/token-usage-v1.0.0) · [说明](Token用量插件/1.0.0/README.md) |
 | [DSH控制桥插件](DSH控制桥插件/README.md) | 1.0.0 | 宿主API、动态Remote接口、DOM控件树，配合Codex端无截图操控 | [安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/dsh-control-v1.0.0) · [说明](DSH控制桥插件/1.0.0/README.md) |
 
-| [鲸鱼娘插件仓库](仓库插件管理器/README.md) | 1.0.0 | 左上角入口，管理与更新本仓库插件 | [安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/repo-manager-v1.0.0) · [说明](仓库插件管理器/1.0.0/README.md) |
+| [鲸鱼娘插件仓库](仓库插件管理器/README.md) | 1.0.1 | 左上角入口，管理与更新本仓库插件 | [安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/repo-manager-v1.0.1) · [说明](仓库插件管理器/1.0.1/README.md) |
 
 ## 目录
 

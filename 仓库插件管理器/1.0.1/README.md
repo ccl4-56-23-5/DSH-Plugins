@@ -1,4 +1,4 @@
-# 鲸鱼娘插件仓库1.0.0
+# 鲸鱼娘插件仓库1.0.1
 
 专门管理[ccl4-56-23-5/DSH-Plugins](https://github.com/ccl4-56-23-5/DSH-Plugins)的DSH插件。左上角侧栏“使用统计”下面点击“鲸鱼娘插件仓库”即可打开，也可从原生插件配置页进入。
 
@@ -6,7 +6,7 @@
 
 ## 安装
 
-下载本目录或[Release](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/repo-manager-v1.0.0)中的TGZ。在DSH左侧“插件→添加插件”中选择本地TGZ，或粘贴Release中的TGZ下载链接。Windows ZIP内含相同TGZ与说明，无额外运行时依赖。如宿主提示需重启，保存当前工作后重启DSH。
+下载本目录或[Release](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/repo-manager-v1.0.1)中的TGZ。在DSH左侧“插件→添加插件”中选择本地TGZ，或粘贴Release中的TGZ下载链接。Windows ZIP内含相同TGZ与说明，无额外运行时依赖。如宿主提示需重启，保存当前工作后重启DSH。
 
 ## 更新机制
 
