@@ -4,8 +4,8 @@
   "runtimeDependencies": 0,
   "files": {
     "dsh-control-bridge-1.0.0.tgz": {
-      "bytes": 408942,
-      "sha256": "1a2c86f1c87c858f14fe7e3d5738d684c8592738f89add7bab290dd1a12f20e8"
+      "bytes": 409076,
+      "sha256": "5ae91618b6ff60323591275e1c52871660b52202bf2c3d15e784533291abbd16"
     }
   },
   "packageFileSHA256": {
@@ -14,9 +14,9 @@
     "cordis.patch.yml": "700a17d721ea66caf6357272cb944afc135b861d614aa7211726cf13cd7929d2",
     "lib/assets/icon.png": "255172e7f2ee0e336c5f8af86941ac2039248b5e374cee242ed8dbbdd20a8bc7",
     "lib/assets/logo.png": "3e22a224c0975ce419e31862db8084795bfd5e99a0ebc72607fb7555ec13f30b",
-    "lib/client.js": "2cd90d53e5961b219b7ae5b31501647043f0170b0cefe3e5ce9159e62868d168",
-    "lib/control.js": "0a84a3ec6b4b7f0856b0683d062fbed73f5a4b8d571b2d12bd2fec8699e3715f",
-    "lib/index.js": "e700af51ae9e6588be59f08c8bf4a0d34e86545c3af111952558998b0b7ea978",
+    "lib/client.js": "25da0b5164cce11349f8e8dfd162ee76eea534b4ac19d6b88109fd09b7ba2e7b",
+    "lib/control.js": "9602e649aca22effba563d2c69118ab4cdfc82874f2a3bdff9a7673e7b6f8285",
+    "lib/index.js": "f37d24bdae0326b4854333e49b24ff2a007ded1f8aa4fe04e7f9eeea286803bc",
     "lib/protocol.js": "94d5da45a355d29e20db9faa55cec1ce71ad06131fec49f02112260227c36ab6",
     "package.json": "4c641fa80d16f206c59317799f66c3082be8b8b18783a40f414fc675f4610b73"
   }
