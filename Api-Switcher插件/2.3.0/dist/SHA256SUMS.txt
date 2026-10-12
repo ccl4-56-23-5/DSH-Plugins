@@ -1,0 +1,3 @@
+23845c74bdcbbb595a7f311c2b89a3af04904d1392e64f538626c7de2035ef1d  dsh-api-switcher-2.3.0.tgz
+e127cc2ef592d309e19980175ad67fd03e3d6a45cb76d0e8c755f075be7b1faf  release-manifest.json
+c857095f9e59c8c142ac9bb9d9403dda289c4501b36c16ddf8943347ae659265  dsh-api-switcher-2.3.0-Windows.zip
