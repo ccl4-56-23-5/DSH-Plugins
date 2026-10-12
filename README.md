@@ -7,6 +7,8 @@ DSH桌面插件集合。每个项目只保留当前最新版的源码和安装�
 | [最高指令插件](最高指令插件/README.md) | 1.1.2 | 全局初始提示词，多行输入、即时开关、原文保存 | [安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/top-directive-v1.1.2) · [安装指南](最高指令插件/1.1.2/docs/INSTALLATION.md) |
 | [Api-Switcher插件](Api-Switcher插件/README.md) | 2.2.0 | 多供应商管理、模型选择、搜索和连接测试 | [安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/api-switcher-v2.2.0) · [安装指南](Api-Switcher插件/2.2.0/docs/INSTALLATION.md) |
 
+| [使用统计定制版](Token用量插件/README.md) | 1.0.0 | 保留历史数据、方块热力图、纯柱状趋势、左侧入口 | [安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/token-usage-v1.0.0) · [说明](Token用量插件/1.0.0/README.md) |
+
 ## 目录
 
 ```text

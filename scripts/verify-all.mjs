@@ -9,7 +9,7 @@ for(const plugin of plugins()) {
     ['scripts/run-tests.mjs'],['scripts/check-project.mjs'],
     ['scripts/unpack-release.mjs',join(plugin.releaseDirectory,`${plugin.pkg.name}-${plugin.version}.tgz`),work],
     ['Verify-Package.mjs',join(plugin.releaseDirectory,`${plugin.pkg.name}-${plugin.version}.tgz`),join(work,'package')]
-  ] : [['--test','test/host.test.mjs']];
+  ] : plugin.pkg.name==='dsh-usage-statistics-panel' ? [['scripts/verify-release.mjs']] : [['--test','test/host.test.mjs']];
   for(const args of commands) {
     const result=spawnSync(process.execPath,args,{cwd:plugin.path,stdio:'inherit'});
     if(result.status!==0)process.exit(result.status||1);
