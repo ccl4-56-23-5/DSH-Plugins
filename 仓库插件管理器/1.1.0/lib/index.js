@@ -1,8 +1,9 @@
 import {readFileSync,writeFileSync,mkdirSync,renameSync,existsSync} from 'node:fs';
 import {join} from 'node:path';
 import {homedir} from 'node:os';
-import {randomUUID} from 'node:crypto';
+import {readCatalogCache,writeCatalogCache,normalizeCatalog,localCatalog} from './cache.js';
 import {REPO,discover,bytes,verifyPackage,compare} from './catalog.js';
+import {runtimeHealth,readRuntime} from './health.js';
 export const name='dsh-repo-manager';
 export const inject=['webServer','pluginManager'];
 const ROOT='/repo-manager/api';
@@ -11,15 +12,38 @@ export function trusted(req){
   try{const host=new URL('http://'+req.headers.host);if(!['localhost','127.0.0.1','[::1]'].includes(host.hostname)||req.headers['sec-fetch-site']==='cross-site')return false;for(const key of ['origin','referer'])if(req.headers[key]&&new URL(req.headers[key]).host!==host.host)return false;return true;}catch{return false;}
 }
 export function createManager(manager,{directory,load=discover,download=bytes}={}){
-  mkdirSync(directory,{recursive:true});let catalog=null,checking=null,busy=false;const jobs=new Map();
+  mkdirSync(directory,{recursive:true});
+  const cacheFile=join(directory,'catalog-v1.json'),cached=readCatalogCache(cacheFile);
+  let catalog=cached.catalog,cacheSource=catalog?'disk':'local',cacheWarning=cached.warning,refreshError=null,checking=null,busy=false;const jobs=new Map();
   const jobsFile=join(directory,'jobs.json');
   if(existsSync(jobsFile)){try{for(const j of JSON.parse(readFileSync(jobsFile,'utf8'))){if(!['done','failed'].includes(j.status)){j.status='uncertain';j.message='宿主已重新加载，请检查本地版本后再操作。';}jobs.set(j.id,j);}}catch{/* Broken receipts never authorize a retry. */}}
   const save=()=>{const path=jobsFile+'.tmp';writeFileSync(path,JSON.stringify([...jobs.values()].slice(-40),null,2));renameSync(path,jobsFile);};
-  async function refresh(){if(!checking)checking=load().then(v=>(catalog=v)).finally(()=>checking=null);return checking;}
-  async function state(refreshNow=false){if(refreshNow||!catalog)await refresh();const bundles=await manager.listBundles();return {repo:REPO,...catalog,items:catalog.items.map(i=>{const b=bundles.find(b=>b.name===i.name&&b.installed!==false);let status='available';if(b){try{const c=compare(i.version,b.version);status=c>0?'update':c<0?'newer':'current';}catch{status='unknown';}}return {...i,installedVersion:b?.version||null,enabled:b?.enabled??null,status,protected:['dsh-repo-manager','dsh-control-bridge'].includes(i.name)};}),jobs:[...jobs.values()].slice(-10),busy};}
+  function refresh(){
+    if(!checking){
+      refreshError=null;
+      checking=Promise.resolve().then(load).then(value=>{
+        const next=normalizeCatalog(value);
+        if(next.errors.length)throw new Error('部分发布校验失败：'+next.errors.join('；'));
+        catalog=next;cacheSource='memory';cacheWarning=null;
+        try{writeCatalogCache(cacheFile,catalog);}catch{cacheWarning='列表已更新，但本地缓存保存失败';}
+        return catalog;
+      }).catch(error=>{refreshError=error.message||String(error);throw error;}).finally(()=>{checking=null;});
+    }
+    return checking;
+  }
+  async function state(refreshNow=false){
+    // Opening a panel must not await GitHub. This request returns local state
+    // while one shared background request refreshes the durable catalog.
+    if(refreshNow)void refresh().catch(()=>{});
+    const [bundles,runtime]=await Promise.all([manager.listBundles(),readRuntime(manager)]);
+    const items=catalog?.items||localCatalog();
+    return {repo:REPO,checkedAt:catalog?.checkedAt||null,errors:catalog?.errors||[],cacheSource,cacheWarning,refreshError,refreshing:!!checking,
+      items:items.map(i=>{const b=bundles.find(b=>b.name===i.name&&b.installed!==false);let status=i.version?'available':'unchecked';if(b&&i.version){try{const c=compare(i.version,b.version);status=c>0?'update':c<0?'newer':'current';}catch{status='unknown';}}return {...i,installedVersion:b?.version||null,enabled:b?.enabled??null,status,health:runtimeHealth(b,runtime.plugins,status,cacheSource==='memory'&&!checking&&!refreshError,runtime.error),protected:['dsh-repo-manager','dsh-control-bridge'].includes(i.name)};}),jobs:[...jobs.values()].slice(-10),busy};
+  }
   async function execute(job,p){
     try{
-      if(!catalog)await refresh();const item=catalog.items.find(i=>i.name===p.name);if(!item)throw new Error('插件不在仓库的已验证发布列表中');
+      if(p.action==='install')await refresh();
+      const item=(catalog?.items||localCatalog()).find(i=>i.name===p.name);if(!item)throw new Error('插件不在仓库的已验证发布列表中');
       const installed=(await manager.listBundles()).find(b=>b.name===p.name&&b.installed!==false);
       if(p.action==='install'){
         if(p.version!==item.version||p.sha256!==item.sha256)throw new Error('发布版本已变化，请重新检查更新');
@@ -44,7 +68,7 @@ export function createManager(manager,{directory,load=discover,download=bytes}={
     }catch(e){job.status='failed';job.message=e.message;}finally{job.finishedAt=new Date().toISOString();busy=false;save();}
   }
   function start(p){if(typeof p.id!=='string'||!/^[-a-zA-Z0-9]{16,80}$/.test(p.id))throw new Error('操作ID无效');const prior=jobs.get(p.id);const signature=JSON.stringify({action:p.action,name:p.name,version:p.version,sha256:p.sha256,enabled:p.enabled});if(prior){if(prior.signature!==signature)throw new Error('操作ID不可用于不同请求');return prior;}if(busy)throw new Error('已有插件操作进行中');busy=true;const job={id:p.id,name:p.name,status:'running',message:'准备操作',signature,startedAt:new Date().toISOString()};jobs.set(p.id,job);save();void execute(job,p);return job;}
-  return {state,start,jobs};
+  return {state,start,jobs,refresh};
 }
 export function apply(ctx){
   const manager=createManager(ctx.pluginManager,{directory:join(process.env.DSH_HOME||join(homedir(),'.dsh'),'repo-manager')});

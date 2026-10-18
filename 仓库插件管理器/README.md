@@ -1,5 +1,5 @@
 # 鲸鱼娘插件仓库
 
-当前版本：1.0.1。
+当前版本：1.1.0。
 
-[说明与安装](1.0.1/README.md) · [下载Release](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/repo-manager-v1.0.1)
+[说明与安装](1.1.0/README.md) · [下载Release](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/repo-manager-v1.1.0)
