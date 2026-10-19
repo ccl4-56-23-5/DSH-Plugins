@@ -108,6 +108,13 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
     const [filter,setFilter]=useState('all');
     const [confirm,setConfirm]=useState(null);
     const [sending,setSending]=useState(false);
+    const confirmRef=useRef(null),openerRef=useRef(null);
+    useEffect(()=>{
+      if(!confirm)return;
+      const panel=confirmRef.current;if(!panel)return;
+      panel.scrollIntoView({block:'center',behavior:'auto'});
+      panel.querySelector('button')?.focus({preventScroll:true});
+    },[confirm?.payload.id]);
     const alive=useRef(true),seq=useRef(0),ctrl=useRef(null);
     const load=useCallback(async refresh=>{
       if(ctrl.current&&!refresh)return;
@@ -163,6 +170,7 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
       finally{setSending(false);}
     }
     function openConfirm(i,action){
+      openerRef.current=document.activeElement;
       const enabled=action==='enable'?true:action==='disable'?false:i.enabled;
       const payload={id:(typeof crypto!=='undefined'&&crypto.randomUUID?crypto.randomUUID():'op-'+Date.now()),name:i.name,action:action==='disable'?'enable':action,enabled:enabled};
       if(action==='install'){payload.version=i.version;payload.sha256=i.sha256;}
@@ -222,14 +230,14 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
       notice&&h('div',{className:'notice',role:'status'},notice),
       view.cacheWarning&&h('div',{className:'notice warn'},view.cacheWarning),
       view.errors&&view.errors.length>0&&h('details',{className:'notice warn'},h('summary',null,'部分发布无法验证（'+view.errors.length+'）'),h('pre',null,view.errors.join('\n'))),
-      confirm&&h('div',{className:'dialog',role:'dialog','aria-label':'确认插件操作'},
+      confirm&&h('div',{ref:confirmRef,className:'dialog',role:'dialog','aria-label':'确认插件操作'},
         h('h3',null,confirm.payload.action==='install'?'确认安装／更新':'确认更改启用状态'),
         h('p',null,confirm.title),
         h('p',null,confirm.payload.action==='install'?'目标版本：'+(confirm.payload.version||'待检查')+'；来源：指定GitHub仓库的Release，执行前重新校验。':confirm.payload.enabled?'启用此插件。':'停用此插件，保留用户配置。'),
         h('p',null,'由DSH执行，保留现有配置；如需重启将明确提示。'),
         h('div',{className:'actions'},
           h('button',{className:'primary',disabled:sending||!canAct,onClick:act},sending?'正在提交…':'确认执行'),
-          h('button',{disabled:sending,onClick:()=>setConfirm(null)},'取消'))),
+          h('button',{disabled:sending,onClick:()=>{setConfirm(null);openerRef.current?.focus();}},'取消'))),
       jobs.length>0&&h('details',{className:'notice',open:true},
         h('summary',null,'最近操作'),
         h('div',{className:'jobs'},jobs.map(j=>h('div',{key:j.id||j.name+j.message,className:'job '+j.status},
@@ -257,7 +265,7 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
         })),
       shown.length===0&&h('p',{className:'muted'},items.length?'没有匹配当前搜索／筛选的插件。':'仓库暂未提供可验证的安装发布。'),
       h('footer',null,
-        h('span',null,'仓库管理器 1.1.1'),
+        h('span',null,'仓库管理器 1.1.2'),
         h('span',null,'仅管理此仓库的DSH插件'),
         h('span',null,'下载后校验 SHA-256')));
   }
