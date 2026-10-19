@@ -6,6 +6,7 @@ export const KNOWN_PLUGINS = [
   ['dsh-api-switcher','Api-Switcher'], ['dsh-control-bridge','DSH控制桥'],
   ['dsh-repo-manager','鲸鱼娘插件仓库'], ['dsh-top-directive','最高指令'],
   ['dsh-usage-statistics-panel','使用统计'],
+  ['dsh-storydeck','故事中控台'],
 ];
 const MAX_BYTES=4*1024*1024;
 export function normalizeCatalog(value) {

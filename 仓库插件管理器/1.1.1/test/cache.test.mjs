@@ -11,11 +11,11 @@ const item={name:'dsh-repo-manager',version:'1.1.0',bytes:123,sha256:'a'.repeat(
 const catalog=()=>({items:[item],errors:[],checkedAt:new Date().toISOString()});
 const host={listBundles:async()=>[{name:item.name,version:'1.0.1',enabled:true}]};
 const tick=()=>new Promise(r=>setImmediate(r));
-test('cold entry returns five useful local cards before network resolves',async()=>{
+test('cold entry returns six useful local cards before network resolves',async()=>{
   let release,calls=0;const m=createManager(host,{directory:dir(),load:()=>{calls++;return new Promise(r=>release=r);}});
   const timeout=new Promise((_,reject)=>{const timer=setTimeout(()=>reject(new Error('State waited for network')),500);timer.unref();});
   const initial=await Promise.race([m.state(true),timeout]);
-  assert.equal(initial.items.length,5);assert.equal(initial.cacheSource,'local');assert.equal(initial.refreshing,true);
+  assert.equal(initial.items.length,6);assert.equal(initial.cacheSource,'local');assert.equal(initial.refreshing,true);
   assert.equal(initial.items.find(i=>i.name===item.name).installedVersion,'1.0.1');
   assert.ok(initial.items.every(i=>i.version===null&&i.status==='unchecked'));
   await Promise.all([m.state(true),m.state(true),m.state()]);assert.equal(calls,1);
@@ -38,7 +38,7 @@ test('partial release error cannot overwrite healthy cache',async()=>{
 });
 test('corrupt, foreign, oversize and hostile cache falls back without crashing',async()=>{
   for(const raw of ['invalid','x'.repeat(4*1024*1024+1),JSON.stringify({schema:1,repo:'other',catalog:catalog()}),JSON.stringify({schema:1,repo:REPO,catalog:{...catalog(),items:[{...item,url:'https://evil.invalid/archive.tgz'}]}})]){
-    const directory=dir();writeFileSync(join(directory,'catalog-v1.json'),raw);const m=createManager(host,{directory,load:async()=>catalog()});const s=await m.state();assert.equal(s.cacheSource,'local');assert.equal(s.items.length,5);assert.ok(s.cacheWarning);
+    const directory=dir();writeFileSync(join(directory,'catalog-v1.json'),raw);const m=createManager(host,{directory,load:async()=>catalog()});const s=await m.state();assert.equal(s.cacheSource,'local');assert.equal(s.items.length,6);assert.ok(s.cacheWarning);
   }
 });
 test('install revalidates cache version before using download URL',async()=>{

@@ -1,0 +1,26 @@
+{
+  "name": "dsh-repo-manager",
+  "version": "1.1.1",
+  "runtimeDependencies": 0,
+  "files": {
+    "dsh-repo-manager-1.1.1.tgz": {
+      "bytes": 1027702,
+      "sha256": "d45de6645077386107c109cfa3b454da6db63e88f58653df590986c14bc4f365"
+    }
+  },
+  "packageFileSHA256": {
+    "LICENSE": "5ca2920d4f56954100c8f365461aba7b6c6154da49734f7b2703d9275ad49d11",
+    "README.md": "02ad45ee5137f4440dd02466beb2325490cc7bfae34b3445a0bf13616371c791",
+    "VALIDATION.md": "03f2e4b34116383f851289cacb1f71d3bc404e306edbf7edf0b97645f0221120",
+    "cordis.patch.yml": "e45874dadae876a6332ff87ab0d75809853ba9eccd197c876103e95be5854312",
+    "lib/assets/icon.png": "190bc310f410dfb42606ca97cc5aed0a7dc678c3e94e2d0202536b4efccf22dc",
+    "lib/assets/logo.png": "18cf1ea6e3a6c849d6fcd30990794addb57a46949f98a7fe26d9f965d0410839",
+    "lib/cache.js": "9af5ae75ab39a28c0e3644ea220584ce3191cc1f0e05695240def582f4a17eb8",
+    "lib/catalog.js": "82b8351aa66d88aa1f6ea9ac151abd75de9f5e46b899f5eaea269153b8a5f6fb",
+    "lib/client.js": "94819a673ba737b79b760da0b9ad880750c3c73703e3360419b67a24b89cd40d",
+    "lib/health.js": "6a033494fcc875a07c320dcfd947a0cb77402666b5407af57f5b754bfadd4d9a",
+    "lib/index.js": "64f4acd05d6d4dec97a1a386d05f9626212700cdcb2c894b202777675dc73dec",
+    "lib/operations.js": "34d668bf6e8e369a74b403e2f278009a7fa7fe77f95ab659e0c7f7b224d0749d",
+    "package.json": "f7633282c71388691c0355fe9037f2ab23a74e2041b2c06586032742684af22d"
+  }
+}

@@ -4,6 +4,8 @@ import {homedir} from 'node:os';
 import {readCatalogCache,writeCatalogCache,normalizeCatalog,localCatalog} from './cache.js';
 import {REPO,discover,bytes,verifyPackage,compare} from './catalog.js';
 import {runtimeHealth,readRuntime} from './health.js';
+import {checkSources,installedTarget,diagnostic} from './operations.js';
+import {randomUUID} from 'node:crypto';
 export const name='dsh-repo-manager';
 export const inject=['webServer','pluginManager'];
 const ROOT='/repo-manager/api';
@@ -17,7 +19,9 @@ export function createManager(manager,{directory,load=discover,download=bytes}={
   let catalog=cached.catalog,cacheSource=catalog?'disk':'local',cacheWarning=cached.warning,refreshError=null,checking=null,busy=false;const jobs=new Map();
   const jobsFile=join(directory,'jobs.json');
   if(existsSync(jobsFile)){try{for(const j of JSON.parse(readFileSync(jobsFile,'utf8'))){if(!['done','failed'].includes(j.status)){j.status='uncertain';j.message='宿主已重新加载，请检查本地版本后再操作。';}jobs.set(j.id,j);}}catch{/* Broken receipts never authorize a retry. */}}
-  const save=()=>{const path=jobsFile+'.tmp';writeFileSync(path,JSON.stringify([...jobs.values()].slice(-40),null,2));renameSync(path,jobsFile);};
+  for(const job of jobs.values())if(job.status==='failed'&&!job.detail){const info=diagnostic(job.message);job.message=info.message;job.detail=info.detail;}
+  let disposed=false;
+  const save=()=>{if(disposed)return;const path=jobsFile+'.'+randomUUID()+'.tmp';writeFileSync(path,JSON.stringify([...jobs.values()].slice(-40),null,2));renameSync(path,jobsFile);};
   function refresh(){
     if(!checking){
       refreshError=null;
@@ -36,6 +40,15 @@ export function createManager(manager,{directory,load=discover,download=bytes}={
     // while one shared background request refreshes the durable catalog.
     if(refreshNow)void refresh().catch(()=>{});
     const [bundles,runtime]=await Promise.all([manager.listBundles(),readRuntime(manager)]);
+    let recovered=false;
+    for(const job of jobs.values())if(job.status==='uncertain'||(job.status==='done'&&!job.installationVerified)){
+      let target=job.target;try{target??=JSON.parse(job.signature);}catch{}
+      const bundle=bundles.find(b=>b.name===job.name);
+      if(installedTarget(bundle,target)){
+        job.status='done';job.message='已核对安装版本与源包SHA-256，更新已完成';job.finishedAt=new Date().toISOString();job.recovered=true;job.installationVerified=true;recovered=true;
+      }
+    }
+    if(recovered)save();
     const items=catalog?.items||localCatalog();
     return {repo:REPO,checkedAt:catalog?.checkedAt||null,errors:catalog?.errors||[],cacheSource,cacheWarning,refreshError,refreshing:!!checking,
       items:items.map(i=>{const b=bundles.find(b=>b.name===i.name&&b.installed!==false);let status=i.version?'available':'unchecked';if(b&&i.version){try{const c=compare(i.version,b.version);status=c>0?'update':c<0?'newer':'current';}catch{status='unknown';}}return {...i,installedVersion:b?.version||null,enabled:b?.enabled??null,status,health:runtimeHealth(b,runtime.plugins,status,cacheSource==='memory'&&!checking&&!refreshError,runtime.error),protected:['dsh-repo-manager','dsh-control-bridge'].includes(i.name)};}),jobs:[...jobs.values()].slice(-10),busy};
@@ -44,18 +57,24 @@ export function createManager(manager,{directory,load=discover,download=bytes}={
     try{
       if(p.action==='install')await refresh();
       const item=(catalog?.items||localCatalog()).find(i=>i.name===p.name);if(!item)throw new Error('插件不在仓库的已验证发布列表中');
-      const installed=(await manager.listBundles()).find(b=>b.name===p.name&&b.installed!==false);
+      const bundles=await manager.listBundles(),installed=bundles.find(b=>b.name===p.name&&b.installed!==false);
       if(p.action==='install'){
         if(p.version!==item.version||p.sha256!==item.sha256)throw new Error('发布版本已变化，请重新检查更新');
         if(installed&&compare(item.version,installed.version)<=0)throw new Error('本地已是同版或更新版本，无需安装');
+        checkSources(bundles);
         job.message='正在下载并校验SHA-256';save();
         const data=await download(item.url,64*1024*1024);verifyPackage(data,item);
         const path=join(directory,`${item.name}-${item.version}-${item.sha256.slice(0,16)}.tgz`);writeFileSync(path+'.tmp',data);renameSync(path+'.tmp',path);
-        job.message='正在由DSH安装；请勿重复操作';save();
+        job.target={version:item.version,sha256:item.sha256,preserveDisabled:installed?.enabled===false};job.phase='installing';job.message='正在由DSH安装；请勿重复操作';save();
         const result=await manager.installBundle(path,{requestId:job.id});
-        if(!['applied','restart-required','overridden'].includes(result.application))throw new Error(typeof result.error==='string'?result.error:JSON.stringify(result.error||result.application));
+        if(!['applied','restart-required','overridden'].includes(result.application)){job.phase='refused';throw new Error(JSON.stringify(result.error||result.application));}
         // Preserve a previously disabled plugin even if the host enables an updated bundle.
         if(installed?.enabled===false)await manager.setBundleEnabled(item.name,false);
+        job.phase='verifying';job.message='DSH已返回，正在核对实际安装版本';save();
+        const observed=(await manager.listBundles()).find(b=>b.name===item.name&&b.installed!==false);
+        if(!installedTarget(observed,job.target))throw new Error('DSH返回后尚未确认目标版本与源包SHA-256；结果待核对，请勿重复安装');
+        if(installed?.enabled===false&&observed.enabled!==false)throw new Error('目标版本已安装，但原停用状态未确认保留；结果待核对');
+        job.installationVerified=true;
         job.application=result.application;job.message=result.application==='restart-required'?'安装完成，需重启DSH后生效':result.application==='overridden'?'安装完成，启用状态受用户配置覆盖':'安装完成';
       }else if(p.action==='enable'){
         if(!installed)throw new Error('插件尚未安装');
@@ -65,13 +84,14 @@ export function createManager(manager,{directory,load=discover,download=bytes}={
         if(result?.application&&!['applied','restart-required','overridden'].includes(result.application))throw new Error(JSON.stringify(result.error||result.application));
         job.application=result?.application;job.message=result?.application==='restart-required'?'状态已保存，需重启DSH':result?.application==='overridden'?'状态受用户配置覆盖':p.enabled?'已启用':'已停用';
       }else throw new Error('不支持的操作');job.status='done';
-    }catch(e){job.status='failed';job.message=e.message;}finally{job.finishedAt=new Date().toISOString();busy=false;save();}
+    }catch(e){const info=diagnostic(e);job.status=['installing','verifying'].includes(job.phase)?'uncertain':'failed';job.message=info.message;job.detail=info.detail;}finally{job.finishedAt=new Date().toISOString();busy=false;save();}
   }
   function start(p){if(typeof p.id!=='string'||!/^[-a-zA-Z0-9]{16,80}$/.test(p.id))throw new Error('操作ID无效');const prior=jobs.get(p.id);const signature=JSON.stringify({action:p.action,name:p.name,version:p.version,sha256:p.sha256,enabled:p.enabled});if(prior){if(prior.signature!==signature)throw new Error('操作ID不可用于不同请求');return prior;}if(busy)throw new Error('已有插件操作进行中');busy=true;const job={id:p.id,name:p.name,status:'running',message:'准备操作',signature,startedAt:new Date().toISOString()};jobs.set(p.id,job);save();void execute(job,p);return job;}
-  return {state,start,jobs,refresh};
+  return {state,start,jobs,refresh,dispose:()=>{disposed=true;}};
 }
 export function apply(ctx){
   const manager=createManager(ctx.pluginManager,{directory:join(process.env.DSH_HOME||join(homedir(),'.dsh'),'repo-manager')});
+  ctx.effect(()=>()=>manager.dispose());
   ctx.effect(()=>ctx.webServer.register({kind:'prefix',path:ROOT,handler:async(req,res)=>{
     const send=(status,v)=>{res.statusCode=status;res.setHeader('content-type','application/json; charset=utf-8');res.setHeader('cache-control','no-store');res.end(JSON.stringify(v));};
     try{if(!trusted(req))throw new Error('仅允许本机同源访问');const u=new URL(req.url,'http://localhost'),leaf=u.pathname.slice(ROOT.length);

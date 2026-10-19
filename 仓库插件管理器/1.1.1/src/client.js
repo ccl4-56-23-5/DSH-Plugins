@@ -16,7 +16,8 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
     {name:'dsh-top-directive',title:'最高指令',description:'保存全局初始提示词，让所有会话遵循同一套系统指令。'},
     {name:'dsh-usage-statistics-panel',title:'使用统计',description:'查看Token用量、热力图与模型使用分布。'},
     {name:'dsh-control-bridge',title:'DSH控制桥',description:'宿主API与桌面控件控制桥，向插件开放受控操作。'},
-    {name:'dsh-repo-manager',title:'鲸鱼娘插件仓库',description:'从GitHub仓库安装DSH插件、检查更新与启停管理。'}
+    {name:'dsh-repo-manager',title:'鲸鱼娘插件仓库',description:'从GitHub仓库安装DSH插件、检查更新与启停管理。'},
+    {name:'dsh-storydeck',title:'故事中控台',description:'输入框内选择多本世界书和条目，兼容RikkaHub原生JSON，选择及剧情状态仅对当前对话生效。'}
   ];
   const META=Object.create(null);KNOWN.forEach(k=>{META[k.name]=k;});
   const STATUS={available:'未安装',update:'可更新',current:'已是最新',newer:'本地版本较新',unchecked:'待检查',unknown:'待核对',error:'校验失败'};
@@ -37,7 +38,7 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
     const status=Object.prototype.hasOwnProperty.call(STATUS,raw.status)?raw.status:'unknown';
     return {health:normalizeHealth(raw.health),name:name,title:clean(raw.title,80)||name,description:clean(raw.description,300),installedVersion:versionOf(raw.installedVersion),version:versionOf(raw.version),status:status,enabled:raw.enabled===true,protected:raw.protected===true,releaseURL:releaseLink(raw.releaseURL),notes:clean(raw.notes,4000),sha256:clean(raw.sha256,64)};
   }
-  function normalizeJob(j){return j&&typeof j==='object'?{id:String(j.id||''),name:clean(j.name,80),status:j.status==='failed'?'failed':'ok',message:clean(j.message,400)}:null;}
+  function normalizeJob(j){return j&&typeof j==='object'?{id:String(j.id||''),name:clean(j.name,80),status:['running','done','failed','uncertain'].includes(j.status)?j.status:'uncertain',message:clean(j.message,1200),detail:clean(j.detail,24000)}:null;}
   function titleOf(i){return (META[i.name]&&META[i.name].title)||i.title||i.name;}
   function descOf(i){return (META[i.name]&&META[i.name].description)||i.description||'';}
   function normalizeSnapshot(v){
@@ -193,6 +194,7 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
     }
     return h('section',{className:'wrm','aria-label':'鲸鱼娘插件仓库'},
       h('style',null,css+".wrm .tl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;border:1px solid var(--line);border-radius:10px;padding:5px 10px;background:var(--soft);min-width:0}.wrm .tl .bulbs{display:flex;gap:4px;flex:0 0 auto}.wrm .tl .bulb{width:9px;height:9px;border-radius:50%;background:rgba(128,136,144,.28)}.wrm .tl .bulb.red{--c:#d25656}.wrm .tl .bulb.yellow{--c:#d9a02b}.wrm .tl .bulb.green{--c:#2ea060}.wrm .tl .bulb.gray{--c:#9aa3ac}.wrm .tl .bulb.on{background:var(--c);box-shadow:0 0 7px var(--c)}.wrm .tl-text{font-weight:600;overflow-wrap:anywhere}.wrm .tl-red .tl-text{color:#d25656}.wrm .tl-yellow .tl-text{color:#c08a1e}.wrm .tl-green .tl-text{color:#2ea060}.wrm .tl-gray .tl-text{opacity:.72}.wrm .tl-detail{flex:1 1 100%;margin:0}.wrm .tl-detail summary{font-size:11.5px}.wrm .tl-detail p{margin:6px 0 0;font-size:12px;opacity:.8;white-space:pre-wrap;overflow-wrap:anywhere}"),
+      h('style',null,'.wrm .job.running .dot{background:#2188c9}.wrm .job.uncertain .dot{background:#c58a22}.wrm .job.done .dot{background:#2ea060}.wrm .job{overflow-wrap:anywhere}.wrm .job details{max-width:100%}'),
       h('header',{className:'hero'},
         h('img',{className:'hero-logo',src:ROOT+'logo',alt:'鲸鱼娘正面推购物车logo'}),
         h('div',null,
@@ -230,9 +232,9 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
           h('button',{disabled:sending,onClick:()=>setConfirm(null)},'取消'))),
       jobs.length>0&&h('details',{className:'notice',open:true},
         h('summary',null,'最近操作'),
-        h('div',{className:'jobs'},jobs.map(j=>h('div',{key:j.id||j.name+j.message,className:'job '+(j.status==='failed'?'failed':'')},
+        h('div',{className:'jobs'},jobs.map(j=>h('div',{key:j.id||j.name+j.message,className:'job '+j.status},
           h('span',{className:'dot'}),
-          h('span',null,(META[j.name]&&META[j.name].title||j.name||'插件')+'：'+(j.message||'已完成')))))),
+          h('div',null,h('span',null,({running:'进行中 · ',done:'完成 · ',failed:'失败 · ',uncertain:'待核对 · '}[j.status]||'待核对 · ')+(META[j.name]&&META[j.name].title||j.name||'插件')+'：'+(j.message||'结果待核对')),j.detail&&h('details',null,h('summary',null,'完整诊断'),h('pre',null,j.detail))))))),
       h('div',{className:'grid'},
         shown.map(i=>{
           const tag=tagOf(i);
@@ -255,7 +257,7 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
         })),
       shown.length===0&&h('p',{className:'muted'},items.length?'没有匹配当前搜索／筛选的插件。':'仓库暂未提供可验证的安装发布。'),
       h('footer',null,
-        h('span',null,'仓库管理器 1.1.0'),
+        h('span',null,'仓库管理器 1.1.1'),
         h('span',null,'仅管理此仓库的DSH插件'),
         h('span',null,'下载后校验 SHA-256')));
   }
