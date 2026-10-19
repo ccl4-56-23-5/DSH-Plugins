@@ -35,8 +35,17 @@ const fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('n
   assert.ok(assembly.contexts.some(s=>s.name==='storydeck:current-state'&&s.text.includes('筑基')));
   const empty=await ctx.systemPrompt.assemble({scope:{session:{id:'unbound'}}});
   assert.ok(!empty.sections.some(s=>s.name==='storydeck:worldbook-policy'&&s.text));
+  const imported=action('importRikka',{document:{version:1,type:'lorebook',data:{name:'宿主Rikka世界书',entries:[{type:'regex',name:'城镇设定',content:'银树城的街道由白石铺成。',keywords:['银树城']}]}}});
+  const d=store.read(),bid=imported.bookId;
+  action('selectBooks',{sessionId:'host-test-session',bookIds:[exampleBook.id,bid],entryIds:{[exampleBook.id]:d.books[exampleBook.id].entries.map(e=>e.id),[bid]:d.books[bid].entries.map(e=>e.id)}});
+  const multi=JSON.parse(await read.execute({query:'银树城',limit:20},exec));assert.equal(multi.books.length,2);assert.ok(multi.entries.some(e=>e.bookId===bid&&e.title==='城镇设定'));
+  const multiPrompt=await ctx.systemPrompt.assemble({scope:agent});assert.ok(multiPrompt.contexts.some(s=>s.name==='storydeck:current-state'&&s.text.includes(bid)));
+  action('selectBooks',{sessionId:'host-test-session',bookIds:[bid],entryIds:{[bid]:[]}});
+  assert.equal(JSON.parse(await read.execute({query:'银树城',limit:20},exec)).entries.length,0);
+  action('selectBooks',{sessionId:'host-test-session',bookIds:[],entryIds:{}});
+  const disabled=await ctx.systemPrompt.assemble({scope:agent});assert.ok(!disabled.sections.some(s=>s.name==='storydeck:worldbook-policy'&&s.text));
   await parent.dispose();
   assert.equal(ctx.tools.get('storydeck_context'),undefined);
-  const result={ok:true,node:process.version,checks:['real installed Cordis parent mounts child','real defineTool validates and executes read/commit','automatic event changes eligible records','hidden and wrong-realm entries excluded','unbound session rejected','prompt and dynamic state scoped to current session','parent disposal removes tools'],boundary:'isolated installed host runtime; no live model request or desktop install'};
+  const result={ok:true,node:process.version,checks:['real installed Cordis parent mounts child','real defineTool validates and executes read/commit','automatic event changes eligible records','hidden and wrong-realm entries excluded','unbound session rejected','prompt and dynamic state scoped to current session','RikkaHub plus native books both returned by actual tool','disabled entry omitted','empty selection removes prompt','parent disposal removes tools'],boundary:'isolated installed host runtime; no live model request or desktop install'};
   fs.writeFileSync(path.join(home,'host-result.json'),JSON.stringify(result,null,2));console.log(JSON.stringify(result,null,2));
 })().catch(e=>{console.error(e);process.exitCode=1;});

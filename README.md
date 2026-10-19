@@ -12,7 +12,7 @@ DSH桌面插件集合。每个项目只保留当前最新版的源码和安装�
 
 | [鲸鱼娘插件仓库](仓库插件管理器/README.md) | 1.1.0 | 左上角入口，管理与更新本仓库插件 | [安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/repo-manager-v1.1.0) · [说明](仓库插件管理器/1.1.0/README.md) |
 
-| [故事中控台](故事中控台/README.md) | 0.1.0 | 世界书调度器：状态驱动检索、自动事件与撤回、独立剧情分支 | [安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/storydeck-v0.1.0) · [说明](故事中控台/0.1.0/README.md) |
+| [故事中控台](故事中控台/README.md) | 0.2.0 | 输入框内多世界书与条目开关，RikkaHub原生格式、当前对话独立状态 | [安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/storydeck-v0.2.0) · [说明](故事中控台/0.2.0/README.md) |
 
 ## 目录
 

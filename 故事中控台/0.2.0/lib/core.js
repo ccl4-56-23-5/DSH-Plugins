@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync, renameSync, openSync, closeSync, unlinkSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { randomUUID, createHash } from 'node:crypto';
+import { importRikka, exportRikka, literalTrigger, regexTriggers } from './rikka.js';
 
 const clone = value => structuredClone(value);
 const own = (o,k) => Object.hasOwn(o,k);
@@ -40,7 +41,7 @@ function validateCondition(book,c) {
 }
 export function validateBook(book) {
   check(plain(book)&&id(book.id)&&text(book.title),'世界书 id 或名称无效');
-  check(Array.isArray(book.fields)&&book.fields.length>0&&book.fields.length<=40,'字段数应为1至40');
+  check(Array.isArray(book.fields)&&book.fields.length<=40,'字段数应为0至40');
   const keys=new Set();
   for(const f of book.fields) {
     check(plain(f)&&id(f.key)&&!keys.has(f.key)&&text(f.label)&&['enum','string','number','boolean','tags'].includes(f.type),'字段定义无效或重复');
@@ -51,7 +52,7 @@ export function validateBook(book) {
   check(Array.isArray(book.entries)&&book.entries.length<=3000,'世界书条目上限为3000');
   const ids=new Set();
   for(const e of book.entries) {
-    check(plain(e)&&id(e.id)&&!ids.has(e.id)&&text(e.title)&&text(e.body,16000),'条目无效或重复');
+    check(plain(e)&&id(e.id)&&!ids.has(e.id)&&text(e.title)&&typeof e.body==='string'&&e.body.length<=16000&&!e.body.includes('\u0000'),'条目无效或重复');
     ids.add(e.id);
     check(['public','known','author'].includes(e.visibility),'条目 visibility 必须为 public/known/author');
     check(typeof e.always==='boolean','条目必须明确 always 开关');
@@ -77,6 +78,7 @@ function compare(book,state,c) {
   return c.op==='gte'?av>=bv:av<=bv;
 }
 export function eligibility(book,story,entry) {
+  if(story.enabledEntryIds&&!story.enabledEntryIds.includes(entry.id)) return {allowed:false,reason:'当前对话已停用此条目'};
   if(entry.visibility==='author') return { allowed:false, reason:'作者隐藏设定' };
   if(entry.visibility==='known'&&!story.knownIds.includes(entry.id)) return { allowed:false, reason:'角色尚未知晓' };
   if(entry.when.all&&!entry.when.all.every(c=>compare(book,story.state,c))) return { allowed:false, reason:'未满足全部状态条件' };
@@ -84,7 +86,7 @@ export function eligibility(book,story,entry) {
   return { allowed:true, reason:entry.always?'常驻条目，且状态/认知条件已满足':'状态与认知条件已满足' };
 }
 const tokens = q => [...new Set((q.toLowerCase().match(/[a-z0-9]+|[\u3400-\u9fff]/g)||[]))].slice(0,100);
-export function retrieve(book,story,{query='',limit=8,maxChars=12000}={}) {
+export function retrieve(book,story,{query='',limit=8,maxChars=12000,regexMatches={}}={}) {
   check(typeof query==='string'&&query.length<=1000,'查询过长');
   check(Number.isInteger(limit)&&limit>=1&&limit<=20,'条数上限为20');
   check(Number.isInteger(maxChars)&&maxChars>=256&&maxChars<=24000,'正文预算应为256至24000字符');
@@ -92,11 +94,15 @@ export function retrieve(book,story,{query='',limit=8,maxChars=12000}={}) {
   for(const e of book.entries) {
     const gate=eligibility(book,story,e);
     if(!gate.allowed) continue;
+    if(e.activation&&!e.activation.constantActive) {
+      check(!e.activation.useRegex||own(regexMatches,book.id+':'+e.id),'正则条目需使用异步检索');
+      if(!(e.activation.useRegex?regexMatches[book.id+':'+e.id]:literalTrigger(e.activation,query)))continue;
+    }
     const title=(e.title+' '+e.tags.join(' ')).toLowerCase(), body=e.body.toLowerCase();
     const score=words.reduce((n,w)=>n+(title.includes(w)?4:body.includes(w)?1:0),0);
-    if(e.always||(!words.length)||score>0) candidates.push({e,gate,score});
+    if(e.body&&(e.activation||e.always||(!words.length)||score>0)) candidates.push({e,gate,score});
   }
-  candidates.sort((a,b)=>Number(b.e.always)-Number(a.e.always)||b.score-a.score||a.e.id.localeCompare(b.e.id));
+  candidates.sort((a,b)=>(b.e.activation?.priority??0)-(a.e.activation?.priority??0)||Number(b.e.always)-Number(a.e.always)||b.score-a.score||a.e.id.localeCompare(b.e.id));
   let used=0, omitted=0;
   const entries=[];
   for(const {e,gate,score} of candidates) {
@@ -107,15 +113,29 @@ export function retrieve(book,story,{query='',limit=8,maxChars=12000}={}) {
   }
   return { stateRevision:story.revision,bookRevision:story.bookRevision,entries,usedChars:used,eligibleMatches:candidates.length,omittedByBudget:omitted };
 }
-function empty() { return {schema:1,revision:0,books:{},stories:{},bindings:{},receipts:{}}; }
+function empty() { return {schema:2,revision:0,books:{},stories:{},bindings:{},selections:{},receipts:{}}; }
+function migrate(data) {
+  if(data.schema===2){check(plain(data.selections),'对话选择数据格式错误');return data;}
+  data.selections={};
+  // Clone every legacy binding, including shared story bindings, before any
+  // new conversation can mutate state. Original stories/events are retained.
+  for(const [sid,storyId] of Object.entries(data.bindings)) {
+    const old=data.stories[storyId];check(old&&data.books[old.bookId],'旧版会话关联已损坏');
+    const id='session-'+signature({sid,storyId}).slice(0,32);
+    data.stories[id]={...clone(old),id,parentId:old.id};data.bindings[sid]=id;
+    const b=data.books[old.bookId];
+    data.selections[sid]={bookIds:[b.id],entryIds:{[b.id]:b.entries.map(e=>e.id)},storyIds:{[b.id]:id},revision:0};
+  }
+  data.schema=2;return data;
+}
 export class WorldbookStore {
   constructor(file) { this.file=file; mkdirSync(dirname(file),{recursive:true}); this.read(); }
   read() {
     if(!existsSync(this.file)) return empty();
     const raw=readFileSync(this.file,'utf8');check(Buffer.byteLength(raw)<=32*1024*1024,'数据文件过大');
     const data=JSON.parse(raw);
-    check(data.schema===1&&Number.isSafeInteger(data.revision)&&plain(data.books)&&plain(data.stories)&&plain(data.bindings)&&plain(data.receipts),'数据文件格式错误，未重置原文件');
-    return data;
+    check([1,2].includes(data.schema)&&Number.isSafeInteger(data.revision)&&plain(data.books)&&plain(data.stories)&&plain(data.bindings)&&plain(data.receipts),'数据文件格式错误，未重置原文件');
+    return migrate(data);
   }
   transact(requestId, expectedRevision, payload, action) {
     check(id(requestId)&&requestId.length>=12,'操作ID应为12至96位字母数字或连字符');
@@ -131,6 +151,7 @@ export class WorldbookStore {
       for(const key of Object.keys(data.receipts).slice(0,-500)) delete data.receipts[key];
       const bytes=JSON.stringify(data,null,2)+'\n';
       check(Buffer.byteLength(bytes)<=32*1024*1024,'数据已达32MiB上限，请导出后整理');
+      if(existsSync(this.file)&&JSON.parse(readFileSync(this.file,'utf8')).schema===1&&!existsSync(this.file+'.schema1-backup'))writeFileSync(this.file+'.schema1-backup',readFileSync(this.file),{flag:'wx'});
       const tmp=this.file+'.'+randomUUID()+'.pending';
       try { writeFileSync(tmp,bytes,{flag:'wx'});renameSync(tmp,this.file); }
       finally { if(existsSync(tmp)) unlinkSync(tmp); }
@@ -140,6 +161,29 @@ export class WorldbookStore {
   author(action,args) {
     check(plain(args),'请求必须为对象');
     return this.transact(args.requestId,args.revision,{action,args},data=>{
+      if(action==='importRikka') {
+        const book=validateBook(importRikka(args.document));data.books[book.id]={...book,revision:1};return {bookId:book.id};
+      }
+      if(action==='selectBooks') {
+        check(text(args.sessionId,200)&&!['__proto__','constructor','prototype'].includes(args.sessionId),'会话ID无效');
+        check(Array.isArray(args.bookIds)&&args.bookIds.length<=20&&new Set(args.bookIds).size===args.bookIds.length,'最多同时选择20本世界书');
+        check(plain(args.entryIds),'条目选择无效');
+        const old=data.selections[args.sessionId]??{storyIds:{},entryIds:{},revision:0};
+        const next={bookIds:[...args.bookIds],entryIds:{...old.entryIds},storyIds:{...old.storyIds},revision:old.revision+1};
+        for(const bid of args.bookIds) {
+          const b=data.books[bid];check(b,'世界书不存在');
+          const ids=args.entryIds[bid];check(Array.isArray(ids)&&new Set(ids).size===ids.length&&ids.every(k=>b.entries.some(e=>e.id===k)),'条目选择包含未知ID');
+          next.entryIds[bid]=[...ids];
+          if(!next.storyIds[bid]) {
+            const id='session-'+randomUUID();
+            data.stories[id]={id,title:b.title,bookId:bid,bookRevision:b.revision,state:clone(b.initialState),knownIds:[],revision:0,events:[]};
+            next.storyIds[bid]=id;
+          }
+        }
+        data.selections[args.sessionId]=next;delete data.bindings[args.sessionId];
+        if(next.bookIds.length===1)data.bindings[args.sessionId]=next.storyIds[next.bookIds[0]];
+        return {sessionId:args.sessionId,selection:clone(next)};
+      }
       if(action==='saveBook') {
         const book=clone(validateBook(args.book)), old=data.books[book.id];
         if(old) {
@@ -157,7 +201,11 @@ export class WorldbookStore {
       }
       if(action==='bind') {
         check(text(args.sessionId,200)&&data.stories[args.storyId],'会话或剧情无效');
-        data.bindings[args.sessionId]=args.storyId;return {sessionId:args.sessionId,storyId:args.storyId};
+        check(!Object.entries(data.selections).some(([sid,s])=>sid!==args.sessionId&&Object.values(s.storyIds).includes(args.storyId)),'剧情已由其他对话使用，请创建独立分支');
+        const b=data.books[data.stories[args.storyId].bookId];
+        data.bindings[args.sessionId]=args.storyId;
+        data.selections[args.sessionId]={bookIds:[b.id],entryIds:{[b.id]:b.entries.filter(e=>e.activation?.enabled!==false).map(e=>e.id)},storyIds:{[b.id]:args.storyId},revision:0};
+        return {sessionId:args.sessionId,storyId:args.storyId};
       }
       if(action==='forkStory') {
         const source=data.stories[args.sourceId];
@@ -165,21 +213,48 @@ export class WorldbookStore {
         data.stories[args.id]={...clone(source),id:args.id,title:args.title,parentId:source.id,revision:0,events:[]};
         return {storyId:args.id};
       }
-      if(action==='unbind') { check(text(args.sessionId,200),'会话ID无效');delete data.bindings[args.sessionId];return {unbound:true}; }
+      if(action==='unbind') { check(text(args.sessionId,200),'会话ID无效');delete data.bindings[args.sessionId];delete data.selections[args.sessionId];return {unbound:true}; }
       if(action==='commit') return this.applyEvent(data,args.storyId,args.event,'author');
       if(action==='undo') return this.undo(data,args.storyId,args.eventId);
       throw new Error('未知作者操作');
     });
   }
-  bound(sessionId,data=this.read()) {
+  bound(sessionId,data=this.read(),bookId) {
     check(text(sessionId,200),'调用缺少真实DSH会话身份');
-    const story=data.stories[data.bindings[sessionId]];check(story,'当前会话未关联剧情，请在故事中控台选择剧情并关联会话');
+    const selection=data.selections[sessionId];check(selection?.bookIds.length,'当前会话未关联世界书，请在输入框的世界书按钮中勾选');
+    check(bookId||selection.bookIds.length===1,'多本世界书启用时必须指定 bookId');
+    const bid=bookId??selection.bookIds[0];check(selection.bookIds.includes(bid),'当前对话未启用此世界书');
+    const story=data.stories[selection.storyIds[bid]];check(story,'当前会话剧情数据不存在');
     const book=data.books[story.bookId];check(book&&book.revision===story.bookRevision,'世界书版本不匹配');
     return {book,story};
   }
   context(sessionId,query,options={}) {
-    const data=this.read(),{book,story}=this.bound(sessionId,data);
-    return {revision:data.revision,storyId:story.id,title:story.title,fields:clone(book.fields),state:clone(story.state),knownIds:clone(story.knownIds),...retrieve(book,story,{query,...options})};
+    const data=this.read(),sel=data.selections[sessionId];check(sel?.bookIds.length,'当前会话未关联世界书');
+    const limit=options.limit??8,maxChars=options.maxChars??12000;
+    const books=sel.bookIds.map(bid=>{
+      const {book,story}=this.bound(sessionId,data,bid),scoped={...story,enabledEntryIds:sel.entryIds[bid]??[]};
+      return {bookId:bid,storyId:story.id,title:book.title,fields:clone(book.fields),state:clone(story.state),knownIds:clone(story.knownIds),...retrieve(book,scoped,{query,...options,limit:20})};
+    });
+    check(Number.isInteger(limit)&&limit>=1&&limit<=20,'条数上限为20');
+    let usedChars=0,omittedByBudget=books.reduce((n,b)=>n+b.omittedByBudget,0);const entries=[];
+    for(const b of books)for(const e of b.entries){const cost=e.body.length+e.title.length;if(entries.length>=limit||usedChars+cost>maxChars){omittedByBudget++;continue;}usedChars+=cost;entries.push({...e,bookId:b.bookId});}
+    const metadata=books.map(({entries,...b})=>b);
+    return {revision:data.revision,...(books.length===1?metadata[0]:{}),books:metadata,entries,usedChars,omittedByBudget};
+  }
+  async contextAsync(sessionId,query='',options={}) {
+    check(typeof query==='string'&&query.length<=1000,'查询过长');
+    const data=this.read(),sel=data.selections[sessionId];check(sel?.bookIds.length,'当前会话未关联世界书');
+    const books=sel.bookIds.map(bid=>({...data.books[bid],entries:data.books[bid].entries.filter(e=>sel.entryIds[bid]?.includes(e.id))}));
+    const regexMatches=await regexTriggers(books,query);
+    check(this.read().revision===data.revision,'数据已变化，请重新检索');
+    return this.context(sessionId,query,{...options,regexMatches});
+  }
+  session(sessionId) {
+    check(text(sessionId,200),'会话ID无效');const d=this.read();
+    return {revision:d.revision,selection:clone(d.selections[sessionId]??{bookIds:[],entryIds:{},storyIds:{},revision:0}),books:clone(Object.values(d.books)),stories:Object.fromEntries(Object.entries(d.stories).filter(([id])=>Object.values(d.selections[sessionId]?.storyIds??{}).includes(id)))};
+  }
+  export(bookId) {const b=this.read().books[bookId];check(b,'世界书不存在');return exportRikka(b);}
+  active(sessionId) { return !!this.read().selections[sessionId]?.bookIds.length;
   }
   applyEvent(data,storyId,event,actor) {
     const story=data.stories[storyId];check(story,'剧情不存在');
@@ -202,7 +277,7 @@ export class WorldbookStore {
   commit(sessionId,args) {
     check(plain(args),'状态事件无效');
     return this.transact(args.requestId,args.revision,{sessionId,args},data=>{
-      const {story}=this.bound(sessionId,data);
+      const {story}=this.bound(sessionId,data,args.bookId);
       return this.applyEvent(data,story.id,args.event,'dsh');
     });
   }
