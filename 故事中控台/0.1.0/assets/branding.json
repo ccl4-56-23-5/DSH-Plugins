@@ -1,0 +1,20 @@
+{
+  "generator": "OpenAI built-in imagegen; sharp exports",
+  "date": "2026-10-18",
+  "target": "Narrative branching display on central console, same whale-maid mascot with two small round fists at lower-right, transparent background",
+  "prompt": "assets/generation-prompt.txt",
+  "files": {
+    "lib/assets/logo.png": {
+      "bytes": 562552,
+      "sha256": "fba3d82be54be36ed9539453ec74492f7d42e1a9051efdd7a46072e123f84a24"
+    },
+    "lib/assets/icon.png": {
+      "bytes": 155873,
+      "sha256": "3a1e1c5e3794bf00e4aaf92913e25f17346d1e6c7d156f933b843cf211da6d67"
+    },
+    "assets/logo-master.png": {
+      "bytes": 2034399,
+      "sha256": "255b2a071d95aa0216c6d8fd3d6ac490d9d279685eff4ec08284ff57c1b1001c"
+    }
+  }
+}

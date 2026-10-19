@@ -32,18 +32,19 @@ export default async function publish({github,context,core}) {
         await verifyDownloads(published);core.info(`Verified unchanged ${plugin.tag}`);continue;
       }
     }
-    const isApi=plugin.pkg.name==='dsh-api-switcher', isUsage=plugin.pkg.name==='dsh-usage-statistics-panel', isControl=plugin.pkg.name==='dsh-control-bridge', isRepo=plugin.pkg.name==='dsh-repo-manager';
-    const sourceName=`DSH-Plugins-${isApi?'Api-Switcher':isUsage?'Token-Usage':isControl?'DSH-Control':isRepo?'Repo-Manager':'Top-Directive'}-${plugin.version}-Source.zip`;
+    const isApi=plugin.pkg.name==='dsh-api-switcher', isUsage=plugin.pkg.name==='dsh-usage-statistics-panel', isControl=plugin.pkg.name==='dsh-control-bridge', isRepo=plugin.pkg.name==='dsh-repo-manager', isStory=plugin.pkg.name==='dsh-storydeck';
+    const sourceName=`DSH-Plugins-${isApi?'Api-Switcher':isUsage?'Token-Usage':isControl?'DSH-Control':isRepo?'Repo-Manager':isStory?'StoryDeck':'Top-Directive'}-${plugin.version}-Source.zip`;
     const sourcePath=join(destination,sourceName);
     execFileSync('git',['archive','--format=zip',`--prefix=${plugin.pkg.name}-${plugin.version}/`,`--output=${sourcePath}`,`${context.sha}:${plugin.directory}/${plugin.version}`],{cwd:root});
-    const names=isApi||isUsage||isControl||isRepo?[`${plugin.pkg.name}-${plugin.version}-Windows.zip`,`${plugin.pkg.name}-${plugin.version}.tgz`,'release-manifest.json']:[`${plugin.pkg.name}-${plugin.version}.tgz`,'Install-DSH.ps1','release-manifest.json'];
+    const names=isApi||isUsage||isControl||isRepo||isStory?[`${plugin.pkg.name}-${plugin.version}-Windows.zip`,`${plugin.pkg.name}-${plugin.version}.tgz`,'release-manifest.json']:[`${plugin.pkg.name}-${plugin.version}.tgz`,'Install-DSH.ps1','release-manifest.json'];
     const assets=names.map(name=>({name,data:readFileSync(join(plugin.releaseDirectory,name))}));
     assets.push({name:sourceName,data:readFileSync(sourcePath)});
     assets.push({name:'SHA256SUMS.txt',data:Buffer.from(assets.map(item=>`${hash(item.data)}  ${item.name}`).join('\n')+'\n')});
     const body=isRepo ? '鲸鱼娘插件仓库1.1.0：缓存优先显示，进入后后台刷新；首次访问显示内置卡片，断网保留列表，宿主重启后恢复上次发布信息。DSH参与制作新版UI，保留5个原版图标，增加宿主运行状态红黄绿灯及卡片内更新。更新前重新核验远端版本和SHA-256。' : isControl ? 'DSH Control Bridge 1.0.0：宿主结构化API与DOM控件树，无截图识别。配合独立Codex插件，提供持久化操作去重、真实回复读取、工作区与插件设置管理、动态Remote契约及流式控制。实际验收与边界见源码VALIDATION.md；Codex端源码与安装包位于ccl4-56-23-5/Codex-Plugins。' : isUsage ? '基于HaoyueQin/dsh-usage-statistics-panel0.3.2的MIT定制版。替换现有使用统计并保留历史数据与设置；保留左上角入口和方块热力图，移除缓存命中率折线、百分比轴与图例，新增透明大肥鱼Logo。详见源码README和VALIDATION；Windows ZIP内含安装器、TGZ、manifest与校验文件。' : isApi ? '按供应商地址、协议和模型适配思考控制：MiMo使用真实开关，已确认GPT/Claude使用实际支持的档位，未知组合不猜测。保留现有配置、自定义映射及凭据，支持添加原生协议来源。65项回归、145种真实宿主请求映射及真实API对照通过；重启加载后的桌面验收待完成。含Windows安装ZIP、TGZ、源码ZIP和SHA-256；实测范围见docs/VALIDATION.md。' : '新增最高指令透明logo和插件图标，右下角使用与Api-Switcher一致的大肥鱼角色。提示词保存与会话桥沿用1.1.1；通过宿主、图片路由和打包检查。下载TGZ与Install-DSH.ps1放在同一目录，退出DSH后运行安装器。真实模型的历史验收范围见源码docs/VALIDATION.md。';
+    const releaseBody=isStory?'故事中控台 StoryDeck 0.1.0：首个子插件世界书调度器。世界书与剧情状态分层，按状态及角色认知筛选后检索；支持会话关联、独立剧情分支、自动事件、版本冲突校验和逐条撤回。含透明故事中控台Logo、Windows安装ZIP、TGZ、源码及SHA-256。自动事件语义由模型报告；筛选控制本插件返回内容，不清除已有会话知识。实际验收范围见VALIDATION.md。':body;
     let release;
     try { release=(await github.rest.repos.getReleaseByTag({...scope,tag:plugin.tag})).data; }
-    catch(error) { if(error.status!==404)throw error; release=(await github.rest.repos.createRelease({...scope,tag_name:plugin.tag,target_commitish:context.sha,name:`${plugin.directory}${plugin.version}`,body,draft:true,prerelease:false})).data; }
+    catch(error) { if(error.status!==404)throw error; release=(await github.rest.repos.createRelease({...scope,tag_name:plugin.tag,target_commitish:context.sha,name:`${plugin.directory}${plugin.version}`,body:releaseBody,draft:true,prerelease:false})).data; }
     let existing=await github.paginate(github.rest.repos.listReleaseAssets,{...scope,release_id:release.id,per_page:100});
     for(const asset of assets) {
       const digest='sha256:'+hash(asset.data), previous=existing.find(item=>item.name===asset.name);
@@ -54,7 +55,7 @@ export default async function publish({github,context,core}) {
     }
     existing=await github.paginate(github.rest.repos.listReleaseAssets,{...scope,release_id:release.id,per_page:100});
     for(const asset of assets)assert.ok(existing.some(item=>item.name===asset.name&&item.digest==='sha256:'+hash(asset.data)&&item.size===asset.data.length));
-    await github.rest.repos.updateRelease({...scope,release_id:release.id,name:`${plugin.directory}${plugin.version}`,body,draft:false,prerelease:false,make_latest:isApi?'true':'false'});
+    await github.rest.repos.updateRelease({...scope,release_id:release.id,name:`${plugin.directory}${plugin.version}`,body:releaseBody,draft:false,prerelease:false,make_latest:isApi?'true':'false'});
     await verifyDownloads(release);
     core.info(`Published and verified ${plugin.tag}`);
     await core.summary.addHeading(`${plugin.directory}${plugin.version}`).addLink('Release',release.html_url).addRaw('\n').write();
@@ -62,13 +63,13 @@ export default async function publish({github,context,core}) {
   // Remove old DSH releases only after BOTH latest releases have verified assets.
   const oldReleases=await github.paginate(github.rest.repos.listReleases,{...scope,per_page:100});
   for(const release of oldReleases) {
-    if(!/^(?:api-switcher|top-directive|token-usage|dsh-control|repo-manager)-v\d+\.\d+\.\d+$/.test(release.tag_name)||kept.has(release.tag_name))continue;
+    if(!/^(?:api-switcher|top-directive|token-usage|dsh-control|repo-manager|storydeck)-v\d+\.\d+\.\d+$/.test(release.tag_name)||kept.has(release.tag_name))continue;
     await github.rest.repos.deleteRelease({...scope,release_id:release.id}); core.info(`Removed old release ${release.tag_name}`);
   }
   const tags=await github.paginate(github.rest.git.listMatchingRefs,{...scope,ref:'tags/'});
   for(const tag of tags) {
     const name=tag.ref.slice('refs/tags/'.length);
-    if(!/^(?:api-switcher|top-directive|token-usage|dsh-control|repo-manager)-v\d+\.\d+\.\d+$/.test(name)||kept.has(name))continue;
+    if(!/^(?:api-switcher|top-directive|token-usage|dsh-control|repo-manager|storydeck)-v\d+\.\d+\.\d+$/.test(name)||kept.has(name))continue;
     await github.rest.git.deleteRef({...scope,ref:`tags/${name}`}); core.info(`Removed old version tag ${name}`);
   }
 }

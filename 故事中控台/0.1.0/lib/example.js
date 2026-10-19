@@ -1,0 +1,19 @@
+export const exampleBook = {
+  id:'cultivation-demo',title:'修真世界示例（可修改后另存）',
+  fields:[
+    {key:'realm',label:'主角境界',type:'enum',values:['炼气','筑基','金丹','元婴']},
+    {key:'location',label:'当前地点',type:'string'},
+    {key:'skills',label:'已学能力',type:'tags'}
+  ],
+  initialState:{realm:'炼气',location:'青云宗',skills:[]},
+  entries:[
+    {id:'realm-order',title:'境界顺序',body:'境界依次为炼气、筑基、金丹、元婴。境界变化必须由实际发生的突破或跌境事件支持。',visibility:'public',always:true,tags:['境界','规则'],when:{}},
+    {id:'qi',title:'炼气阶段',body:'炼气修士引气入体，灵力有限，不能凭空施展筑基阶段能力。',visibility:'public',always:false,tags:['炼气','灵力'],when:{all:[{field:'realm',op:'eq',value:'炼气'}]}},
+    {id:'foundation',title:'筑基阶段',body:'筑基后灵力根基稳定，可以学习御剑术；达到筑基不代表已经学会御剑术。',visibility:'public',always:false,tags:['筑基','突破'],when:{all:[{field:'realm',op:'eq',value:'筑基'}]}},
+    {id:'flight',title:'御剑术',body:'主角确实学会御剑术后才能使用；跌境后本例禁止御剑，但学习记录保留。',visibility:'public',always:false,tags:['御剑','飞行'],when:{all:[{field:'realm',op:'gte',value:'筑基'},{field:'skills',op:'contains',value:'御剑术'}]}},
+    {id:'sect',title:'青云宗',body:'青云宗有外门、内门与丹堂。本场在宗门时可参考宗门场景。',visibility:'public',always:false,tags:['宗门','青云宗'],when:{all:[{field:'location',op:'eq',value:'青云宗'}]}},
+    {id:'golden-core',title:'金丹详细规则',body:'本示例的金丹细节只在主角当前境界为金丹时提供。',visibility:'public',always:false,tags:['金丹'],when:{all:[{field:'realm',op:'eq',value:'金丹'}]}},
+    {id:'letter',title:'主角发现的密信',body:'密信证明失踪弟子最后去过后山。仅在剧情确认主角读过密信后可提供。',visibility:'known',always:false,tags:['密信','后山'],when:{}},
+    {id:'secret',title:'作者隐藏身份',body:'此内容只在作者编辑界面可见，模型检索工具永不返回。',visibility:'author',always:false,tags:['伏笔'],when:{}}
+  ]
+};

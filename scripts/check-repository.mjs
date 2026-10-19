@@ -7,12 +7,12 @@ export const root=resolve(import.meta.dirname,'..');
 const hash=data=>createHash('sha256').update(data).digest('hex');
 const json=file=>JSON.parse(readFileSync(file,'utf8'));
 export function plugins() {
-  return ['Api-Switcher插件','最高指令插件','Token用量插件','DSH控制桥插件','仓库插件管理器'].map(directory=> {
+  return ['Api-Switcher插件','最高指令插件','Token用量插件','DSH控制桥插件','仓库插件管理器','故事中控台'].map(directory=> {
     const versions=readdirSync(join(root,directory)).filter(name=>/^\d+\.\d+\.\d+$/.test(name));
     assert.equal(versions.length,1,`${directory}: only latest source may remain`);
     const version=versions[0], path=join(root,directory,version), pkg=json(join(path,'package.json'));
     assert.equal(pkg.version,version);
-    return {directory,version,path,pkg,tag:`${directory==='Api-Switcher插件'?'api-switcher':directory==='Token用量插件'?'token-usage':directory==='DSH控制桥插件'?'dsh-control':directory==='仓库插件管理器'?'repo-manager':'top-directive'}-v${version}`,releaseDirectory:join(path,directory==='Api-Switcher插件'?'dist':'')};
+    return {directory,version,path,pkg,tag:`${directory==='Api-Switcher插件'?'api-switcher':directory==='Token用量插件'?'token-usage':directory==='DSH控制桥插件'?'dsh-control':directory==='仓库插件管理器'?'repo-manager':directory==='故事中控台'?'storydeck':'top-directive'}-v${version}`,releaseDirectory:join(path,directory==='Api-Switcher插件'?'dist':'')};
   });
 }
 function walk(path,prefix='') {
