@@ -1,3 +1,5 @@
+> 上游设计参考：本文记录 dsh-usage-statistics-panel 0.3.2 的统计实现。本定制版的界面调整见[使用说明](../README.md)。
+
 # 设计说明
 
 DSH Usage Statistics Panel 复刻 reasonix 的用量统计功能（PR #7238 / #7503），按 DeepSeek Harness 的插件规范实现：Host 半（Node）负责采集与聚合，Client 半（浏览器）负责渲染（插件页内的独立页面，以及一个同名主面板），两者通过插件自有的 fenced HTTP 路由通信。

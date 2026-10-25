@@ -1,35 +1,26 @@
-# DSH插件
+# DSH 插件
 
-DSH桌面插件集合。每个项目只保留当前最新版的源码和安装包。
+为 DSH 桌面提供模型管理、全局提示词、用量统计、外部控制和世界书功能。
 
-| 插件 | 当前版本 | 功能 | 下载与安装 |
-|---|---|---|---|
-| [最高指令插件](最高指令插件/README.md) | 1.1.2 | 全局初始提示词，多行输入、即时开关、原文保存 | [安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/top-directive-v1.1.2) · [安装指南](最高指令插件/1.1.2/docs/INSTALLATION.md) |
-| [Api-Switcher插件](Api-Switcher插件/README.md) | 2.3.0 | 多供应商管理、模型选择、搜索和连接测试 | [安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/api-switcher-v2.3.0) · [安装指南](Api-Switcher插件/2.3.0/docs/INSTALLATION.md) |
+| 插件 | 版本 | 功能 | 安装包 |
+| --- | --- | --- | --- |
+| [api-switcher](Api-Switcher插件/2.3.0/README.md) | 2.3.0 | 管理 API 供应商，在会话中搜索和切换模型，配置思考参数 | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/api-switcher-v2.3.0) |
+| [最高指令](最高指令插件/1.1.2/README.md) | 1.1.2 | 编辑全局系统提示词，保存原文，随时启停 | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/top-directive-v1.1.2) |
+| [使用统计·大肥鱼定制版](Token用量插件/1.0.0/README.md) | 1.0.0 | 查看 Token 用量、活跃热力图、模型与供应商占比 | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/token-usage-v1.0.0) |
+| [DSH Control Bridge](DSH控制桥插件/1.0.0/README.md) | 1.0.0 | 通过宿主接口和 DOM 控件树管理 DSH | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/dsh-control-v1.0.0) |
+| [鲸鱼娘插件仓库](仓库插件管理器/1.1.2/README.md) | 1.1.2 | 在 DSH 内安装、更新和管理本仓库插件 | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/repo-manager-v1.1.2) |
+| [故事中控台 StoryDeck](故事中控台/0.2.0/README.md) | 0.2.0 | 导入世界书，按对话选择条目，记录剧情状态和事件 | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/storydeck-v0.2.0) |
 
-| [使用统计定制版](Token用量插件/README.md) | 1.0.0 | 保留历史数据、方块热力图、纯柱状趋势、左侧入口 | [安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/token-usage-v1.0.0) · [说明](Token用量插件/1.0.0/README.md) |
-| [DSH控制桥插件](DSH控制桥插件/README.md) | 1.0.0 | 宿主API、动态Remote接口、DOM控件树，配合Codex端无截图操控 | [安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/dsh-control-v1.0.0) · [说明](DSH控制桥插件/1.0.0/README.md) |
+## 安装
 
-| [鲸鱼娘插件仓库](仓库插件管理器/README.md) | 1.1.2 | 左上角入口，管理与更新本仓库插件 | [安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/repo-manager-v1.1.2) · [说明](仓库插件管理器/1.1.2/README.md) |
+在插件对应的 Release 下载预构建 TGZ，通过 DSH 插件管理添加。Windows 用户也可下载 ZIP，解压后按包内说明安装；最高指令提供单独的 PowerShell 安装器。安装器需要关闭 DSH 时，先完成正在运行的任务。
 
-| [故事中控台](故事中控台/README.md) | 0.2.0 | 输入框内多世界书与条目开关，RikkaHub原生格式、当前对话独立状态 | [安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/storydeck-v0.2.0) · [说明](故事中控台/0.2.0/README.md) |
+各插件的 README 包含使用方法、配置位置和开发入口。Release 附带 SHA-256 清单。
 
-## 目录
+## 源码与配套工具
 
-```text
-DSH-Plugins/
-├─ 最高指令插件/1.1.2/
-└─ Api-Switcher插件/2.3.0/
-```
+每个插件按“项目/版本”存放，版本目录包含独立项目源码。默认分支提供当前版本，历史变更可通过 Git 提交查看。
 
-点击项目名称查看功能图文、使用说明和开发文档。最高指令安装文件位于其版本目录；Api-Switcher安装文件位于其版本目录的`dist/`。也可从上表的Release入口下载。
+DSH Control Bridge 的 Codex 端配套插件位于 [Codex-Plugins](https://github.com/ccl4-56-23-5/Codex-Plugins)。
 
-Codex控制DSH的插件单独保存在[Codex-Plugins](https://github.com/ccl4-56-23-5/Codex-Plugins)。
-
-## 版本与验证
-
-默认分支和Release仅保留各插件最新版；Git提交历史用于追溯。版本更新时替换本项目版本目录，更新文档、下载链接与SHA-256，保留其他项目。
-
-本次仓库整理核对目录、安装包和源文件哈希；实际运行验收范围分别见[最高指令验证记录](最高指令插件/1.1.2/docs/VALIDATION.md)和[Api-Switcher验证记录](Api-Switcher插件/2.3.0/docs/VALIDATION.md)。
-
-[MIT许可](LICENSE)。第三方素材与依赖的许可见各项目声明。
+代码采用 [MIT 许可](LICENSE)。使用统计基于 [HaoyueQin/dsh-usage-statistics-panel](https://github.com/HaoyueQin/dsh-usage-statistics-panel) 定制，依赖与素材来源见各项目的第三方声明。

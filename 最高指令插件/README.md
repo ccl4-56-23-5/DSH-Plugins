@@ -1,15 +1,13 @@
-# 最高指令插件
+# 最高指令
 
-<p align="center"><img src="1.1.2/lib/assets/logo.png" width="192" alt="最高指令透明logo"></p>
+<p align="center"><img src="1.1.2/lib/assets/logo.png" width="192" alt="最高指令 logo"></p>
 
-当前版本：**1.1.2**；DSH内部包名：`dsh-top-directive`。
+在 DSH 插件页编辑全局系统提示词。支持多行输入、Ctrl+Enter 保存和即时启停，原样保存换行、花括号与空白；正文上限 32 KiB。
 
-在DSH插件页编辑全局初始提示词，支持多行输入、Ctrl+Enter保存、即时开关和原文热更新。正文在DSH身份段之前进入system消息，保留换行、花括号和空白，上限32KiB。
+当前版本 **1.1.2**，包名 `dsh-top-directive`。
 
-[下载最新版](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/top-directive-v1.1.2) · [功能说明](1.1.2/README.md) · [安装指南](1.1.2/docs/INSTALLATION.md) · [使用指南](1.1.2/docs/USER_GUIDE.md) · [验证记录](1.1.2/docs/VALIDATION.md)
+[下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/top-directive-v1.1.2) · [功能说明](1.1.2/README.md) · [安装](1.1.2/docs/INSTALLATION.md) · [使用指南](1.1.2/docs/USER_GUIDE.md)
 
-![最高指令设置页演示](1.1.2/docs/screenshots/top-directive-panel.jpg)
+![最高指令设置页示例](1.1.2/docs/screenshots/top-directive-panel.jpg)
 
-图片来自1.1.1真实前端组件与隔离示例数据；实际模型验收及适用范围见验证记录。
-
-最新版完整源码与安装文件位于`1.1.2/`。如需从Codex控制DSH，请另行安装[Codex-DSH插件](https://github.com/ccl4-56-23-5/Codex-Plugins)。
+截图使用 1.1.1 前端组件和示例正文。

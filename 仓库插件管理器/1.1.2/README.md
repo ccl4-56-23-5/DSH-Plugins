@@ -1,35 +1,47 @@
-# 鲸鱼娘插件仓库 1.1.2
+# 鲸鱼娘插件仓库
 
-管理 [ccl4-56-23-5/DSH-Plugins](https://github.com/ccl4-56-23-5/DSH-Plugins) 的 DSH 插件。入口位于左上角“使用统计”下方。
+在 DSH 中管理 [DSH-Plugins](https://github.com/ccl4-56-23-5/DSH-Plugins) 的插件。入口位于左上角“使用统计”下方，当前版本 **1.1.2**。
 
-## 本版修复
+## 功能
 
-- 从下方卡片点击更新后，自动将确认框滚入可视区域并聚焦确认按钮；取消后返回原按钮。避免确认框留在页面顶部，让更新看起来没有响应。
+- 用卡片查看本仓库 6 个插件的名称、图标、说明和版本。
+- 安装、更新和停用插件，保留已有配置与停用状态。
+- 检测宿主入口与安装版本，显示运行状态。
+- 先显示本地缓存，再从 GitHub 刷新目录；断网时继续查看缓存。
+- 展示最近操作、完整诊断与安装结果。
 
-- 安装返回后重新读取宿主版本和本地安装源的 SHA-256，确认目标包后才显示完成。未能确认的结果显示“待核对”，不会自动重复安装。
-- 自更新或热重载中断回执时，对照目标版本和源包哈希恢复结果；旧实例退出后不再写入过时回执。保留操作历史。
-- 操作区分进行中、完成、失败、待核对；提取完整日志中的 ENOENT 等根因，并可展开诊断，不再只展示下载进度前400字符。
-- 安装前检查已安装插件的绝对本地源文件；缺失时指出插件及路径，在调用包管理器前停止。源包缓存位于 DSH_HOME/repo-manager，请保留当前安装依赖的包。
-- 6张内置卡片与6种原版图标，补齐故事中控台的名称、说明和图标。
-
-缓存优先展示，后台核对 GitHub；断网保留列表。磁盘目录为 DSH_HOME/repo-manager/catalog-v1.json，浏览器快照只用于显示，不作为安装依据。空/坏缓存、并发刷新和错误保留均有检查。
+目录缓存保存在 `$DSH_HOME/repo-manager/catalog-v1.json`，安装源包也保存在 `repo-manager` 目录。已安装插件可能依赖这些源包，请保留正在使用的文件。
 
 ## 安装与更新
 
-[下载 Release](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/repo-manager-v1.1.2)。Windows ZIP包含 TGZ、清单、SHA-256和本说明，无独立运行时依赖。
+首次安装：从 [Release](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/repo-manager-v1.1.2) 取得 TGZ，在 DSH 插件管理中添加。Windows ZIP 包含 TGZ、安装说明和 SHA-256 清单。
 
-已安装用户在仓库中“检测状态与更新”，找到本卡片点击“更新插件”，再点“确认执行”。提交后等待最近操作结果；下载、DSH安装和读回验证各需时间。首次安装可在 DSH 原生插件页添加 Release TGZ 地址。
+更新插件：打开仓库，点击“检测状态与更新”，找到插件卡片，选择“更新插件”并确认。确认框会滚入当前视口；操作区依次显示下载、安装与结果核对。
 
-如提示本地安装源不存在，检查完整路径并恢复安装包或通过宿主重新安装相关插件。不要仅删除依赖清单/锁文件。失败、待核对、需重启和配置覆盖分别显示。宿主要求重启时由用户安排，不自动中断会话。
+安装完成后，管理器读取宿主版本和本地源包哈希。结果暂时无法核实时显示“待核对”，可查看操作记录和诊断。自更新导致页面重载后，管理器会根据目标版本与哈希恢复操作结果。
 
-## 运行状态与保护
+## 状态说明
 
-红灯表示宿主入口缺失或非active；黄灯表示运行正常但待更新；绿灯需要当前发布版本已核对且所有入口active；灰色表示未安装、停用或暂不能确认。安装完成与业务功能验收分别判断。
+| 状态 | 含义 |
+| --- | --- |
+| 绿色 | 已核对当前发布版本，所有宿主入口 active |
+| 黄色 | 运行正常，有可用更新 |
+| 红色 | 宿主入口缺失或处于非 active 状态 |
+| 灰色 | 未安装、已停用或状态尚未确认 |
 
-只访问本仓库正式Release；下载前重新核对版本，下载后验证大小、哈希、包身份与安装脚本。保留配置及原停用状态，不降级。控制桥和仓库自身的停用在宿主原生插件页管理。不会请求GitHub令牌或发送会话内容。
+下载来源为本仓库的正式 Release，安装前核对版本，下载后检查大小、哈希与包身份。宿主要求重启时，界面会提示安排重启。控制桥和仓库管理器自身的停用请在 DSH 原生插件页操作。
+
+## 故障处理
+
+提示本地安装源不存在时，按诊断中的路径恢复源包，或通过 DSH 重新安装对应插件。展开完整日志可查看 ENOENT 等错误的具体位置。
 
 ## 开发
 
-Node22及以上。运行 `node --test test/manager.test.mjs test/cache.test.mjs test/health.test.mjs test/operations.test.mjs`，构建 `node scripts/build-release.mjs`。客户端源为 src/client.js，构建注入透明图标生成 lib/client.js。
+要求 Node.js 22 或以上。客户端源文件为 `src/client.js`，构建时加入图标并生成 `lib/client.js`。
 
-[验证范围](VALIDATION.md)。设计参考 [dsh-market](https://github.com/dsh-market/dsh-market)，实现独立。
+```sh
+node --test test/manager.test.mjs test/cache.test.mjs test/health.test.mjs test/operations.test.mjs
+node scripts/build-release.mjs
+```
+
+[验证记录](VALIDATION.md)。界面设计参考 [dsh-market](https://github.com/dsh-market/dsh-market)。

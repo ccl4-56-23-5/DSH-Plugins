@@ -1,10 +1,10 @@
 # 贡献指南
 
-1. 说明具体问题和期望行为；涉及界面时提供脱敏复现步骤。
-2. 以最新版本源码开发，保留旧发行目录用于回滚。内部包名`dsh-api-switcher`与数据迁移必须保持兼容。
-3. 运行`node scripts/run-tests.mjs`和`node scripts/check-project.mjs`。模型请求、凭据写入、并发、网络或插槽改动需要相应行为验证；纯文档或素材调整无需增加镜像测试。
-4. 使用`node scripts/build-release.mjs`验证可打包性。需要Windows发行时运行`Build-Release.ps1`。
-5. 界面或插槽变化应验证真实DSH桌面。供应商响应测试须明确授权与费用；不要将离线测试写成实际模型响应验证。
-6. 提交前排除凭据、本机profile、聊天、日志与备份。第三方代码和素材必须记录来源及许可。
+1. 描述具体问题、复现步骤与期望行为，界面问题可附脱敏截图。
+2. 基于当前版本修改，保持包名 `dsh-api-switcher` 和已有配置格式兼容。
+3. 运行 `node scripts/run-tests.mjs` 和 `node scripts/check-project.mjs`。请求、凭据、并发、网络或插槽变化应附相应行为验证。
+4. 运行 `node scripts/build-release.mjs` 检查打包；Windows 发行使用 `Build-Release.ps1`。
+5. 界面改动在 DSH 中检查，供应商请求测试记录协议、模型与结果；收费测试需事先获得授权。
+6. 提交前去除密钥、profile、聊天记录、运行日志和部署备份，第三方代码与素材注明来源和许可。
 
-使用语义化版本：兼容修复、文档与素材为patch；新增兼容功能为minor；不兼容接口或数据迁移为major。PR说明应写明触发问题、修改后行为、验证范围和剩余限制。
+代码版本使用语义化版本：兼容修复为 patch，兼容新增功能为 minor，不兼容变更为 major。PR 说明写清问题、修改后行为和验证结果。

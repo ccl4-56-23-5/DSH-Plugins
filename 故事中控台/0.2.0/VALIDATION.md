@@ -5,6 +5,6 @@
 - 已安装DSH的真实Cordis/defineTool/systemPrompt隔离运行：父包挂载、工具读取与提交、状态快照按会话生效、隐藏条目筛除、卸载清理。
 - 打包：256px/512px透明PNG和母版哈希、TGZ源文件哈希与ZIP校验、独立运行时依赖0。
 
-RikkaHub依据2026-10-19官方master原生Lorebook/ExportData。position/role/depth/scanDepth保留用于往返，不模拟原消息注入顺序；关键词用本轮query，正则为Node方言。工具和界面检查不构成模型长期小说写作正确性的证明。
+RikkaHub依据2026-10-19官方master原生Lorebook/ExportData。position/role/depth/scanDepth保留用于往返，不模拟原消息注入顺序；关键词用本轮query，正则为Node方言。长期写作测试待补充。
 
 远端发布与实际桌面更新的最终证据见交付记录。

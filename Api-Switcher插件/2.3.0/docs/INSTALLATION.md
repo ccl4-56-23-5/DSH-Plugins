@@ -2,7 +2,7 @@
 
 ## 环境
 
-已在Windows桌面DSH、其0.2.0-rc.2服务包和Node24.21.0上完成验证。源码要求Node≥20。其他DSH版本、Windows路径和profile需要按本说明核对；macOS/Linux安装未验证，Windows安装器不支持它们。
+已在Windows桌面DSH、其0.2.0-rc.2服务包和Node24.21.0上完成验证。源码要求Node≥20。安装器适用于 Windows，路径与 profile 可通过参数指定。
 
 Windows安装包包括TGZ、安装器、逐文件校验脚本、文档、logo与SHA256清单；不包含DSH程序、用户凭据或聊天数据。DSH须已经安装，且目标profile已经初始化。
 
@@ -17,7 +17,7 @@ Windows安装包包括TGZ、安装器、逐文件校验脚本、文档、logo与
 Get-FileHash -LiteralPath .\dsh-api-switcher-2.3.0-Windows.zip -Algorithm SHA256
 ```
 
-校验值只校验文件完整性；应从可信仓库下载程序和清单。
+程序与校验清单均从本项目 Release 下载。
 
 ## 自定义位置
 
@@ -36,7 +36,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Install-DSH.ps1 `
 
 ## 手动导入
 
-可在DSH插件管理中导入`dsh-api-switcher-2.3.0.tgz`。这是插件运行包，不是完整源码。使用DSH管理器安装时，备份、重启和依赖策略由管理器行为决定；本项目Windows安装器的验证记录不自动适用于该操作。
+可在DSH插件管理中导入`dsh-api-switcher-2.3.0.tgz`。导入后按 DSH 管理器提示完成安装与重启。
 
 ## 升级与备份
 
@@ -44,7 +44,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Install-DSH.ps1 `
 
 安装器在`%USERPROFILE%\.dsh\api-switcher\deployment-backups\<时间戳>`备份profile的`package.json`、lockfile、Cordis配置与工作区策略，以及当时的插件元数据。它记录凭据文件和最高优先级提示词配置的哈希，安装后检查一致性，但不复制这些敏感文件进发行包。
 
-若离线pnpm缓存缺少原profile已有的依赖，安装可能失败。安装器会尝试恢复原profile并给出备份位置；先检查错误，不要移除原锁文件或清空缓存来绕过问题。
+若离线pnpm缓存缺少原profile已有的依赖，安装可能失败。安装器会尝试恢复原profile并给出备份位置；按错误信息补齐原 profile 所需的依赖后重试。
 
 ## 回滚
 

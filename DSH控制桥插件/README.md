@@ -1,7 +1,7 @@
-# DSH控制桥插件
+# DSH Control Bridge
 
-当前版本：[1.0.0](1.0.0/README.md)。
+通过 DSH 宿主接口与 DOM 控件树管理会话、模型、工作区、插件和设置，供 Codex 等外部客户端使用。
 
-[DSH端安装包](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/dsh-control-v1.0.0) · [Codex端配套插件](https://github.com/ccl4-56-23-5/Codex-Plugins) · [验证范围](1.0.0/VALIDATION.md)
+当前版本 **1.0.0**。
 
-通过宿主API、动态Remote接口和DOM控件树操作DSH，不使用截图识别。41个MCP工具，支持持久化去重及带游标的流式会话。主机实际扩展能力以接口发现结果为准。
+[使用说明](1.0.0/README.md) · [DSH 端下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/dsh-control-v1.0.0) · [Codex 端配套插件](https://github.com/ccl4-56-23-5/Codex-Plugins)

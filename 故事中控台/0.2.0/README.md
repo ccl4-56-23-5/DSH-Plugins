@@ -11,13 +11,13 @@
 3. 回到“启用世界书”，勾选多本书，展开每本书选择条目，点击“应用到当前对话”。
 4. 检索预览查看当前对话能读取的资料；剧情状态查看、手动纠正或撤回事件。DSH 可以自动提交已发生的状态变化。
 
-使用 conversation.input.right 会话插槽，紧邻模型选择左侧。不注册主列表或侧栏入口。原生模态弹窗支持 Escape、焦点返回、窄屏滚动。关闭时放弃未应用的勾选。
+入口紧邻模型选择左侧。弹窗支持 Escape 关闭、焦点返回和窄屏滚动，关闭时放弃未应用的勾选。
 
 ## 对话范围
 
 书库在本机共用；世界书勾选、条目勾选、剧情状态与事件记录按真实 sessionId 独立保存。新对话默认全部关闭；清空并应用后保持关闭。取消书后再启用保留该对话自己的剧情状态。最多同时20本。
 
-条目开关是当前对话的覆盖设置，不修改原始 enabled。其他对话可以选择不同的书和条目。同名条目通过 bookId 区分。工具从真实调用身份确定对话，不能自行选择别的对话。
+条目开关是当前对话的覆盖设置，不修改原始 enabled。其他对话可以选择不同的书和条目。同名条目通过 bookId 区分。工具按调用所属对话读取数据。
 
 ## RikkaHub 格式
 
@@ -31,13 +31,13 @@
 
 常驻、关键词、大小写、正则与条目优先级参与筛选；同一本书内优先级高的先返回，多书按选择顺序分配共享预算。关键词/正则匹配 storydeck_context 本次 query，提示模型带上当前场景关键词。
 
-格式兼容不等于重现 RikkaHub 聊天注入管线：position、role、injectDepth、scanDepth 保留并随原格式导出，DSH 不据此重排消息或扫描历史。正则为 Node JavaScript 方言，不支持的 Kotlin/JVM 表达式明确报错；有时限的独立 Worker 防止拖住宿主。SillyTavern 映射格式不属于本版原生适配范围。
+position、role、injectDepth 和 scanDepth 随原格式保存与导出；检索使用本轮 query。正则按 Node.js 语法运行，并设独立 Worker 时限，Kotlin/JVM 特有表达式会返回错误。当前支持 RikkaHub 原生格式与 StoryDeck 格式。
 
 ## 状态与事件
 
 StoryDeck 格式包含 id/title/fields/initialState/entries，参考[示例](lib/example.js)。字段支持 enum/string/number/boolean/tags。条目 visibility 为 public/known/author；when.all/any 支持 eq/ne/in/contains/gte/lte，不执行脚本。
 
-检索先检查当前对话书与条目开关、作者隐藏、角色认知、状态条件，再做触发/相关度排序和共享预算。author 永不返回，known 需要剧情 knownIds，always 不绕过门槛。默认最多8条、12000字符，工具最多20条；正文整体装入。单书4MiB、3000条，单条正文16000字符。没有向量检索。
+检索先检查当前对话书与条目开关、作者隐藏、角色认知、状态条件，再做触发/相关度排序和共享预算。author 永不返回，known 需要剧情 knownIds，always 不绕过门槛。默认最多8条、12000字符，工具最多20条；正文整体装入。单书4MiB、3000条，单条正文16000字符。检索使用关键词、正则和状态条件。
 
 storydeck_commit 需要最新 revision、expectedStateRevision、certainty=confirmed、summary、source、patch；多书启用时必须指定已启用的 bookId。模型可自动提交，插件验证结构、字段、版本和幂等性；事件真实性仍由模型报告。可依次撤回最新事件。已用于剧情的世界书不可覆盖，修改请另存新ID。
 
@@ -45,8 +45,8 @@ storydeck_commit 需要最新 revision、expectedStateRevision、certainty=confi
 
 继续使用 `$DSH_HOME/storydeck/worldbook-v1.json`，默认 `~/.dsh/storydeck/worldbook-v1.json`。内部升级 schema2，保留旧书和事件；旧版各会话关联迁移为独立剧情，原先共享的剧情也不再共享状态。首次成功写入前保留字节相同的 .schema1-backup。损坏数据不重置；写锁、原子替换和版本校验保护并发更新。
 
-本插件筛选不能抹除聊天旧内容或模型已有知识。作者界面可以查看完整书库。发布不包含用户世界书或运行数据。更新不主动中断正在运行的任务，宿主要求重启时等待用户安排。
+条目筛选作用于本轮工具返回；作者界面可查看完整书库。聊天中的既有内容仍保留在对话上下文中。
 
 ## 验证
 
-运行 `node --test test/worldbook.test.mjs test/rikka.test.mjs`。实际验收范围见 [VALIDATION](VALIDATION.md)。
+运行 `node --test test/worldbook.test.mjs test/rikka.test.mjs`。测试环境与结果见 [验证记录](VALIDATION.md)。

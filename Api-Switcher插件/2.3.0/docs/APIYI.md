@@ -2,7 +2,7 @@
 
 ## 基础设置
 
-API易的默认来源ID为`apiyi`，使用OpenAI Chat Completions协议和`https://api.apiyi.com/v1`。填写自己的Key，勾选要显示的模型，开启供应商并保存；不必把Key发送到聊天或写入源码。
+API易的默认来源ID为`apiyi`，使用OpenAI Chat Completions协议和`https://api.apiyi.com/v1`。填写自己的Key，勾选要显示的模型，开启供应商并保存。
 
 这是按[官方快速开始](https://docs.apiyi.com/getting-started)于2026-10-09核对的地址规则：
 
@@ -21,7 +21,7 @@ API易的默认来源ID为`apiyi`，使用OpenAI Chat Completions协议和`https
 
 随包目录来自[API易公开模型注册表](https://docs.apiyi.com/model-registry.json)，保留2026-10-09核对的233个支持Chat Completions的文本模型。原始目录来源和时间保存在`lib/assets/apiyi-catalog.json`；该快照不是实时自动更新目录。
 
-保存Key后可通过“同步模型”查询账户可用目录；也可手动添加供应商文档确认的模型ID。公开目录、账户权限、模型是否临时可用、接口支持和参数限制是不同事项，不能只因在列表中出现就认为请求一定成功。
+保存Key后可通过“同步模型”查询账户可用目录；也可手动添加供应商文档确认的模型ID。可用模型及参数取决于当前账户权限和供应商接口，连接错误可按返回信息排查。
 
 ## 网站图标
 

@@ -1,9 +1,13 @@
-# 品牌资产
+# 图标与品牌资产
 
-最高指令使用蓝青渐变的皇冠指令文档作为主符号，右下角为与Api-Switcher一致的“大肥鱼”角色。蓝发、蓝眼、白色褶边头饰、右侧蓝蝴蝶结、笑脸和两只小手沿用参考身份；保留明显可见的比例与透明背景，不添加衬底色块。
+主符号为蓝青渐变的皇冠文档，右下角沿用 api-switcher 的蓝发鲸鱼娘，背景透明。
 
-`assets/logo-master.png`为透明母版；`lib/assets/logo.png`为512×512设置面板logo；`lib/assets/icon.png`为256×256RGBA插件图标，低于256KiB，并通过package.json.icon声明。运行图片由同源`top-directive/api/brand`返回。
+| 文件 | 用途 |
+| --- | --- |
+| `assets/logo-master.png` | 透明母版 |
+| `lib/assets/logo.png` | 512 × 512，设置面板 |
+| `lib/assets/icon.png` | 256 × 256 RGBA，插件图标，小于 256 KiB |
 
-使用Codex内置imagegen，以Api-Switcher当前logo为角色与风格参考生成；导出只做Lanczos高质量尺寸缩放。完整生成提示、参考SHA-256和三份资产哈希见`assets/branding.json`。提示摘要：皇冠文档主符号，右下角同款“大肥鱼”，保持蓝发蓝眼、头饰、蝴蝶结、笑脸和双手，透明背景，无文字、外框或衬底。
+图片由 imagegen 生成，使用 Lanczos 缩放导出。插件图标通过 `package.json.icon` 声明，设置图片由同源 `top-directive/api/brand` 返回。
 
-角色来源沿用Api-Switcher用户提供的拟人形象；[第三方声明](../THIRD_PARTY_NOTICES.md)说明权利范围。
+生成提示、参考文件与资产哈希见 `assets/branding.json`，角色来源见 [第三方声明](../THIRD_PARTY_NOTICES.md)。

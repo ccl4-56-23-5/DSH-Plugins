@@ -21,4 +21,4 @@
 
 ![最高指令设置页演示](screenshots/top-directive-panel.jpg)
 
-图中使用1.1.1真实React组件与隔离的示例正文；外围标题和背景为文档预览容器。该图没有连接DSH、保存用户配置或调用模型。实际桌面与模型验收见[验证记录](VALIDATION.md)。
+图中使用 1.1.1 React 组件与示例正文，外围为文档预览容器。测试环境和结果见[验证记录](VALIDATION.md)。

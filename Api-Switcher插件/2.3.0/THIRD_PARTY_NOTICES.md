@@ -1,19 +1,19 @@
-# 第三方与素材声明
+# 第三方与素材来源
 
-## DSH插槽测试快照
+## DSH 插槽测试快照
 
-`test/fixtures/slot-core.js`来自`@deepseek-ai/dsh-client-ui-slots@0.2.0-rc.2`的公开SlotCore实现，用于离线验证注册、优先级和卸载；不进入插件npm运行包。原版权为Copyright(c)2026 DeepSeek，采用MIT许可，完整文本保存在`test/fixtures/LICENSE`。
+`test/fixtures/slot-core.js` 来自 `@deepseek-ai/dsh-client-ui-slots@0.2.0-rc.2`，用于离线测试注册、优先级和卸载。版权为 Copyright (c) 2026 DeepSeek，MIT 许可文本位于 `test/fixtures/LICENSE`。
 
-官方源码：[deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness)，对应`packages/client/ui-slots`。DSH运行服务由宿主提供，项目未重新打包宿主或React。
+源码：[deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) 的 `packages/client/ui-slots`。DSH 服务、React 和 ReactDOM 在运行时由宿主提供。
 
-## logo与角色参考
+## 图标与角色
 
-切换符号为本项目A方案蓝青色S形双箭头。角色依据用户提供的网络DeepSeek拟人形象，经图像生成工具重绘并合成到透明logo中；用户给定参考链接为[百度图片原图](https://tiebapic.baidu.com/forum/pic/item/e2d07432c895d1431cbe792035f082025baf0766.jpg)。原画作者与原画许可未由该链接确认，原始参考JPG不收入发行包。
+蓝青色双箭头由本项目设计，角色基于提供的 [参考图片](https://tiebapic.baidu.com/forum/pic/item/e2d07432c895d1431cbe792035f082025baf0766.jpg)，经 imagegen 重绘并导出透明图标。生成信息和哈希见 [图标资产](docs/BRANDING.md)。
 
-生成资产不包含白底，导出过程只做常规尺寸缩放。生成日期、要求、文件哈希见[品牌资产文档](docs/BRANDING.md)。代码MIT许可不声明转让第三方角色、商标或参考原画权利，也不构成原作者的商业授权。
+参考图片的原作者与许可尚未确认，第三方角色和商标权利归各自权利人，代码的 MIT 许可适用于本项目代码与原创文档。
 
-## API易目录与供应商图标
+## 模型目录与供应商标识
 
-API易预置目录根据其[公开模型注册表](https://docs.apiyi.com/model-registry.json)筛选文本Chat Completions模型；来源和核对时间保存在`lib/assets/apiyi-catalog.json`。目录不保证用户Key的模型权限或持续可用性。
+API 易目录来源于其 [公开注册表](https://docs.apiyi.com/model-registry.json)，快照日期记录在 `lib/assets/apiyi-catalog.json`。账户可用模型以供应商实际接口返回为准。
 
-供应商图标运行时从用户配置的网站获取，不随本仓库预置第三方图标文件。供应商名称、标识与模型名称归各自权利人所有。本项目与上述组织没有隶属关系。
+供应商图标在运行时从用户配置的网站获取，名称与标识归各自权利人所有。
