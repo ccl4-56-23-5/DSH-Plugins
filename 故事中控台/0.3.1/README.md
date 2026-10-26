@@ -1,10 +1,10 @@
-# 故事中控台 StoryDeck 0.3.0
+# 故事中控台 StoryDeck 0.3.1
 
 世界书保存设定，插件保存每个对话的剧情状态，并决定本轮可以读取哪些条目。
 
 ## 安装与使用
 
-从 [Release](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/storydeck-v0.3.0) 下载 Windows ZIP 或 TGZ，也可在鲸鱼娘插件仓库更新。
+从 [Release](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/storydeck-v0.3.1) 下载 Windows ZIP 或 TGZ，也可在鲸鱼娘插件仓库更新。
 
 1. 打开 DSH 对话，点击右上角抓绳的鲸鱼娘。
 2. 在“导入与导出”选择一个或多个 JSON 文件，也可粘贴 JSON。支持 RikkaHub 原生格式和 StoryDeck；修真示例可直接载入后导入。
@@ -50,3 +50,7 @@ storydeck_commit 需要最新 revision、expectedStateRevision、certainty=confi
 ## 验证
 
 运行 `node --test test/worldbook.test.mjs test/rikka.test.mjs`。测试环境与结果见 [验证记录](VALIDATION.md)。
+
+## 0.3.1 美术修复
+
+重画左右肩膀至手腕的完整连接：左臂横过胸前握住下方绳段，右臂上举握住上方绳段，两条手臂各自从对应肩膀出发。握持段与手指在同一张透明PNG中绘制，上方绳段单独连接；保留35px宽度、灰蓝配色和轻摆。
