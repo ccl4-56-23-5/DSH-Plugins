@@ -9,7 +9,7 @@
 | [使用统计·大肥鱼定制版](Token用量插件/1.0.0/README.md) | 1.0.0 | 查看 Token 用量、活跃热力图、模型与供应商占比 | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/token-usage-v1.0.0) |
 | [DSH Control Bridge](DSH控制桥插件/1.0.0/README.md) | 1.0.0 | 通过宿主接口和 DOM 控件树管理 DSH | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/dsh-control-v1.0.0) |
 | [鲸鱼娘插件仓库](仓库插件管理器/1.2.1/README.md) | 1.2.1 | 仅管理本仓库插件，发现、安装、更新与卸载 | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/repo-manager-v1.2.1) |
-| [故事中控台 StoryDeck](故事中控台/0.3.1/README.md) | 0.3.1 | 导入世界书，按对话选择条目，记录剧情状态和事件 | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/storydeck-v0.3.1) |
+| [故事中控台 StoryDeck](故事中控台/0.4.0/README.md) | 0.4.0 | 导入世界书，按对话选择条目，记录剧情状态和事件 | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/storydeck-v0.4.0) |
 
 ## 安装
 

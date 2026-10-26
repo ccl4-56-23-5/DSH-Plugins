@@ -11,10 +11,16 @@
     "reviewWidth": 105,
     "width": 35,
     "linearScale": 0.3333333333333333,
-    "areaScale": 0.1111111111111111,
-    "ropeDrop": 11.333333333333334,
+    "ropeDrop": 63.75,
     "swayDegrees": 1.6,
-    "periodSeconds": 5.8
+    "periodSeconds": 5.8,
+    "characterAreaScale": 0.1111111111111111,
+    "exposedRopeLength": 78.625,
+    "previousExposedRopeLength": 26.208333333333332,
+    "ropeLengthMultiplier": 3,
+    "horizontalDragging": true,
+    "positionPersistence": "browser localStorage, clamped relative horizontal position",
+    "worldbookSwitches": "immediate persistence, current conversation only"
   },
   "files": {
     "lib/assets/mascot.png": {

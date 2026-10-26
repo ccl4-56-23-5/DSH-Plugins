@@ -1,6 +1,6 @@
 {
   "name": "dsh-storydeck",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "故事中控台：世界书为底层，剧情状态驱动条目检索，支持自动状态事件与撤回。",
   "type": "module",
   "main": "lib/index.js",
@@ -50,6 +50,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/ccl4-56-23-5/DSH-Plugins.git",
-    "directory": "故事中控台/0.3.1"
+    "directory": "故事中控台/0.4.0"
   }
 }

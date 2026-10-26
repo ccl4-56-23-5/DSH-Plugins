@@ -1,27 +1,27 @@
 {
   "name": "dsh-storydeck",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "runtimeDependencies": 0,
   "files": {
-    "dsh-storydeck-0.3.1.tgz": {
-      "bytes": 2352209,
-      "sha256": "fce9fe38fff61da64e44fb920b26e2f17829cd1f3122fec389a52a9fcc7437ce"
+    "dsh-storydeck-0.4.0.tgz": {
+      "bytes": 2353623,
+      "sha256": "a00b7f4833fa8f2883dd90c9bb29f7d58c596f6bc02e6941e06d03812036ac1c"
     }
   },
   "packageFileSHA256": {
     "LICENSE": "5ca2920d4f56954100c8f365461aba7b6c6154da49734f7b2703d9275ad49d11",
-    "README.md": "965d768fc49051ecc8d437eccdedc8e34301f4d98ce8e158868b4a595853b0ad",
-    "VALIDATION.md": "8bd116a659bf702c3bddb0cf518bea5b2121e73c203766496bc7a10de25e9ebc",
+    "README.md": "70f6c19d0602c0c4ae66fb12aca80d68ddd96beaa44e2b85c14637b2ccc4747f",
+    "VALIDATION.md": "1734fa593ce15cbcada99292efd009f2c5107da32cbd42f3f2f17676f6cd4157",
     "cordis.patch.yml": "531569ccca08abb73420f2b425e7b47b7c4bf4af2200d0a12ec9ba70f3eeb8d3",
     "lib/assets/icon.png": "3a1e1c5e3794bf00e4aaf92913e25f17346d1e6c7d156f933b843cf211da6d67",
     "lib/assets/logo.png": "fba3d82be54be36ed9539453ec74492f7d42e1a9051efdd7a46072e123f84a24",
     "lib/assets/mascot.png": "a25e599688d99f0cf8f58180d9383686d3d015e03f5da725004d30f658c4edb6",
-    "lib/client.js": "7ec4b36efef2b7ea862935625408bd8863171d5e4b1f7c35eb9ee049abdb1575",
+    "lib/client.js": "0fde730b9febe3e561634a9ac0641479035be0372004a838d193a010b2741329",
     "lib/core.js": "adde23174ad9901dc59df4db39b3da03fe8239452623e84f8adfdaa1df1810a8",
     "lib/example.js": "8009701234df07391e98f25c43e88abddfb8dd178f1ebc2b413a4eabc15a8d64",
     "lib/index.js": "f4a89069f446e95c66e80595815f8d8ae0d271e060b63fb330cbb2dac3b37b86",
     "lib/rikka.js": "38b91842530ef439dd5c214fbbb7e7169dcd9a6cf94ac9087a827bc752ad6d3e",
     "lib/worldbook.js": "759ddb7d8cc10cf9539b0eef38d8ce85fc1ae044c81e87e1245a77849c2f62b3",
-    "package.json": "7019d43be4fe94e342859becc1e26f5017cebfaa60fee9f9fbba946372f7755e"
+    "package.json": "28722f94dfd83acf18118a82430e240a8cd42345eb4f45d8efb662462ca16da4"
   }
 }
