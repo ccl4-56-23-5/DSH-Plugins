@@ -31,6 +31,8 @@ export function literalTrigger(activation,query) {
 }
 // Untrusted regex never executes on the host event loop. One bounded worker
 // evaluates the entire request; timeout/invalid expressions fail visibly.
+// Worker startup has its own bounded wait: a slow Windows thread launch must
+// not consume the regex execution budget before any expression has run.
 export async function regexTriggers(books,query,timeout=500) {
   const jobs=books.flatMap(b=>b.entries.filter(e=>e.activation?.useRegex&&!e.activation.constantActive).map(e=>({key:b.id+':'+e.id,patterns:e.activation.keywords,flags:e.activation.caseSensitive?'':'i'})));
   if(!jobs.length)return {};
@@ -38,7 +40,8 @@ export async function regexTriggers(books,query,timeout=500) {
     const worker=new Worker(`const {parentPort,workerData}=require('node:worker_threads');try{const out={};for(const j of workerData.jobs)out[j.key]=j.patterns.some(p=>new RegExp(p,j.flags).test(workerData.query));parentPort.postMessage({out});}catch(e){parentPort.postMessage({error:'正则表达式不受支持：'+e.message});}`,{eval:true,workerData:{jobs,query},resourceLimits:{maxOldGenerationSizeMb:32}});
     let settled=false;
     const done=(error,value)=>{if(settled)return;settled=true;clearTimeout(timer);worker.terminate();error?reject(error):resolve(value);};
-    const timer=setTimeout(()=>done(new Error('世界书正则匹配超时；请停用或修改相关条目')),timeout);
+    let timer=setTimeout(()=>done(new Error('世界书正则工作进程启动超时；请稍后重试')),5000);
+    worker.once('online',()=>{if(settled)return;clearTimeout(timer);timer=setTimeout(()=>done(new Error('世界书正则匹配超时；请停用或修改相关条目')),timeout);});
     worker.on('message',m=>done(m.error?new Error(m.error):null,m.out));worker.on('error',e=>done(e));worker.on('exit',code=>{if(!settled)done(new Error('世界书正则工作进程退出：'+code));});
   });
 }
