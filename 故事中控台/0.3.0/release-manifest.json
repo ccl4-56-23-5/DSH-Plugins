@@ -1,26 +1,27 @@
 {
   "name": "dsh-storydeck",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "runtimeDependencies": 0,
   "files": {
-    "dsh-storydeck-0.2.0.tgz": {
-      "bytes": 741184,
-      "sha256": "8029228d64674a9762691c4495a8935652d1ea30fbd3c6c58d1a067ad3f94fce"
+    "dsh-storydeck-0.3.0.tgz": {
+      "bytes": 2301403,
+      "sha256": "4b883a30b58183fc63735178f5393a2aec8f1e7f53daee898a1351d0045f2745"
     }
   },
   "packageFileSHA256": {
     "LICENSE": "5ca2920d4f56954100c8f365461aba7b6c6154da49734f7b2703d9275ad49d11",
-    "README.md": "fd94d1140d533eb9e6c1d436a615ed99f5fd95792a3d59a566734a3e15d188c4",
-    "VALIDATION.md": "062670a104f44d1fcc17e8b7a342d58d8908cbb23e226fab8a9ad3d248899cb8",
+    "README.md": "f6b0a0efaf88084a7dfa4f815cf0783c8afc24237c59636dc2d228f07504eb13",
+    "VALIDATION.md": "108445d0b8fa7b4738a3f7334d4d5d2a6446b1f8e6cd5fa75f2c93f181d8042b",
     "cordis.patch.yml": "531569ccca08abb73420f2b425e7b47b7c4bf4af2200d0a12ec9ba70f3eeb8d3",
     "lib/assets/icon.png": "3a1e1c5e3794bf00e4aaf92913e25f17346d1e6c7d156f933b843cf211da6d67",
     "lib/assets/logo.png": "fba3d82be54be36ed9539453ec74492f7d42e1a9051efdd7a46072e123f84a24",
-    "lib/client.js": "1b2acd758da2d9c34944e38494718d033dc3fb8315e95e8a1b4228cdce803832",
+    "lib/assets/mascot.png": "d378efe76e08614ab94690bd3e8fe59e62e88b577ea8f3bd3c4fd1c5b2276332",
+    "lib/client.js": "3ac731bcfb868830fe8a6d239cc3d7ac4fa1981e31058c15e4579bbd0e1591d8",
     "lib/core.js": "adde23174ad9901dc59df4db39b3da03fe8239452623e84f8adfdaa1df1810a8",
     "lib/example.js": "8009701234df07391e98f25c43e88abddfb8dd178f1ebc2b413a4eabc15a8d64",
     "lib/index.js": "f4a89069f446e95c66e80595815f8d8ae0d271e060b63fb330cbb2dac3b37b86",
     "lib/rikka.js": "9d2e762ff5fcc6fd45ad999befe41376f4cc86b7fb18185508b59f26f0fce531",
-    "lib/worldbook.js": "861ab4f7d2efc8c6a627c65e12f280dc220f2ba8a58cd651f36e2df2f31f72ba",
-    "package.json": "58e33762bfd6c499aa6283c03586639ce3234d6ac37eddcc00b3d38597dcf3ac"
+    "lib/worldbook.js": "759ddb7d8cc10cf9539b0eef38d8ce85fc1ae044c81e87e1245a77849c2f62b3",
+    "package.json": "067fedce8c8684b16f3c400069ee56a03a9c16be1b0160844f0b71ac72bad377"
   }
 }

@@ -1,0 +1,29 @@
+{
+  "generator": "OpenAI built-in imagegen; native CSS rope and animation",
+  "reference": "dafeiyu-chibi-character-sheet.png, supplied by the character owner",
+  "referenceSHA256": "539548dbdf78a6488b9baca3af07521fe422c62bd8dee6e5664a1880754325b6",
+  "style": "two-head chibi, muted slate gray-blue, two hands gripping one rope",
+  "width": 1207,
+  "height": 1303,
+  "format": "RGBA PNG",
+  "spriteSHA256": "d378efe76e08614ab94690bd3e8fe59e62e88b577ea8f3bd3c4fd1c5b2276332",
+  "entry": {
+    "reviewWidth": 105,
+    "width": 35,
+    "linearScale": 0.3333333333333333,
+    "areaScale": 0.1111111111111111,
+    "ropeDrop": 11.333333333333334,
+    "swayDegrees": 1.6,
+    "periodSeconds": 5.8
+  },
+  "files": {
+    "lib/assets/mascot.png": {
+      "bytes": 1632332,
+      "sha256": "d378efe76e08614ab94690bd3e8fe59e62e88b577ea8f3bd3c4fd1c5b2276332"
+    },
+    "assets/mascot-master.png": {
+      "bytes": 1632332,
+      "sha256": "d378efe76e08614ab94690bd3e8fe59e62e88b577ea8f3bd3c4fd1c5b2276332"
+    }
+  }
+}

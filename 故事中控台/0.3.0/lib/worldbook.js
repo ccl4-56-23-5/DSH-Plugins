@@ -46,8 +46,8 @@ export function route(store,ctx) {
     try {
       check(trusted(req),'仅允许本机同源访问');
       const url=new URL(req.url,'http://localhost'),leaf=url.pathname.slice(ROOT.length);
-      if(req.method==='GET'&&['/logo','/icon'].includes(leaf)) {
-        res.setHeader('content-type','image/png');res.end(readFileSync(new URL('./assets/'+(leaf==='/logo'?'logo':'icon')+'.png',import.meta.url)));return;
+      if(req.method==='GET'&&['/logo','/icon','/mascot'].includes(leaf)) {
+        res.setHeader('content-type','image/png');res.end(readFileSync(new URL('./assets/'+(leaf==='/logo'?'logo':leaf==='/mascot'?'mascot':'icon')+'.png',import.meta.url)));return;
       }
       check(req.headers['x-storydeck']==='1','缺少请求标识');
       if(req.method==='GET'&&leaf==='/state') {send(200,{ok:true,value:store.read()});return;}
