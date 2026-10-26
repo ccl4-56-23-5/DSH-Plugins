@@ -1,26 +1,26 @@
 {
   "name": "dsh-repo-manager",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "runtimeDependencies": 0,
   "files": {
-    "dsh-repo-manager-1.2.0.tgz": {
-      "bytes": 1028681,
-      "sha256": "d7a4bbae877fdeb3db5b2699711090acc9e4eeb038e9a766cb71915049a025c2"
+    "dsh-repo-manager-1.2.1.tgz": {
+      "bytes": 1028584,
+      "sha256": "fa1a6c8f7d2771c9611eb217c7039544bd3250e4523aab5c55e412dd643bfb2d"
     }
   },
   "packageFileSHA256": {
     "LICENSE": "5ca2920d4f56954100c8f365461aba7b6c6154da49734f7b2703d9275ad49d11",
-    "README.md": "251d2d760a103a31e688f3ccfa1a8d881ac60cfc0874c71ff7db38c27598f6f0",
-    "VALIDATION.md": "ff2519253e63531bfbb5e9bd4e4843ee631f9cb65cb1a1edd6cfbcab264cc35f",
+    "README.md": "199089c2db172c1c6ae31211673e538c68ccf2e5c630c99841024a4f3ea8361d",
+    "VALIDATION.md": "d11d7f59f68c8d303f4da4a3578f0830aec1a00e2915cd4c341a35a56d344975",
     "cordis.patch.yml": "e45874dadae876a6332ff87ab0d75809853ba9eccd197c876103e95be5854312",
     "lib/assets/icon.png": "190bc310f410dfb42606ca97cc5aed0a7dc678c3e94e2d0202536b4efccf22dc",
     "lib/assets/logo.png": "18cf1ea6e3a6c849d6fcd30990794addb57a46949f98a7fe26d9f965d0410839",
     "lib/cache.js": "9af5ae75ab39a28c0e3644ea220584ce3191cc1f0e05695240def582f4a17eb8",
     "lib/catalog.js": "82b8351aa66d88aa1f6ea9ac151abd75de9f5e46b899f5eaea269153b8a5f6fb",
-    "lib/client.js": "b42ee798be4a51384cfbf6eb598b6946c0c96e01890e12e85a3ccb488f28408d",
+    "lib/client.js": "1c5796b28233a25648cadad9c662cc592f682cf361f417b49c094ef50d1066cf",
     "lib/health.js": "6a033494fcc875a07c320dcfd947a0cb77402666b5407af57f5b754bfadd4d9a",
-    "lib/index.js": "43f4d74c295d075177106b7503b424e54cb12be7388957a598c33f8833540426",
+    "lib/index.js": "943be854fe7ae35c809bd3635792f89a1abc2919d7ffa4bbef4829535cfb24f6",
     "lib/operations.js": "34d668bf6e8e369a74b403e2f278009a7fa7fe77f95ab659e0c7f7b224d0749d",
-    "package.json": "d9ad344b35bba8d4fff061f2ab8840e98273bf3d18987ebc143fe018d7800ed4"
+    "package.json": "621d5c3bb8f7a7543a8a9d5bb79aab8c0a59220e6b0efedc9fdb97d685539b40"
   }
 }

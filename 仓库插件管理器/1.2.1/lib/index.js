@@ -55,14 +55,13 @@ export function createManager(manager,{directory,load=discover,download=bytes}={
     }
     if(recovered)save();
     const items=[...(catalog?.items||localCatalog())];
-    for(const b of bundles)if(present(b)&&b.installed===true&&!items.some(i=>i.name===b.name))items.push({name:b.name,title:typeof b.meta?.title==='string'?b.meta.title:b.meta?.title?.zh||b.name,description:b.description,version:null,localOnly:true,notes:''});
     return {repo:REPO,checkedAt:catalog?.checkedAt||null,errors:catalog?.errors||[],cacheSource,cacheWarning,refreshError,refreshing:!!checking,
-      items:items.map(i=>{const b=bundles.find(b=>b.name===i.name&&present(b));let status=i.localOnly?'local':i.version?'available':'unchecked';if(b&&i.version){try{const c=compare(i.version,b.version);status=c>0?'update':c<0?'newer':'current';}catch{status='unknown';}}return {...i,installed:!!b,installedVersion:b?.version||null,enabled:b?.enabled??null,status,removable:removable(b),health:runtimeHealth(b,runtime.plugins,status,cacheSource==='memory'&&!checking&&!refreshError,runtime.error),protected:PROTECTED.has(i.name)};}),jobs:[...jobs.values()].slice(-10),busy};
+      items:items.map(i=>{const b=bundles.find(b=>b.name===i.name&&present(b));let status=i.version?'available':'unchecked';if(b&&i.version){try{const c=compare(i.version,b.version);status=c>0?'update':c<0?'newer':'current';}catch{status='unknown';}}return {...i,installed:!!b,installedVersion:b?.version||null,enabled:b?.enabled??null,status,removable:removable(b),health:runtimeHealth(b,runtime.plugins,status,cacheSource==='memory'&&!checking&&!refreshError,runtime.error),protected:PROTECTED.has(i.name)};}),jobs:[...jobs.values()].slice(-10),busy};
   }
   async function execute(job,p){
     try{
       if(p.action==='install')await refresh();
-      const item=(catalog?.items||localCatalog()).find(i=>i.name===p.name);if(!item&&p.action==='install')throw new Error('插件不在仓库的已验证发布列表中');
+      const item=(catalog?.items||localCatalog()).find(i=>i.name===p.name);if(!item)throw new Error('插件不在仓库的已验证发布列表中');
       const bundles=await manager.listBundles(),installed=bundles.find(b=>b.name===p.name&&b.installed!==false);
       if(p.action==='install'){
         if(p.version!==item.version||p.sha256!==item.sha256)throw new Error('发布版本已变化，请重新检查更新');

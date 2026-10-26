@@ -16,7 +16,7 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
     {name:'dsh-top-directive',title:'最高指令',description:'保存全局初始提示词，让所有会话遵循同一套系统指令。'},
     {name:'dsh-usage-statistics-panel',title:'使用统计',description:'查看Token用量、热力图与模型使用分布。'},
     {name:'dsh-control-bridge',title:'DSH控制桥',description:'宿主API与桌面控件控制桥，向插件开放受控操作。'},
-    {name:'dsh-repo-manager',title:'鲸鱼娘插件仓库',description:'发现仓库未安装插件，安装、更新、启停和卸载本地插件。'},
+    {name:'dsh-repo-manager',title:'鲸鱼娘插件仓库',description:'管理指定仓库的插件，发现新插件、安装、更新与卸载。'},
     {name:'dsh-storydeck',title:'故事中控台',description:'输入框内选择多本世界书和条目，兼容RikkaHub原生JSON，选择及剧情状态仅对当前对话生效。'}
   ];
   const META=Object.create(null);KNOWN.forEach(k=>{META[k.name]=k;});
@@ -32,9 +32,10 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
     return {level:HEALTH[v.level]?v.level:'gray',label:clean(v.label,80),detail:clean(v.detail,300),checkedAt:/^\d{4}-\d{2}-\d{2}T[\d:.]+(Z|[+-]\d{2}:\d{2})$/.test(iso)?iso.slice(0,40):''};
   }
   function normalizeItem(raw){
-    if(!raw||typeof raw!=='object')return null;
+    if(!raw||typeof raw!=='object'||raw.localOnly===true||raw.status==='local')return null;
     const name=clean(raw.name,80);
-    if(!/^(?:@[a-z0-9._-]+\/)?[a-z0-9][a-z0-9._-]{0,100}$/.test(name))return null;
+    if(!/^dsh-[a-z0-9-]{1,100}$/.test(name))return null;
+    if(!META[name]&&!releaseLink(raw.releaseURL))return null;
     const status=Object.prototype.hasOwnProperty.call(STATUS,raw.status)?raw.status:'unknown';
     return {installed:raw.installed===true||!!raw.installedVersion,removable:raw.removable===true,localOnly:raw.localOnly===true,health:normalizeHealth(raw.health),name:name,title:clean(raw.title,80)||name,description:clean(raw.description,300),installedVersion:versionOf(raw.installedVersion),version:versionOf(raw.version),status:status,enabled:raw.enabled===true,protected:raw.protected===true,releaseURL:releaseLink(raw.releaseURL),notes:clean(raw.notes,4000),sha256:clean(raw.sha256,64)};
   }
@@ -183,7 +184,7 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
     const healthCtx={live:live,trusted:view.healthTrusted===true,refreshing:!!view.refreshing};
     const canAct=live&&!error&&!sending&&!view.busy;
     const q=query.trim().toLowerCase();
-    const shown=items.filter(i=>{if(filter==='installed')return i.installed;if(filter==='available')return !i.installed&&!i.localOnly;if(filter==='local')return i.localOnly;if(filter==='updates')return i.status==='update';if(filter==='enabled')return i.enabled;return true;}).filter(i=>!q||(i.name+' '+titleOf(i)+' '+descOf(i)+' '+(i.description||'')).toLowerCase().includes(q));
+    const shown=items.filter(i=>{if(filter==='installed')return i.installed;if(filter==='available')return !i.installed&&!i.localOnly;if(filter==='updates')return i.status==='update';if(filter==='enabled')return i.enabled;return true;}).filter(i=>!q||(i.name+' '+titleOf(i)+' '+descOf(i)+' '+(i.description||'')).toLowerCase().includes(q));
     const jobs=(view.jobs||[]).slice(-8).reverse();
     const checked=view.checkedAt?stamp(view.checkedAt):'尚未完成检查';
     let line='正在获取最新状态…';
@@ -221,7 +222,6 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
           h('option',{value:'all'},'全部插件'),
           h('option',{value:'installed'},'已安装'),
           h('option',{value:'available'},'仓库未安装'),
-          h('option',{value:'local'},'仅本地安装'),
           h('option',{value:'updates'},'可更新'),
           h('option',{value:'enabled'},'已启用')),
         h('button',{className:'primary',disabled:checking||view.refreshing||view.busy||sending,onClick:()=>load(true)},view.refreshing?'正在后台更新…':checking?'正在检查…':'检测状态与更新')),
@@ -270,8 +270,8 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
         })),
       shown.length===0&&h('p',{className:'muted'},items.length?'没有匹配当前搜索／筛选的插件。':'仓库暂未提供可验证的安装发布。'),
       h('footer',null,
-        h('span',null,'仓库管理器 1.2.0'),
-        h('span',null,'从此仓库安装与更新 · 支持卸载本地插件'),
+        h('span',null,'仓库管理器 1.2.1'),
+        h('span',null,'仅管理此仓库的DSH插件'),
         h('span',null,'下载后校验 SHA-256')));
   }
   function Icon(){return h('svg',{width:20,height:20,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.7,role:'img','aria-label':'仓库'} ,h('path',{d:'M3 7h18M5 7v12a1 1 0 001 1h12a1 1 0 001-1V7M9 11h6',strokeLinecap:'round',strokeLinejoin:'round'}),h('path',{d:'M8 7l1.4-3h5.2L16 7',strokeLinecap:'round',strokeLinejoin:'round'}));}
