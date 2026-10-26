@@ -16,11 +16,11 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
     {name:'dsh-top-directive',title:'最高指令',description:'保存全局初始提示词，让所有会话遵循同一套系统指令。'},
     {name:'dsh-usage-statistics-panel',title:'使用统计',description:'查看Token用量、热力图与模型使用分布。'},
     {name:'dsh-control-bridge',title:'DSH控制桥',description:'宿主API与桌面控件控制桥，向插件开放受控操作。'},
-    {name:'dsh-repo-manager',title:'鲸鱼娘插件仓库',description:'从GitHub仓库安装DSH插件、检查更新与启停管理。'},
+    {name:'dsh-repo-manager',title:'鲸鱼娘插件仓库',description:'发现仓库未安装插件，安装、更新、启停和卸载本地插件。'},
     {name:'dsh-storydeck',title:'故事中控台',description:'输入框内选择多本世界书和条目，兼容RikkaHub原生JSON，选择及剧情状态仅对当前对话生效。'}
   ];
   const META=Object.create(null);KNOWN.forEach(k=>{META[k.name]=k;});
-  const STATUS={available:'未安装',update:'可更新',current:'已是最新',newer:'本地版本较新',unchecked:'待检查',unknown:'待核对',error:'校验失败'};
+  const STATUS={available:'未安装',update:'可更新',current:'已是最新',newer:'本地版本较新',unchecked:'待检查',unknown:'待核对',error:'校验失败',local:'仅本地安装'};
   const CACHE_SOURCE={disk:'磁盘缓存',memory:'内存缓存',local:'本地插件信息'};
   function isStr(v){return typeof v==='string';}
   function clean(v,max){return isStr(v)?v.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g,'').slice(0,max):'';}
@@ -34,9 +34,9 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
   function normalizeItem(raw){
     if(!raw||typeof raw!=='object')return null;
     const name=clean(raw.name,80);
-    if(!/^dsh-[a-z0-9-]{1,100}$/.test(name))return null;
+    if(!/^(?:@[a-z0-9._-]+\/)?[a-z0-9][a-z0-9._-]{0,100}$/.test(name))return null;
     const status=Object.prototype.hasOwnProperty.call(STATUS,raw.status)?raw.status:'unknown';
-    return {health:normalizeHealth(raw.health),name:name,title:clean(raw.title,80)||name,description:clean(raw.description,300),installedVersion:versionOf(raw.installedVersion),version:versionOf(raw.version),status:status,enabled:raw.enabled===true,protected:raw.protected===true,releaseURL:releaseLink(raw.releaseURL),notes:clean(raw.notes,4000),sha256:clean(raw.sha256,64)};
+    return {installed:raw.installed===true||!!raw.installedVersion,removable:raw.removable===true,localOnly:raw.localOnly===true,health:normalizeHealth(raw.health),name:name,title:clean(raw.title,80)||name,description:clean(raw.description,300),installedVersion:versionOf(raw.installedVersion),version:versionOf(raw.version),status:status,enabled:raw.enabled===true,protected:raw.protected===true,releaseURL:releaseLink(raw.releaseURL),notes:clean(raw.notes,4000),sha256:clean(raw.sha256,64)};
   }
   function normalizeJob(j){return j&&typeof j==='object'?{id:String(j.id||''),name:clean(j.name,80),status:['running','done','failed','uncertain'].includes(j.status)?j.status:'uncertain',message:clean(j.message,1200),detail:clean(j.detail,24000)}:null;}
   function titleOf(i){return (META[i.name]&&META[i.name].title)||i.title||i.name;}
@@ -66,7 +66,7 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
   function writeCache(snap){
     if(!snap||!snap.repo||!Array.isArray(snap.items)||!snap.items.length)return;
     try{
-      const payload={schema:SCHEMA,repo:snap.repo.slice(0,200),checkedAt:snap.checkedAt||0,source:snap.cacheSource||'disk',items:snap.items.slice(0,60).map(i=>({name:i.name,title:i.title,description:i.description,installedVersion:i.installedVersion,version:i.version,status:i.status,enabled:i.enabled,protected:i.protected,releaseURL:i.releaseURL,notes:i.notes.slice(0,1200),sha256:i.sha256}))};
+      const payload={schema:SCHEMA,repo:snap.repo.slice(0,200),checkedAt:snap.checkedAt||0,source:snap.cacheSource||'disk',items:snap.items.slice(0,60).map(i=>({name:i.name,title:i.title,description:i.description,installed:i.installed,removable:i.removable,localOnly:i.localOnly,installedVersion:i.installedVersion,version:i.version,status:i.status,enabled:i.enabled,protected:i.protected,releaseURL:i.releaseURL,notes:i.notes.slice(0,1200),sha256:i.sha256}))};
       let text=JSON.stringify(payload);
       if(byteLength(text)>CACHE_LIMIT){payload.items=payload.items.map(i=>({...i,notes:''}));text=JSON.stringify(payload);}
       if(byteLength(text)<=CACHE_LIMIT)localStorage.setItem(CACHE_KEY,text);
@@ -163,7 +163,7 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
         const r=await fetch(ROOT+'action',{method:'POST',headers:{'x-dsh-repo-manager':'1','content-type':'application/json'},body:JSON.stringify(confirm.payload)});
         const body=await r.json().catch(()=>null);
         if(!r.ok||!body||body.ok!==true)throw new Error(clean(body&&body.error,300)||'操作提交失败');
-        setNotice(confirm.payload.action==='install'?'已提交安装／更新任务；执行前会重新核对远端版本。':'已提交启用状态变更。');
+        setNotice(confirm.payload.action==='install'?'已提交安装／更新任务；执行前会重新核对远端版本。':confirm.payload.action==='remove'?'已提交卸载任务；保留用户数据。':'已提交启用状态变更。');
         setConfirm(null);
         load(false);
       }catch(e){setNotice('操作失败：'+(e&&e.message?e.message:'网络错误'));}
@@ -178,12 +178,12 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
     }
     const items=view.items||[];
     const updates=items.filter(i=>i.status==='update');
-    const installed=items.filter(i=>i.installedVersion);
+    const installed=items.filter(i=>i.installed);
     const trust=live&&!error&&!view.refreshing&&!view.refreshError&&view.source==='network'&&view.cacheSource==='memory';
     const healthCtx={live:live,trusted:view.healthTrusted===true,refreshing:!!view.refreshing};
     const canAct=live&&!error&&!sending&&!view.busy;
     const q=query.trim().toLowerCase();
-    const shown=items.filter(i=>{if(filter==='installed')return !!i.installedVersion;if(filter==='updates')return i.status==='update';if(filter==='enabled')return i.enabled;return true;}).filter(i=>!q||(i.name+' '+titleOf(i)+' '+descOf(i)+' '+(i.description||'')).toLowerCase().includes(q));
+    const shown=items.filter(i=>{if(filter==='installed')return i.installed;if(filter==='available')return !i.installed&&!i.localOnly;if(filter==='local')return i.localOnly;if(filter==='updates')return i.status==='update';if(filter==='enabled')return i.enabled;return true;}).filter(i=>!q||(i.name+' '+titleOf(i)+' '+descOf(i)+' '+(i.description||'')).toLowerCase().includes(q));
     const jobs=(view.jobs||[]).slice(-8).reverse();
     const checked=view.checkedAt?stamp(view.checkedAt):'尚未完成检查';
     let line='正在获取最新状态…';
@@ -197,6 +197,7 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
       if(i.status==='current')return {cls:'current',label:'已是最新'};
       if(i.status==='available')return {cls:'available',label:'未安装'};
       if(i.status==='newer')return {cls:'',label:'本地版本较新'};
+      if(i.status==='local')return {cls:'',label:'仅本地安装'};
       if(i.status==='error')return {cls:'',label:'校验失败'};
       return {cls:'',label:'待检查'};
     }
@@ -212,12 +213,15 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
       h('div',{className:'summary'},
         h('div',null,h('b',null,items.length),h('span',null,'个插件')),
         h('div',null,h('b',null,installed.length),h('span',null,'已安装')),
-        h('div',null,h('b',null,updates.length),h('span',null,'可更新'))),
+        h('div',null,h('b',null,updates.length),h('span',null,'可更新')),
+        h('div',null,h('b',null,items.filter(i=>!i.installed&&!i.localOnly).length),h('span',null,'仓库未安装'))),
       h('div',{className:'bar'},
         h('div',{className:'search'},h('input',{type:'search','aria-label':'搜索仓库插件',placeholder:'搜索插件名称或功能…',value:query,onChange:e=>setQuery(e.target.value)})),
         h('select',{'aria-label':'筛选插件',value:filter,onChange:e=>setFilter(e.target.value)},
           h('option',{value:'all'},'全部插件'),
           h('option',{value:'installed'},'已安装'),
+          h('option',{value:'available'},'仓库未安装'),
+          h('option',{value:'local'},'仅本地安装'),
           h('option',{value:'updates'},'可更新'),
           h('option',{value:'enabled'},'已启用')),
         h('button',{className:'primary',disabled:checking||view.refreshing||view.busy||sending,onClick:()=>load(true)},view.refreshing?'正在后台更新…':checking?'正在检查…':'检测状态与更新')),
@@ -231,9 +235,9 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
       view.cacheWarning&&h('div',{className:'notice warn'},view.cacheWarning),
       view.errors&&view.errors.length>0&&h('details',{className:'notice warn'},h('summary',null,'部分发布无法验证（'+view.errors.length+'）'),h('pre',null,view.errors.join('\n'))),
       confirm&&h('div',{ref:confirmRef,className:'dialog',role:'dialog','aria-label':'确认插件操作'},
-        h('h3',null,confirm.payload.action==='install'?'确认安装／更新':'确认更改启用状态'),
+        h('h3',null,confirm.payload.action==='install'?'确认安装／更新':confirm.payload.action==='remove'?'确认卸载插件':'确认更改启用状态'),
         h('p',null,confirm.title),
-        h('p',null,confirm.payload.action==='install'?'目标版本：'+(confirm.payload.version||'待检查')+'；来源：指定GitHub仓库的Release，执行前重新校验。':confirm.payload.enabled?'启用此插件。':'停用此插件，保留用户配置。'),
+        h('p',null,confirm.payload.action==='install'?'目标版本：'+(confirm.payload.version||'待检查')+'；来源：指定GitHub仓库的Release，执行前重新校验。':confirm.payload.action==='remove'?'将从DSH移除此插件。用户数据（配置、世界书和会话数据）保留；需要时可重新安装。':confirm.payload.enabled?'启用此插件。':'停用此插件，保留用户配置。'),
         h('p',null,'由DSH执行，保留现有配置；如需重启将明确提示。'),
         h('div',{className:'actions'},
           h('button',{className:'primary',disabled:sending||!canAct,onClick:act},sending?'正在提交…':'确认执行'),
@@ -255,18 +259,19 @@ window.__ModuleLoader__.load({id:'dsh-repo-manager',factory:require=>{
             h('p',{className:'desc'},descOf(i)||'暂无描述'),
             h('div',{className:'versions'},
               h('div',null,h('small',null,'本地版本'),h('strong',null,i.installedVersion||(live?'未安装':'待确认'))),
-              h('div',null,h('small',null,trust?'仓库最新版':'仓库版本'),h('strong',null,i.version||'待检查'))),
+              h('div',null,h('small',null,trust?'仓库最新版':'仓库版本'),h('strong',null,i.localOnly?'不在仓库':i.version||'待检查'))),
             i.protected&&h('span',{className:'chip'},'受保护插件'),
             h('div',{className:'actions'},
               (i.status==='available'||i.status==='update')&&h('button',{className:'primary',disabled:!canAct||!i.version,title:!live?'状态同步后可操作':'',onClick:()=>openConfirm(i,'install')},i.status==='update'?'更新插件':'安装插件'),
-              i.installedVersion&&!i.protected&&h('button',{disabled:!canAct,onClick:()=>openConfirm(i,i.enabled?'disable':'enable')},i.enabled?'停用':'启用'),
+              i.installed&&!i.protected&&h('button',{disabled:!canAct,onClick:()=>openConfirm(i,i.enabled?'disable':'enable')},i.enabled?'停用':'启用'),
+              i.installed&&i.removable&&!i.protected&&h('button',{disabled:!canAct,onClick:()=>openConfirm(i,'remove')},'卸载插件'),
               i.releaseURL&&h('a',{className:'link',href:i.releaseURL,target:'_blank',rel:'noreferrer'},'查看发布 ↗')),
             h('details',null,h('summary',null,'发布说明'),h('pre',null,i.notes||'此发布未提供发布说明。')));
         })),
       shown.length===0&&h('p',{className:'muted'},items.length?'没有匹配当前搜索／筛选的插件。':'仓库暂未提供可验证的安装发布。'),
       h('footer',null,
-        h('span',null,'仓库管理器 1.1.2'),
-        h('span',null,'仅管理此仓库的DSH插件'),
+        h('span',null,'仓库管理器 1.2.0'),
+        h('span',null,'从此仓库安装与更新 · 支持卸载本地插件'),
         h('span',null,'下载后校验 SHA-256')));
   }
   function Icon(){return h('svg',{width:20,height:20,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.7,role:'img','aria-label':'仓库'} ,h('path',{d:'M3 7h18M5 7v12a1 1 0 001 1h12a1 1 0 001-1V7M9 11h6',strokeLinecap:'round',strokeLinejoin:'round'}),h('path',{d:'M8 7l1.4-3h5.2L16 7',strokeLinecap:'round',strokeLinejoin:'round'}));}

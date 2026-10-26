@@ -1,8 +1,8 @@
 {
   "name": "dsh-repo-manager",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "type": "module",
-  "description": "鲸鱼娘插件仓库：管理、安装和更新ccl4-56-23-5/DSH-Plugins中的插件。",
+  "description": "鲸鱼娘插件仓库：发现、安装、更新和卸载ccl4-56-23-5/DSH-Plugins中的插件。",
   "main": "lib/index.js",
   "icon": "lib/assets/icon.png",
   "license": "MIT",
@@ -39,6 +39,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/ccl4-56-23-5/DSH-Plugins.git",
-    "directory": "仓库插件管理器/1.1.2"
+    "directory": "仓库插件管理器/1.2.0"
   }
 }

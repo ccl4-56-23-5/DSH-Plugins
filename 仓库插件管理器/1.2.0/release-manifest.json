@@ -1,26 +1,26 @@
 {
   "name": "dsh-repo-manager",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "runtimeDependencies": 0,
   "files": {
-    "dsh-repo-manager-1.1.2.tgz": {
-      "bytes": 1028132,
-      "sha256": "4d14959e0b8e8d52e8cb184ff2159eebdf95bd1f29976657a75d0b0690a99f3a"
+    "dsh-repo-manager-1.2.0.tgz": {
+      "bytes": 1028681,
+      "sha256": "d7a4bbae877fdeb3db5b2699711090acc9e4eeb038e9a766cb71915049a025c2"
     }
   },
   "packageFileSHA256": {
     "LICENSE": "5ca2920d4f56954100c8f365461aba7b6c6154da49734f7b2703d9275ad49d11",
-    "README.md": "3be92387a126fa50d16350644c588ee188a84d0845585a54720b5794c7a115ce",
-    "VALIDATION.md": "bcc6b235e95f7d88d8943057ddb1f7b42ae030588d1e3d5905f56c41a7f4eeae",
+    "README.md": "251d2d760a103a31e688f3ccfa1a8d881ac60cfc0874c71ff7db38c27598f6f0",
+    "VALIDATION.md": "ff2519253e63531bfbb5e9bd4e4843ee631f9cb65cb1a1edd6cfbcab264cc35f",
     "cordis.patch.yml": "e45874dadae876a6332ff87ab0d75809853ba9eccd197c876103e95be5854312",
     "lib/assets/icon.png": "190bc310f410dfb42606ca97cc5aed0a7dc678c3e94e2d0202536b4efccf22dc",
     "lib/assets/logo.png": "18cf1ea6e3a6c849d6fcd30990794addb57a46949f98a7fe26d9f965d0410839",
     "lib/cache.js": "9af5ae75ab39a28c0e3644ea220584ce3191cc1f0e05695240def582f4a17eb8",
     "lib/catalog.js": "82b8351aa66d88aa1f6ea9ac151abd75de9f5e46b899f5eaea269153b8a5f6fb",
-    "lib/client.js": "f9df5b8934f4f59e51ca249a37a6738debf236e409664511e70ed2275b0345a2",
+    "lib/client.js": "b42ee798be4a51384cfbf6eb598b6946c0c96e01890e12e85a3ccb488f28408d",
     "lib/health.js": "6a033494fcc875a07c320dcfd947a0cb77402666b5407af57f5b754bfadd4d9a",
-    "lib/index.js": "64f4acd05d6d4dec97a1a386d05f9626212700cdcb2c894b202777675dc73dec",
+    "lib/index.js": "43f4d74c295d075177106b7503b424e54cb12be7388957a598c33f8833540426",
     "lib/operations.js": "34d668bf6e8e369a74b403e2f278009a7fa7fe77f95ab659e0c7f7b224d0749d",
-    "package.json": "ccac5d2381b123236d1a6d8a9af78600eb4222c271db3abbdfa453a3aaf14368"
+    "package.json": "d9ad344b35bba8d4fff061f2ab8840e98273bf3d18987ebc143fe018d7800ed4"
   }
 }

@@ -25,3 +25,38 @@ test('disabled state preserved and restart requirement retained',async()=>{let e
 test('never downgrade local newer version',async()=>{let calls=0;const m=createManager({listBundles:async()=>[{name,version:'2.0.0'}],installBundle:async()=>calls++},{directory:dir(),load:async()=>({items:[item]})});await m.refresh();assert.equal((await m.state()).items[0].status,'newer');m.start({id:'test-operation-0005',action:'install',...item});assert.equal((await finish(m)).status,'failed');assert.equal(calls,0);});
 test('installer failure is not presented as success',async()=>{const m=createManager({listBundles:async()=>[],installBundle:async()=>({application:'failed',error:'fixture failure'})},{directory:dir(),load:async()=>({items:[item]}),download:async()=>data});m.start({id:'test-operation-0006',action:'install',...item});assert.equal((await finish(m)).status,'failed');});
 test('unknown packages cannot be enabled',async()=>{let calls=0;const m=createManager({listBundles:async()=>[],setBundleEnabled:async()=>calls++},{directory:dir(),load:async()=>({items:[]})});m.start({id:'test-operation-0007',action:'enable',name:'other',enabled:true});assert.equal((await finish(m)).status,'failed');assert.equal(calls,0);});
+
+test('new GitHub release outside presets is discoverable when not installed',async()=>{
+  const catalog=await discover(async u=>Buffer.from(JSON.stringify(u.includes('api.github')?[release]:manifest)));
+  const m=createManager({listBundles:async()=>[{name,installed:false,version:'1.0.0'}]},{directory:dir(),load:async()=>catalog});
+  await m.refresh();const i=(await m.state()).items.find(i=>i.name===name);
+  assert.equal(i.status,'available');assert.equal(i.installed,false);assert.equal(i.installedVersion,null);assert.equal(i.sha256,item.sha256);
+});
+test('installed view includes scoped local bundles without inventing GitHub releases',async()=>{
+  const m=createManager({listBundles:async()=>[{name:'@local/tools',version:'2.0.0',installed:true,removable:true,description:'local tools'}]},{directory:dir(),load:async()=>({items:[item]})});
+  await m.refresh();const i=(await m.state()).items.find(i=>i.name==='@local/tools');assert.equal(i.status,'local');assert.equal(i.installed,true);assert.equal(i.removable,true);assert.equal(i.version,null);assert.equal(i.url,undefined);
+});
+test('local uninstall is idempotent and verifies host absence',async()=>{
+  let observed=[{name:'@local/tools',version:'2.0.0',installed:true,removable:true}],calls=0;
+  const m=createManager({listBundles:async()=>observed,removeBundle:async n=>{assert.equal(n,'@local/tools');calls++;observed=[];return {application:'applied'};}},{directory:dir()});
+  const p={id:'remove-local-0001',name:'@local/tools',action:'remove'};m.start(p);m.start(p);const job=await finish(m);assert.equal(job.status,'done');assert.equal(job.removalVerified,true);assert.equal(calls,1);m.start(p);assert.equal(calls,1);
+});
+test('protected and host non-removable plugins refuse uninstall',async()=>{
+  for(const b of [{name:'dsh-repo-manager',removable:true},{name:'dsh-control-bridge',removable:true},{name,removable:false}]){
+    let calls=0;const m=createManager({listBundles:async()=>[{...b,installed:true,version:'1.0.0'}],removeBundle:async()=>calls++},{directory:dir()});
+    m.start({id:'protected-remove-01',name:b.name,action:'remove'});assert.equal((await finish(m)).status,'failed');assert.equal(calls,0);assert.equal((await m.state()).items.find(i=>i.name===b.name)?.removable||false,false);
+  }
+});
+test('unverified removal stays uncertain and recovers without replay',async()=>{
+  const directory=dir();let observed=[{name,version:'1.0.0',installed:true,removable:true}],calls=0;
+  const host={listBundles:async()=>observed,removeBundle:async()=>{calls++;return {application:'applied'};}};
+  const m=createManager(host,{directory});const p={id:'uncertain-remove-01',name,action:'remove'};m.start(p);assert.equal((await finish(m)).status,'uncertain');m.dispose();
+  const next=createManager(host,{directory});assert.equal((await next.state()).jobs[0].status,'uncertain');observed=[{name,installed:false}];const s=await next.state();assert.equal(s.jobs[0].status,'done');assert.equal(s.jobs[0].removalVerified,true);next.start(p);assert.equal(calls,1);
+});
+test('uninstall preserves restart requirement and reports a refused host result',async()=>{
+  for(const application of ['restart-required','failed']){
+    let observed=[{name,version:'1.0.0',installed:true,removable:true}];
+    const m=createManager({listBundles:async()=>observed,removeBundle:async()=>{if(application!=='failed')observed=[];return {application,error:'fixture refused'};}},{directory:dir()});
+    m.start({id:'remove-result-0001',name,action:'remove'});const job=await finish(m);assert.equal(job.status,application==='failed'?'failed':'done');if(application==='restart-required')assert.equal(job.application,application);
+  }
+});
