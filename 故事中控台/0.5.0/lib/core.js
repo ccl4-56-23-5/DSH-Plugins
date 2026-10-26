@@ -78,7 +78,7 @@ function compare(book,state,c) {
   return c.op==='gte'?av>=bv:av<=bv;
 }
 export function eligibility(book,story,entry) {
-  if(story.enabledEntryIds&&!story.enabledEntryIds.includes(entry.id)) return {allowed:false,reason:'当前对话已停用此条目'};
+  if(story.enabledEntryIds&&!story.enabledEntryIds.includes(entry.id)) return {allowed:false,reason:'此条目已停用'};
   if(entry.visibility==='author') return { allowed:false, reason:'作者隐藏设定' };
   if(entry.visibility==='known'&&!story.knownIds.includes(entry.id)) return { allowed:false, reason:'角色尚未知晓' };
   if(entry.when.all&&!entry.when.all.every(c=>compare(book,story.state,c))) return { allowed:false, reason:'未满足全部状态条件' };
@@ -113,9 +113,10 @@ export function retrieve(book,story,{query='',limit=8,maxChars=12000,regexMatche
   }
   return { stateRevision:story.revision,bookRevision:story.bookRevision,entries,usedChars:used,eligibleMatches:candidates.length,omittedByBudget:omitted };
 }
-function empty() { return {schema:2,revision:0,books:{},stories:{},bindings:{},selections:{},receipts:{}}; }
+function empty() { return {schema:3,revision:0,books:{},stories:{},bindings:{},selections:{},workspaceSelections:{},receipts:{}}; }
 function migrate(data) {
-  if(data.schema===2){check(plain(data.selections),'对话选择数据格式错误');return data;}
+  if(data.schema===3){check(plain(data.selections)&&plain(data.workspaceSelections),'工作区选择数据格式错误');return data;}
+  if(data.schema===2){check(plain(data.selections),'对话选择数据格式错误');data.schema=3;data.workspaceSelections={};return data;}
   data.selections={};
   // Clone every legacy binding, including shared story bindings, before any
   // new conversation can mutate state. Original stories/events are retained.
@@ -126,15 +127,50 @@ function migrate(data) {
     const b=data.books[old.bookId];
     data.selections[sid]={bookIds:[b.id],entryIds:{[b.id]:b.entries.map(e=>e.id)},storyIds:{[b.id]:id},revision:0};
   }
-  data.schema=2;return data;
+  data.schema=3;data.workspaceSelections={};return data;
 }
 export class WorldbookStore {
-  constructor(file) { this.file=file; mkdirSync(dirname(file),{recursive:true}); this.read(); }
+  constructor(file,{resolveWorkspace=()=>null}={}) { this.file=file;this.resolveWorkspace=resolveWorkspace; mkdirSync(dirname(file),{recursive:true}); this.read(); }
+  scopeSession(data,sid) {
+    check(text(sid,200)&&!['__proto__','constructor','prototype'].includes(sid),'会话ID无效');
+    const workspace=this.resolveWorkspace(sid);
+    if(!workspace)return {kind:'session',workspaceId:null,title:'未归入工作区的对话'};
+    check(text(workspace.id,200)&&!['__proto__','constructor','prototype'].includes(workspace.id)&&Array.isArray(workspace.sessionIds)&&workspace.sessionIds.includes(sid),'宿主工作区信息无效');
+    let shared=data.workspaceSelections[workspace.id];
+    if(!shared) {
+      // Retain every previously enabled entry on migration. This view remains
+      // read-only until the next successful author/state transaction persists it.
+      const bookIds=[],entryIds={};
+      for(const member of workspace.sessionIds) {
+        const old=data.selections[member];
+        for(const bid of old?.bookIds??[])if(data.books[bid]) {
+          if(!bookIds.includes(bid))bookIds.push(bid);
+          entryIds[bid]=[...new Set([...(entryIds[bid]??[]),...(old.entryIds[bid]??[])])];
+        }
+      }
+      shared=data.workspaceSelections[workspace.id]={bookIds,entryIds,revision:0,inherited:true};
+    }
+    const old=data.selections[sid]??{storyIds:{},entryIds:{},revision:0};
+    const next={bookIds:[...shared.bookIds],entryIds:clone(shared.entryIds),storyIds:{...old.storyIds},revision:shared.revision};
+    for(const bid of next.bookIds) {
+      const book=data.books[bid];check(book,'工作区世界书不存在');
+      if(!next.storyIds[bid]) {
+        const storyId='session-'+signature({sid,bid}).slice(0,40);
+        check(!data.stories[storyId],'剧情ID发生冲突');
+        next.storyIds[bid]=storyId;
+        data.stories[storyId]={id:storyId,title:book.title,bookId:bid,bookRevision:book.revision,state:clone(book.initialState),knownIds:[],revision:0,events:[]};
+      }
+    }
+    data.selections[sid]=next;delete data.bindings[sid];
+    if(next.bookIds.length===1)data.bindings[sid]=next.storyIds[next.bookIds[0]];
+    return {kind:'workspace',workspaceId:workspace.id,title:workspace.title||workspace.id,inherited:shared.inherited===true};
+  }
+  scopedRead(sid) {const data=this.read();this.scopeSession(data,sid);return data;}
   read() {
     if(!existsSync(this.file)) return empty();
     const raw=readFileSync(this.file,'utf8');check(Buffer.byteLength(raw)<=32*1024*1024,'数据文件过大');
     const data=JSON.parse(raw);
-    check([1,2].includes(data.schema)&&Number.isSafeInteger(data.revision)&&plain(data.books)&&plain(data.stories)&&plain(data.bindings)&&plain(data.receipts),'数据文件格式错误，未重置原文件');
+    check([1,2,3].includes(data.schema)&&Number.isSafeInteger(data.revision)&&plain(data.books)&&plain(data.stories)&&plain(data.bindings)&&plain(data.receipts),'数据文件格式错误，未重置原文件');
     return migrate(data);
   }
   transact(requestId, expectedRevision, payload, action) {
@@ -152,6 +188,7 @@ export class WorldbookStore {
       const bytes=JSON.stringify(data,null,2)+'\n';
       check(Buffer.byteLength(bytes)<=32*1024*1024,'数据已达32MiB上限，请导出后整理');
       if(existsSync(this.file)&&JSON.parse(readFileSync(this.file,'utf8')).schema===1&&!existsSync(this.file+'.schema1-backup'))writeFileSync(this.file+'.schema1-backup',readFileSync(this.file),{flag:'wx'});
+      if(existsSync(this.file)&&JSON.parse(readFileSync(this.file,'utf8')).schema===2&&!existsSync(this.file+'.schema2-backup'))writeFileSync(this.file+'.schema2-backup',readFileSync(this.file),{flag:'wx'});
       const tmp=this.file+'.'+randomUUID()+'.pending';
       try { writeFileSync(tmp,bytes,{flag:'wx'});renameSync(tmp,this.file); }
       finally { if(existsSync(tmp)) unlinkSync(tmp); }
@@ -166,6 +203,7 @@ export class WorldbookStore {
       }
       if(action==='selectBooks') {
         check(text(args.sessionId,200)&&!['__proto__','constructor','prototype'].includes(args.sessionId),'会话ID无效');
+        const scope=this.scopeSession(data,args.sessionId);
         check(Array.isArray(args.bookIds)&&args.bookIds.length<=20&&new Set(args.bookIds).size===args.bookIds.length,'最多同时选择20本世界书');
         check(plain(args.entryIds),'条目选择无效');
         const old=data.selections[args.sessionId]??{storyIds:{},entryIds:{},revision:0};
@@ -182,7 +220,8 @@ export class WorldbookStore {
         }
         data.selections[args.sessionId]=next;delete data.bindings[args.sessionId];
         if(next.bookIds.length===1)data.bindings[args.sessionId]=next.storyIds[next.bookIds[0]];
-        return {sessionId:args.sessionId,selection:clone(next)};
+        if(scope.kind==='workspace')data.workspaceSelections[scope.workspaceId]={bookIds:clone(next.bookIds),entryIds:clone(next.entryIds),revision:next.revision,inherited:false};
+        return {sessionId:args.sessionId,selection:clone(next),scope};
       }
       if(action==='saveBook') {
         const book=clone(validateBook(args.book)), old=data.books[book.id];
@@ -205,6 +244,8 @@ export class WorldbookStore {
         const b=data.books[data.stories[args.storyId].bookId];
         data.bindings[args.sessionId]=args.storyId;
         data.selections[args.sessionId]={bookIds:[b.id],entryIds:{[b.id]:b.entries.filter(e=>e.activation?.enabled!==false).map(e=>e.id)},storyIds:{[b.id]:args.storyId},revision:0};
+        const workspace=this.resolveWorkspace(args.sessionId);
+        if(workspace){const s=data.selections[args.sessionId];data.workspaceSelections[workspace.id]={bookIds:clone(s.bookIds),entryIds:clone(s.entryIds),revision:(data.workspaceSelections[workspace.id]?.revision??0)+1,inherited:false};}
         return {sessionId:args.sessionId,storyId:args.storyId};
       }
       if(action==='forkStory') {
@@ -213,15 +254,18 @@ export class WorldbookStore {
         data.stories[args.id]={...clone(source),id:args.id,title:args.title,parentId:source.id,revision:0,events:[]};
         return {storyId:args.id};
       }
-      if(action==='unbind') { check(text(args.sessionId,200),'会话ID无效');delete data.bindings[args.sessionId];delete data.selections[args.sessionId];return {unbound:true}; }
-      if(action==='commit') return this.applyEvent(data,args.storyId,args.event,'author');
-      if(action==='undo') return this.undo(data,args.storyId,args.eventId);
+      if(action==='unbind') { const scope=this.scopeSession(data,args.sessionId);if(scope.kind==='workspace'){const s=data.workspaceSelections[scope.workspaceId];data.workspaceSelections[scope.workspaceId]={...s,bookIds:[],revision:s.revision+1,inherited:false};}delete data.bindings[args.sessionId];delete data.selections[args.sessionId];return {unbound:true}; }
+      if(action==='commit'||action==='undo') {
+        if(args.sessionId){this.scopeSession(data,args.sessionId);check(Object.values(data.selections[args.sessionId]?.storyIds??{}).includes(args.storyId),'剧情不属于当前对话');}
+        return action==='commit'?this.applyEvent(data,args.storyId,args.event,'author'):this.undo(data,args.storyId,args.eventId);
+      }
       throw new Error('未知作者操作');
     });
   }
   bound(sessionId,data=this.read(),bookId) {
     check(text(sessionId,200),'调用缺少真实DSH会话身份');
-    const selection=data.selections[sessionId];check(selection?.bookIds.length,'当前会话未关联世界书，请在输入框的世界书按钮中勾选');
+    this.scopeSession(data,sessionId);
+    const selection=data.selections[sessionId];check(selection?.bookIds.length,'当前会话未关联世界书，请点击右上角鲸鱼娘打开世界书开关');
     check(bookId||selection.bookIds.length===1,'多本世界书启用时必须指定 bookId');
     const bid=bookId??selection.bookIds[0];check(selection.bookIds.includes(bid),'当前对话未启用此世界书');
     const story=data.stories[selection.storyIds[bid]];check(story,'当前会话剧情数据不存在');
@@ -229,7 +273,7 @@ export class WorldbookStore {
     return {book,story};
   }
   context(sessionId,query,options={}) {
-    const data=this.read(),sel=data.selections[sessionId];check(sel?.bookIds.length,'当前会话未关联世界书');
+    const data=this.scopedRead(sessionId),sel=data.selections[sessionId];check(sel?.bookIds.length,'当前会话未关联世界书');
     const limit=options.limit??8,maxChars=options.maxChars??12000;
     const books=sel.bookIds.map(bid=>{
       const {book,story}=this.bound(sessionId,data,bid),scoped={...story,enabledEntryIds:sel.entryIds[bid]??[]};
@@ -243,18 +287,18 @@ export class WorldbookStore {
   }
   async contextAsync(sessionId,query='',options={}) {
     check(typeof query==='string'&&query.length<=1000,'查询过长');
-    const data=this.read(),sel=data.selections[sessionId];check(sel?.bookIds.length,'当前会话未关联世界书');
+    const data=this.scopedRead(sessionId),sel=data.selections[sessionId];check(sel?.bookIds.length,'当前会话未关联世界书');
     const books=sel.bookIds.map(bid=>({...data.books[bid],entries:data.books[bid].entries.filter(e=>sel.entryIds[bid]?.includes(e.id))}));
     const regexMatches=await regexTriggers(books,query);
     check(this.read().revision===data.revision,'数据已变化，请重新检索');
     return this.context(sessionId,query,{...options,regexMatches});
   }
   session(sessionId) {
-    check(text(sessionId,200),'会话ID无效');const d=this.read();
-    return {revision:d.revision,selection:clone(d.selections[sessionId]??{bookIds:[],entryIds:{},storyIds:{},revision:0}),books:clone(Object.values(d.books)),stories:Object.fromEntries(Object.entries(d.stories).filter(([id])=>Object.values(d.selections[sessionId]?.storyIds??{}).includes(id)))};
+    check(text(sessionId,200),'会话ID无效');const d=this.read(),scope=this.scopeSession(d,sessionId);
+    return {revision:d.revision,scope,selection:clone(d.selections[sessionId]??{bookIds:[],entryIds:{},storyIds:{},revision:0}),books:clone(Object.values(d.books)),stories:Object.fromEntries(Object.entries(d.stories).filter(([id])=>Object.values(d.selections[sessionId]?.storyIds??{}).includes(id)))};
   }
   export(bookId) {const b=this.read().books[bookId];check(b,'世界书不存在');return exportRikka(b);}
-  active(sessionId) { return !!this.read().selections[sessionId]?.bookIds.length;
+  active(sessionId) { return !!this.scopedRead(sessionId).selections[sessionId]?.bookIds.length;
   }
   applyEvent(data,storyId,event,actor) {
     const story=data.stories[storyId];check(story,'剧情不存在');

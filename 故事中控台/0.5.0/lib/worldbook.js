@@ -6,7 +6,7 @@ import { exampleBook } from './example.js';
 import { defineTool } from '@deepseek-ai/dsh-tools';
 
 export const name='storydeck-worldbook-router';
-export const inject=['tools','systemPrompt'];
+export const inject=['tools','systemPrompt','workspaceRegistry'];
 export const ROOT='/storydeck/api';
 const sessionId=exec=>exec?.agent?.session?.id;
 export function toolDefinitions(store,define=defineTool) {
@@ -73,7 +73,7 @@ export function route(store,ctx) {
   }};
 }
 export function apply(ctx) {
-  const store=new WorldbookStore(join(process.env.DSH_HOME||join(homedir(),'.dsh'),'storydeck','worldbook-v1.json'));
+  const store=new WorldbookStore(join(process.env.DSH_HOME||join(homedir(),'.dsh'),'storydeck','worldbook-v1.json'),{resolveWorkspace:workspaceResolver(ctx.get('workspaceRegistry'))});
   for(const tool of toolDefinitions(store)) ctx.tools.register(tool);
   ctx.systemPrompt.section({
     name:'storydeck:worldbook-policy',order:4800,interpolate:false,
@@ -93,4 +93,12 @@ export function apply(ctx) {
     }
   });
   ctx.inject(['webServer'],web=>web.effect(()=>web.webServer.register(route(store,ctx))));
+}
+export function workspaceResolver(registry) {
+  check(registry&&typeof registry.list==='function','宿主未提供工作区注册服务');
+  return sid=>{
+    const matches=registry.list().filter(w=>w.sessionIds.includes(sid));
+    check(matches.length<=1,'对话同时属于多个工作区，请修复宿主工作区关联');
+    return matches[0]??null;
+  };
 }

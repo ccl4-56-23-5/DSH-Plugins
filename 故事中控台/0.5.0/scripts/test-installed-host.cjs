@@ -12,10 +12,13 @@ const fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('n
   const {WorldbookStore}=await import(pathToFileURL(root+'/lib/core.js').href);
   const {exampleBook}=await import(pathToFileURL(root+'/lib/example.js').href);
   const home=path.resolve(process.argv[2]);fs.mkdirSync(home,{recursive:true});process.env.DSH_HOME=home;
-  const store=new WorldbookStore(path.join(home,'storydeck/worldbook-v1.json'));
+  const registry={list:()=>[{id:'host-workspace',title:'隔离工作区',sessionIds:['host-test-session','host-sibling']}]};
+  const {workspaceResolver}=await import(pathToFileURL(root+'/lib/worldbook.js').href);
+  const store=new WorldbookStore(path.join(home,'storydeck/worldbook-v1.json'),{resolveWorkspace:workspaceResolver(registry)});
   const action=(kind,args)=>store.author(kind,{requestId:crypto.randomUUID(),revision:store.read().revision,...args});
   action('saveBook',{book:exampleBook});action('createStory',{id:'host-test',title:'隔离宿主验证',bookId:exampleBook.id});action('bind',{sessionId:'host-test-session',storyId:'host-test'});
   const ctx=new Context();
+  ctx.provide('workspaceRegistry',registry);
   ctx.plugin(tools.default);ctx.plugin(system.default);const parent=ctx.plugin(suite);
   for(let i=0;i<30;i++)await new Promise(resolve=>setImmediate(resolve));
   assert.ok(ctx.tools,'ToolRuntime did not load');assert.ok(ctx.systemPrompt,'SystemPrompt did not load');
@@ -29,6 +32,11 @@ const fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('n
   const after=JSON.parse(await read.execute({query:'御剑',limit:8},exec));
   assert.ok(after.entries.some(e=>e.id==='flight'));
   assert.ok(!after.entries.some(e=>['secret','golden-core'].includes(e.id)));
+  const siblingExec={...exec,agent:{session:{id:'host-sibling'}}};
+  const sibling=JSON.parse(await read.execute({query:'御剑',limit:8},siblingExec));
+  assert.equal(sibling.state.realm,'炼气');assert.equal(sibling.books[0].bookId,exampleBook.id);
+  const siblingPrompt=await ctx.systemPrompt.assemble({scope:siblingExec.agent});
+  assert.ok(siblingPrompt.contexts.some(s=>s.name==='storydeck:current-state'&&s.text.includes('炼气')));
   await assert.rejects(()=>read.execute({query:'',limit:8},{...exec,agent:{session:{id:'unbound'}}}),/未关联/);
   const assembly=await ctx.systemPrompt.assemble({scope:agent});
   assert.ok(assembly.sections.some(s=>s.name==='storydeck:worldbook-policy'));
@@ -43,6 +51,7 @@ const fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('n
   action('selectBooks',{sessionId:'host-test-session',bookIds:[bid],entryIds:{[bid]:[]}});
   assert.equal(JSON.parse(await read.execute({query:'银树城',limit:20},exec)).entries.length,0);
   action('selectBooks',{sessionId:'host-test-session',bookIds:[],entryIds:{}});
+  await assert.rejects(()=>read.execute({query:'',limit:8},siblingExec),/未关联/);
   const disabled=await ctx.systemPrompt.assemble({scope:agent});assert.ok(!disabled.sections.some(s=>s.name==='storydeck:worldbook-policy'&&s.text));
   await parent.dispose();
   assert.equal(ctx.tools.get('storydeck_context'),undefined);
