@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { WorldbookStore, check } from './core.js';
 import { exampleBook } from './example.js';
 import { defineTool } from '@deepseek-ai/dsh-tools';
+import { StarMapService, hostGenerator } from './star-map.js';
 
 export const name='storydeck-worldbook-router';
 export const inject=['tools','systemPrompt','workspaceRegistry'];
@@ -40,16 +41,28 @@ export function trusted(req) {
     return true;
   } catch{return false;}
 }
-export function route(store,ctx) {
+export function route(store,ctx,stars=new StarMapService(store,{generate:hostGenerator(ctx),model:()=>{try{return ctx.get('agentDefaultModel')?.currentSelection()??null;}catch{return null;}}})) {
   return {kind:'prefix',path:ROOT,handler:async(req,res)=>{
     const send=(code,value)=>{res.statusCode=code;res.setHeader('content-type','application/json; charset=utf-8');res.setHeader('cache-control','no-store');res.end(JSON.stringify(value));};
     try {
       check(trusted(req),'仅允许本机同源访问');
       const url=new URL(req.url,'http://localhost'),leaf=url.pathname.slice(ROOT.length);
+      if(req.method==='GET'&&leaf==='/star-map') {
+        res.setHeader('content-type','text/html; charset=utf-8');res.setHeader('cache-control','no-store');
+        res.setHeader('content-security-policy',"default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; frame-ancestors 'self'; form-action 'none'");
+        res.end(readFileSync(new URL('./assets/star-map.html',import.meta.url)));return;
+      }
       if(req.method==='GET'&&['/logo','/icon','/mascot'].includes(leaf)) {
         res.setHeader('content-type','image/png');res.end(readFileSync(new URL('./assets/'+(leaf==='/logo'?'logo':leaf==='/mascot'?'mascot':'icon')+'.png',import.meta.url)));return;
       }
       check(req.headers['x-storydeck']==='1','缺少请求标识');
+      if(req.method==='GET'&&leaf==='/graph'){send(200,{ok:true,value:stars.graph(url.searchParams.get('sessionId'),url.searchParams.get('bookId'))});return;}
+      if(req.method==='GET'&&leaf==='/organize'){send(200,{ok:true,value:stars.job(url.searchParams.get('sessionId'),url.searchParams.get('jobId'))});return;}
+      if(req.method==='POST'&&['/organize','/undo-archive'].includes(leaf)){
+        check(req.headers['content-type']?.startsWith('application/json'),'需要JSON请求');let size=0;const chunks=[];
+        for await(const c of req){size+=c.length;check(size<=100000,'整理请求过大');chunks.push(c);}const args=JSON.parse(Buffer.concat(chunks).toString('utf8'));
+        send(200,{ok:true,value:leaf==='/organize'?await stars.start(args.sessionId,args):stars.undo(args.sessionId,args)});return;
+      }
       if(req.method==='GET'&&leaf==='/state') {send(200,{ok:true,value:store.read()});return;}
       if(req.method==='GET'&&leaf==='/session') {send(200,{ok:true,value:store.session(url.searchParams.get('sessionId'))});return;}
       if(req.method==='GET'&&leaf==='/export') {send(200,{ok:true,value:store.export(url.searchParams.get('bookId'))});return;}

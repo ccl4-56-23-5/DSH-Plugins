@@ -1,7 +1,7 @@
 {
   "name": "dsh-storydeck",
-  "version": "0.5.0",
-  "description": "故事中控台：世界书为底层，剧情状态驱动条目检索，支持自动状态事件与撤回。",
+  "version": "0.6.0",
+  "description": "故事中控台：工作区世界书、独立剧情进度与万象星图，支持AI整理归档和关系网。",
   "type": "module",
   "main": "lib/index.js",
   "icon": "lib/assets/icon.png",
@@ -21,7 +21,8 @@
       "inject": [
         "@deepseek-ai/dsh-client-ui-slots",
         "@deepseek-ai/dsh-client-ui-session",
-        "@deepseek-ai/dsh-client-ui-layout"
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-sidebar-right"
       ]
     }
   },
@@ -44,12 +45,12 @@
     "node": ">=20"
   },
   "scripts": {
-    "test": "node --test test/worldbook.test.mjs test/rikka.test.mjs test/workspace.test.mjs",
+    "test": "node --test test/worldbook.test.mjs test/rikka.test.mjs test/workspace.test.mjs test/star-map.test.mjs",
     "build": "node scripts/build-release.mjs"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/ccl4-56-23-5/DSH-Plugins.git",
-    "directory": "故事中控台/0.5.0"
+    "directory": "故事中控台/0.6.0"
   }
 }

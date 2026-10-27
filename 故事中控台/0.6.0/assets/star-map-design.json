@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-27",
+  "designOwner": "DSH",
+  "integrationOwner": "Codex",
+  "approvedDesignSHA256": "ef9d5a58559f856b61304999065e515fd8fbf6e44cdfba441b506ef73a154cd2",
+  "adaptation": [
+    "native right sidebar embedding",
+    "real worldbook data",
+    "DSH default model AI organization",
+    "persistent task and archive relations",
+    "safe text rendering and paging"
+  ],
+  "branding": "Existing StoryDeck RGBA icon, logo and whale character retained"
+}

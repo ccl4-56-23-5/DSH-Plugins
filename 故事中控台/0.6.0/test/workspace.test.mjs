@@ -57,7 +57,7 @@ test('schema2并集合并旧开关，保留关书的历史剧情，原始字节�
  const s=store.session('A');assert.deepEqual(new Set(s.selection.entryIds[exampleBook.id]),new Set(['realm-order','qi']));
  assert.equal(readFileSync(store.file,'utf8'),original);assert.equal(existsSync(store.file+'.schema2-backup'),false);
  const storyIds=structuredClone(d.selections.A.storyIds);select('A',[]);
- assert.equal(readFileSync(store.file+'.schema2-backup','utf8'),original);assert.equal(store.read().schema,3);
+ assert.equal(readFileSync(store.file+'.schema2-backup','utf8'),original);assert.equal(store.read().schema,4);
  select('B');assert.deepEqual(store.session('A').selection.storyIds,storyIds);
 });
 test('未归入工作区的对话独立，不合并为全局默认工作区',()=>{

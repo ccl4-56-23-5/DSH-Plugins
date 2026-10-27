@@ -113,10 +113,11 @@ export function retrieve(book,story,{query='',limit=8,maxChars=12000,regexMatche
   }
   return { stateRevision:story.revision,bookRevision:story.bookRevision,entries,usedChars:used,eligibleMatches:candidates.length,omittedByBudget:omitted };
 }
-function empty() { return {schema:3,revision:0,books:{},stories:{},bindings:{},selections:{},workspaceSelections:{},receipts:{}}; }
+function empty() { return {schema:4,revision:0,books:{},stories:{},bindings:{},selections:{},workspaceSelections:{},starMaps:{},organizeJobs:{},receipts:{}}; }
 function migrate(data) {
-  if(data.schema===3){check(plain(data.selections)&&plain(data.workspaceSelections),'工作区选择数据格式错误');return data;}
-  if(data.schema===2){check(plain(data.selections),'对话选择数据格式错误');data.schema=3;data.workspaceSelections={};return data;}
+  if(data.schema===4){check(plain(data.selections)&&plain(data.workspaceSelections)&&plain(data.starMaps)&&plain(data.organizeJobs),'星图数据格式错误');return data;}
+  if(data.schema===3){check(plain(data.selections)&&plain(data.workspaceSelections),'工作区选择数据格式错误');data.schema=4;data.starMaps={};data.organizeJobs={};return data;}
+  if(data.schema===2){check(plain(data.selections),'对话选择数据格式错误');data.schema=3;data.workspaceSelections={};return migrate(data);}
   data.selections={};
   // Clone every legacy binding, including shared story bindings, before any
   // new conversation can mutate state. Original stories/events are retained.
@@ -127,7 +128,7 @@ function migrate(data) {
     const b=data.books[old.bookId];
     data.selections[sid]={bookIds:[b.id],entryIds:{[b.id]:b.entries.map(e=>e.id)},storyIds:{[b.id]:id},revision:0};
   }
-  data.schema=3;data.workspaceSelections={};return data;
+  data.schema=3;data.workspaceSelections={};return migrate(data);
 }
 export class WorldbookStore {
   constructor(file,{resolveWorkspace=()=>null}={}) { this.file=file;this.resolveWorkspace=resolveWorkspace; mkdirSync(dirname(file),{recursive:true}); this.read(); }
@@ -170,7 +171,7 @@ export class WorldbookStore {
     if(!existsSync(this.file)) return empty();
     const raw=readFileSync(this.file,'utf8');check(Buffer.byteLength(raw)<=32*1024*1024,'数据文件过大');
     const data=JSON.parse(raw);
-    check([1,2,3].includes(data.schema)&&Number.isSafeInteger(data.revision)&&plain(data.books)&&plain(data.stories)&&plain(data.bindings)&&plain(data.receipts),'数据文件格式错误，未重置原文件');
+    check([1,2,3,4].includes(data.schema)&&Number.isSafeInteger(data.revision)&&plain(data.books)&&plain(data.stories)&&plain(data.bindings)&&plain(data.receipts),'数据文件格式错误，未重置原文件');
     return migrate(data);
   }
   transact(requestId, expectedRevision, payload, action) {
@@ -189,6 +190,7 @@ export class WorldbookStore {
       check(Buffer.byteLength(bytes)<=32*1024*1024,'数据已达32MiB上限，请导出后整理');
       if(existsSync(this.file)&&JSON.parse(readFileSync(this.file,'utf8')).schema===1&&!existsSync(this.file+'.schema1-backup'))writeFileSync(this.file+'.schema1-backup',readFileSync(this.file),{flag:'wx'});
       if(existsSync(this.file)&&JSON.parse(readFileSync(this.file,'utf8')).schema===2&&!existsSync(this.file+'.schema2-backup'))writeFileSync(this.file+'.schema2-backup',readFileSync(this.file),{flag:'wx'});
+      if(existsSync(this.file)&&JSON.parse(readFileSync(this.file,'utf8')).schema===3&&!existsSync(this.file+'.schema3-backup'))writeFileSync(this.file+'.schema3-backup',readFileSync(this.file),{flag:'wx'});
       const tmp=this.file+'.'+randomUUID()+'.pending';
       try { writeFileSync(tmp,bytes,{flag:'wx'});renameSync(tmp,this.file); }
       finally { if(existsSync(tmp)) unlinkSync(tmp); }

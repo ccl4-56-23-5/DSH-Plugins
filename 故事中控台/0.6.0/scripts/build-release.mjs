@@ -4,7 +4,9 @@ import {fileURLToPath} from 'node:url';
 import {gzipSync} from 'node:zlib';
 import {createHash} from 'node:crypto';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..'),pkg=JSON.parse(readFileSync(join(root,'package.json'))),hash=b=>createHash('sha256').update(b).digest('hex');
-writeFileSync(join(root,'lib/client.js'),readFileSync(join(root,'src/client.js')));
+writeFileSync(join(root,'lib/client.js'),readFileSync(join(root,'src/client.js'),'utf8').replace('// __STAR_MAP_CLIENT__',readFileSync(join(root,'src/star-map-client.js'),'utf8')));
+const runtime=readFileSync(join(root,'src/star-map-runtime.js'),'utf8').replace('/*__GEOMETRY__*/',readFileSync(join(root,'src/star-map-geometry.js'),'utf8'));
+writeFileSync(join(root,'lib/assets/star-map.html'),readFileSync(join(root,'src/star-map.html'),'utf8').replace('__STAR_MAP_SCRIPTS__',runtime));
 const walk=(dir,prefix='')=>readdirSync(dir).sort().flatMap(n=>statSync(join(dir,n)).isDirectory()?walk(join(dir,n),prefix+n+'/'):[prefix+n]);
 const names=['package.json',...pkg.files.flatMap(n=>statSync(join(root,n)).isDirectory()?walk(join(root,n),n+'/'):[n])].sort(),chunks=[],fileHashes={};
 for(const n of names){

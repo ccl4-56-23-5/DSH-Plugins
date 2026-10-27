@@ -16,7 +16,7 @@ export function importRikka(input) {
     if(e.keywords!==undefined&&(!Array.isArray(e.keywords)||e.keywords.length>100||e.keywords.some(k=>typeof k!=='string'||k.length>1000)))fail('关键词格式无效');
     const activation={enabled:e.enabled??true,priority:e.priority??0,keywords:e.keywords??[],useRegex:e.useRegex??false,caseSensitive:e.caseSensitive??false,constantActive:e.constantActive??false};
     if(['enabled','useRegex','caseSensitive','constantActive'].some(k=>typeof activation[k]!=='boolean')||!Number.isFinite(activation.priority))fail('条目开关或优先级无效');
-    return {id:'entry-'+randomUUID(),title:string(e.name)||'条目 '+(i+1),body:e.content,visibility:'public',always:activation.constantActive,tags:[],when:{},activation,rikka:structuredClone(e)};
+    return {id:'entry-'+randomUUID(),title:string(e.name)||'条目 '+(i+1),body:e.content,visibility:e.storydeckVisibility==='author'?'author':'public',always:activation.constantActive,tags:[],when:{},activation,rikka:structuredClone(e)};
   });
   return {id:'rikka-'+randomUUID(),title:raw.name||'未命名世界书',description:string(raw.description),fields:[],initialState:{},entries,format:'rikkahub',defaultEnabled:raw.enabled??true,rikka:{envelope:envelope?structuredClone(envelope):null,book:structuredClone(raw)}};
 }

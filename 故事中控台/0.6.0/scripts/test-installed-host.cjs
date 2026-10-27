@@ -8,6 +8,7 @@ const fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('n
   const {Context}=await import(pathToFileURL(base+'cordis/lib/index.js').href);
   const tools=await import(pathToFileURL(base+'dsh-tools/lib/index.js').href);
   const system=await import(pathToFileURL(base+'dsh-system-prompt/lib/index.js').href);
+  const llmLib=await import(pathToFileURL(base+'dsh-llm/lib/index.js').href);
   const suite=await import(pathToFileURL(root+'/lib/index.js').href);
   const {WorldbookStore}=await import(pathToFileURL(root+'/lib/core.js').href);
   const {exampleBook}=await import(pathToFileURL(root+'/lib/example.js').href);
@@ -19,7 +20,7 @@ const fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('n
   action('saveBook',{book:exampleBook});action('createStory',{id:'host-test',title:'隔离宿主验证',bookId:exampleBook.id});action('bind',{sessionId:'host-test-session',storyId:'host-test'});
   const ctx=new Context();
   ctx.provide('workspaceRegistry',registry);
-  ctx.plugin(tools.default);ctx.plugin(system.default);const parent=ctx.plugin(suite);
+  ctx.plugin(tools.default);ctx.plugin(system.default);ctx.plugin(llmLib.default);const parent=ctx.plugin(suite);
   for(let i=0;i<30;i++)await new Promise(resolve=>setImmediate(resolve));
   assert.ok(ctx.tools,'ToolRuntime did not load');assert.ok(ctx.systemPrompt,'SystemPrompt did not load');
   const read=ctx.tools.get('storydeck_context'),commit=ctx.tools.get('storydeck_commit');
@@ -53,6 +54,13 @@ const fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('n
   action('selectBooks',{sessionId:'host-test-session',bookIds:[],entryIds:{}});
   await assert.rejects(()=>read.execute({query:'',limit:8},siblingExec),/未关联/);
   const disabled=await ctx.systemPrompt.assemble({scope:agent});assert.ok(!disabled.sections.some(s=>s.name==='storydeck:worldbook-policy'&&s.text));
+  const {StarMapService,hostGenerator}=await import(pathToFileURL(root+'/lib/star-map.js').href);
+  let nativeOptions;
+  class FixtureAdapter extends llmLib.LlmAdapter {async *stream(options){nativeOptions=options;const value=JSON.stringify({entries:[{key:'native-entry',title:'原生模型接入条目',body:'原生模型调用成功。',type:'设定',sourceQuote:'原生模型调用成功。'}],relations:[]});yield {type:'block-start',index:0,blockType:'text'};yield {type:'text-delta',index:0,text:value};yield {type:'block-end',index:0,block:{type:'text',text:value}};yield {type:'finish',reason:{kind:'stop'}};}}
+  const releaseAdapter=ctx.llm.registerAdapter(['storydeck-fixture'],new FixtureAdapter());
+  const stars=new StarMapService(store,{generate:hostGenerator(ctx),model:()=>({provider:'storydeck-fixture',model:'fixture-model'})});
+  const job=await stars.start('host-test-session',{requestId:crypto.randomUUID(),revision:store.read().revision,bookId:exampleBook.id,input:'原生模型调用成功。'});
+  await stars.inflight.get(job.id);assert.equal(stars.job('host-test-session',job.id).status,'done');assert.deepEqual(nativeOptions.tools,[]);assert.equal(nativeOptions.messages[0].role,'system');assert.ok(store.read().books[exampleBook.id].entries.some(e=>e.title==='原生模型接入条目'));releaseAdapter();
   await parent.dispose();
   assert.equal(ctx.tools.get('storydeck_context'),undefined);
   const result={ok:true,node:process.version,checks:['real installed Cordis parent mounts child','real defineTool validates and executes read/commit','automatic event changes eligible records','hidden and wrong-realm entries excluded','unbound session rejected','prompt and dynamic state scoped to current session','RikkaHub plus native books both returned by actual tool','disabled entry omitted','empty selection removes prompt','parent disposal removes tools'],boundary:'isolated installed host runtime; no live model request or desktop install'};
