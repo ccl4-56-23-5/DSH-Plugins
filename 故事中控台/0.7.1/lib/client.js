@@ -44,7 +44,7 @@ window.__ModuleLoader__.load({id:'dsh-storydeck',factory:require=>{
         module==='star'?h(StarMapFrame,{sessionId,onBooks:chooseBooks,onExpand:()=>setExpanded(v=>!v)}):h(React.Fragment,null,
           h('nav',{'aria-label':'世界书页面'},...['books','import','state','preview'].map((t,i)=>h('button',{type:'button',key:t,'aria-selected':tab===t,onClick:()=>setTab(t)},['启用世界书','导入与导出','剧情状态','检索预览'][i]))),
           error&&h('p',{className:'sd-error',role:'alert'},error),unverified&&h('button',{type:'button',disabled:busy,onClick:()=>run(async()=>{await reload();setUnverified(false);onSaved();setMessage('已重新读取'+scopeLabel+'开关');})},'重新读取开关状态'),message&&h('p',{className:'sd-status',role:'status'},message),!data&&h('p',null,'正在读取世界书…'),data&&selection&&({books:booksPage,import:importPage,state:statePage,preview:previewPage}[tab])())),
-      h('footer',{className:'sd-footer'},h('span',{className:'sd-note'},selection?selection.bookIds.length+' 本启用 · '+(unverified?'待核对':busy?'保存中…':'自动保存')+' · StoryDeck 0.7.0':'StoryDeck 0.7.0'),h('div',{className:'sd-actions',style:{margin:0}},h('button',{type:'button',disabled:busy,onClick:onClose},'关闭'))));
+      h('footer',{className:'sd-footer'},h('span',{className:'sd-note'},selection?selection.bookIds.length+' 本启用 · '+(unverified?'待核对':busy?'保存中…':'自动保存')+' · StoryDeck 0.7.1':'StoryDeck 0.7.1'),h('div',{className:'sd-actions',style:{margin:0}},h('button',{type:'button',disabled:busy,onClick:onClose},'关闭'))));
   }
   // The reviewed 105px pendant is scaled to 35px: width and height / 3, area / 9.
   const pendantCss=`.sd-hang-anchor{--sd-hang-width:35px;--sd-rope-drop:63.75px;position:absolute;top:var(--dsh-frame-top-clearance,0px);right:max(18px,env(safe-area-inset-right,0px));width:var(--sd-hang-width);height:calc(var(--sd-rope-drop) + var(--sd-hang-width)*1.079536);z-index:1;pointer-events:none}.sd-hang-button{appearance:none;display:block;position:relative;width:100%;height:100%;padding:0;margin:0;border:0;border-radius:0;background:transparent;cursor:pointer;touch-action:none;pointer-events:auto;-webkit-app-region:no-drag;transform-origin:82.9% 0;animation:sd-hang-sway 5.8s ease-in-out infinite;line-height:0}.sd-hang-button:hover,.sd-hang-button:focus-visible,.sd-hang-button[aria-expanded=true],.sd-hang-button[data-dragging=true]{animation-play-state:paused}.sd-hang-button[data-dragging=true]{cursor:grabbing}.sd-hang-button:focus-visible{outline:2px solid #73839a;outline-offset:3px;border-radius:5px}.sd-hang-art{position:absolute;top:var(--sd-rope-drop);left:0;width:100%;height:auto;pointer-events:none;user-select:none}.sd-hang-rope{position:absolute;left:calc(82.9% - .416667px);top:0;width:.833333px;height:calc(var(--sd-rope-drop) + var(--sd-hang-width)*.425);border-radius:1px;background:#8f8779;box-shadow:none;z-index:1;pointer-events:none}@keyframes sd-hang-sway{0%,100%{transform:rotate(-1.6deg)}50%{transform:rotate(1.6deg)}}@media(prefers-reduced-motion:reduce){.sd-hang-button{animation:none;transform:none}}`;
@@ -72,8 +72,23 @@ window.__ModuleLoader__.load({id:'dsh-storydeck',factory:require=>{
     const conversationVisible=usePanelInfo(info=>info.activePanelId===null);
     return sessionId&&conversationVisible?h(HangingButton,{key:sessionId,sessionId}):null;
   }
-  // __STAR_MAP_CLIENT__
-  function Config(){return h('div',{style:{padding:24}},h('h2',null,'故事中控台 0.7.0'),h('p',null,'通过右上角绳子与大肥鱼打开故事中控台，在同一入口使用世界书和万象星图。世界书开关在工作区共用，剧情进度按对话独立保存。'));}
+    // Components registered here share the same hanging StoryDeck entry.
+  const CENTER_MODULES=[{id:'worldbook',label:'世界书'},{id:'star',label:'万象星图'}];
+  function StarMapFrame({sessionId,onBooks,onExpand}){
+    const frame=useRef();
+    useEffect(()=>{
+      const receive=event=>{
+        if(event.source!==frame.current?.contentWindow||event.origin!==location.origin)return;
+        if(event.data?.type==='storydeck-starmap-books')onBooks();
+        if(event.data?.type==='storydeck-starmap-expand')onExpand();
+      };
+      window.addEventListener('message',receive);
+      return()=>window.removeEventListener('message',receive);
+    },[onBooks,onExpand]);
+    return h('iframe',{key:sessionId,ref:frame,title:'万象星图',src:ROOT+'star-map?sessionId='+encodeURIComponent(sessionId),className:'sd-star-frame'});
+  }
+
+  function Config(){return h('div',{style:{padding:24}},h('h2',null,'故事中控台 0.7.1'),h('p',null,'通过右上角绳子与大肥鱼打开故事中控台，在同一入口使用世界书和万象星图。世界书开关在工作区共用，剧情进度按对话独立保存。'));}
   return {name:'storydeck-ui',inject:['slots'],apply(ctx){
     ctx.slots.inject('shell.overlay',()=>ctx.slots.register({name:'shell.overlay',id:'storydeck-hanging-entry',order:10000},HangingEntry));
     ctx.slots.inject('plugins.bundle.config',()=>ctx.slots.register({name:'plugins.bundle.config',key:'dsh-storydeck'},Config));

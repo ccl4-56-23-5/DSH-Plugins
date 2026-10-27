@@ -1,2 +1,0 @@
-c69e307d0855e4993e6ad1a4f2e6cbc893170869fb16dc5e4c8e89e8bafc730c  dsh-storydeck-0.7.0.tgz
-bd94a9683d0ea4a35431507617914bec2a2d16beb20320ec2a1f11feff7bff6d  dsh-storydeck-0.7.0-Windows.zip
