@@ -1,0 +1,2 @@
+561a47dfc3a87c6f3cb97da55bdebe3f9493a857eb773d5f1bef08ac1fefcf01  dsh-repo-manager-1.2.2.tgz
+0fe7d38505afc0e0d678885336aca90916fb8ffed7900b5917d35eeedf6fc200  dsh-repo-manager-1.2.2-Windows.zip

@@ -1,0 +1,44 @@
+{
+  "name": "dsh-repo-manager",
+  "version": "1.2.2",
+  "type": "module",
+  "description": "鲸鲸插件仓库：发现、安装、更新和卸载ccl4-56-23-5/DSH-Plugins中的插件。",
+  "main": "lib/index.js",
+  "icon": "lib/assets/icon.png",
+  "license": "MIT",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-slots"
+      ],
+      "platform": "web"
+    }
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE",
+    "VALIDATION.md"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "build": "node scripts/build-release.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ccl4-56-23-5/DSH-Plugins.git",
+    "directory": "仓库插件管理器/1.2.2"
+  }
+}

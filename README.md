@@ -8,8 +8,8 @@
 | [最高指令](最高指令插件/1.1.2/README.md) | 1.1.2 | 编辑全局系统提示词，保存原文，随时启停 | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/top-directive-v1.1.2) |
 | [使用统计·大肥鱼定制版](Token用量插件/1.0.0/README.md) | 1.0.0 | 查看 Token 用量、活跃热力图、模型与供应商占比 | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/token-usage-v1.0.0) |
 | [DSH Control Bridge](DSH控制桥插件/1.0.0/README.md) | 1.0.0 | 通过宿主接口和 DOM 控件树管理 DSH | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/dsh-control-v1.0.0) |
-| [鲸鱼娘插件仓库](仓库插件管理器/1.2.1/README.md) | 1.2.1 | 仅管理本仓库插件，发现、安装、更新与卸载 | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/repo-manager-v1.2.1) |
-| [故事中控台 StoryDeck](故事中控台/0.6.0/README.md) | 0.6.0 | 世界书与独立剧情状态，万象星图关系网和AI整理归档 | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/storydeck-v0.6.0) |
+| [鲸鲸插件仓库](仓库插件管理器/1.2.2/README.md) | 1.2.2 | 仅管理本仓库插件，发现、安装、更新与卸载 | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/repo-manager-v1.2.2) |
+| [故事中控台 StoryDeck](故事中控台/0.7.0/README.md) | 0.7.0 | 世界书与独立剧情状态，万象星图关系网和AI整理归档 | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/storydeck-v0.7.0) |
 
 ## 安装
 
