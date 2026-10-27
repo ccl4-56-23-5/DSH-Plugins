@@ -1,6 +1,6 @@
 # 鲸鲸插件仓库
 
-在 DSH 中管理 [DSH-Plugins](https://github.com/ccl4-56-23-5/DSH-Plugins) 的插件。入口位于左上角“使用统计”下方，当前版本 **1.2.2**。
+在 DSH 中管理 [DSH-Plugins](https://github.com/ccl4-56-23-5/DSH-Plugins) 的插件。入口位于左上角“使用统计”下方，当前版本 **1.2.3**。
 
 ## 功能
 
@@ -14,7 +14,7 @@
 
 ## 安装与更新
 
-首次安装：从 [Release](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/repo-manager-v1.2.2) 取得 TGZ，在 DSH 插件管理中添加。Windows ZIP 包含 TGZ、安装说明和 SHA-256 清单。
+首次安装：从 [Release](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/repo-manager-v1.2.3) 取得 TGZ，在 DSH 插件管理中添加。Windows ZIP 包含 TGZ、安装说明和 SHA-256 清单。
 
 更新插件：打开仓库，点击“检测状态与更新”，找到插件卡片，选择“更新插件”并确认。确认内容直接显示在该插件卡片内；操作区依次显示下载、安装与结果核对。
 
