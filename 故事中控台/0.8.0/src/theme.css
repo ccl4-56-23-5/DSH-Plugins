@@ -1,0 +1,9 @@
+.sd-theme{
+  color-scheme:dark;
+  --sd-bg:#10151b;--sd-surface:#151b23;--sd-raised:#1b232d;--sd-hover:#222e3b;
+  --sd-line:#2c3744;--sd-line-soft:#232d38;--sd-ink:#e0e6ee;--sd-muted:#9aa8b8;--sd-dim:#778596;
+  --sd-accent:#9eb4cf;--sd-tint:rgba(158,180,207,.12);--sd-positive:#9dbdac;--sd-negative:#e4a8a8;
+  --sd-radius:12px;--sd-control:8px;--sd-fast:140ms;--sd-duration:200ms;--sd-ease:cubic-bezier(.2,.75,.25,1);
+  --sd-font:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  font-family:var(--sd-font);color:var(--sd-ink);background:var(--sd-bg);
+}

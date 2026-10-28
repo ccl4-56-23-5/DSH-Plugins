@@ -1,0 +1,29 @@
+{
+  "name": "dsh-storydeck",
+  "version": "0.8.0",
+  "runtimeDependencies": 0,
+  "files": {
+    "dsh-storydeck-0.8.0.tgz": {
+      "bytes": 2384314,
+      "sha256": "310c3565f7148f26df37589787bac11c80f19943e525ea76584442c6a535c8e1"
+    }
+  },
+  "packageFileSHA256": {
+    "LICENSE": "5ca2920d4f56954100c8f365461aba7b6c6154da49734f7b2703d9275ad49d11",
+    "README.md": "d8b4db75c86689589ef8559dd3ae333924407e9c0be29d3f9a1dbdf68186603a",
+    "VALIDATION.md": "04a8a59459930609826f911d9af1f4dc0834178c9b93b729587c130c99fc2a33",
+    "cordis.patch.yml": "531569ccca08abb73420f2b425e7b47b7c4bf4af2200d0a12ec9ba70f3eeb8d3",
+    "lib/assets/icon.png": "3a1e1c5e3794bf00e4aaf92913e25f17346d1e6c7d156f933b843cf211da6d67",
+    "lib/assets/logo.png": "fba3d82be54be36ed9539453ec74492f7d42e1a9051efdd7a46072e123f84a24",
+    "lib/assets/mascot.png": "a25e599688d99f0cf8f58180d9383686d3d015e03f5da725004d30f658c4edb6",
+    "lib/assets/star-map.html": "12cf746e69621a368e5059b62cc0041e12607fafbcf429b052cf429da41c1bc5",
+    "lib/client.js": "4bbb8f7e201a0a9d8ccd7e57c3ba4a4ccad493cd92dd3e78790c53095eaa1b17",
+    "lib/core.js": "d59c439443823d6fc89bbf9aac7a9989969edb90f07084c3a3fe29b0058f3e28",
+    "lib/example.js": "8009701234df07391e98f25c43e88abddfb8dd178f1ebc2b413a4eabc15a8d64",
+    "lib/index.js": "f4a89069f446e95c66e80595815f8d8ae0d271e060b63fb330cbb2dac3b37b86",
+    "lib/rikka.js": "a98cc149d4c38df7d625d159e266aefba1b2b452352da026285fe9bbd15cf39f",
+    "lib/star-map.js": "b6290eb25fc5582a176f10680366df7b033a35cbf64efac64fe57796e8144117",
+    "lib/worldbook.js": "65906cc1c1603d683ab7558043fd60af538acad6957254f6be46ccdd8e0a9ba4",
+    "package.json": "ce556855717370d317fd7aff98ec776b37b879c724f1feabae597b5d03194067"
+  }
+}

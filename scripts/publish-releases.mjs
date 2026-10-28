@@ -1,3 +1,4 @@
+import {retentionPlan,promoteRelease} from './release-policy.mjs';
 import assert from 'node:assert/strict';
 import { readFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -8,7 +9,7 @@ const hash=data=>createHash('sha256').update(data).digest('hex');
 export default async function publish({github,context,core}) {
   assert.equal(context.repo.owner,'ccl4-56-23-5'); assert.equal(context.repo.repo,'DSH-Plugins');
   checkRepository();
-  const scope=context.repo, current=plugins(), kept=new Set(current.map(item=>item.tag));
+  const scope=context.repo, current=plugins();
   const latest=await github.rest.repos.getBranch({...scope,branch:'main'});
   assert.equal(latest.data.commit.sha,context.sha,'Do not publish an obsolete commit');
   const destination=join(root,'.work/publication'); mkdirSync(destination,{recursive:true});
@@ -22,6 +23,8 @@ export default async function publish({github,context,core}) {
       assert.equal(bytes.length,asset.size);assert.equal('sha256:'+hash(bytes),asset.digest);
     }
   }
+  const promoteTag=context.eventName==='workflow_dispatch'?context.payload?.inputs?.promote_tag:'';
+  if(promoteTag){await promoteRelease({github,scope,tag:promoteTag,verify:verifyDownloads});core.info('Promoted explicitly selected '+promoteTag);return;}
   for(const plugin of current) {
     let published;
     try { published=(await github.rest.repos.getReleaseByTag({...scope,tag:plugin.tag})).data; } catch(error) { if(error.status!==404)throw error; }
@@ -32,6 +35,7 @@ export default async function publish({github,context,core}) {
         await verifyDownloads(published);core.info(`Verified unchanged ${plugin.tag}`);continue;
       }
     }
+    if(published&&!published.draft&&!published.prerelease)throw Error('Stable assets are immutable. Use a new test version or explicitly promote a test release: '+plugin.tag);
     const isApi=plugin.pkg.name==='dsh-api-switcher', isUsage=plugin.pkg.name==='dsh-usage-statistics-panel', isControl=plugin.pkg.name==='dsh-control-bridge', isRepo=plugin.pkg.name==='dsh-repo-manager', isStory=plugin.pkg.name==='dsh-storydeck';
     const sourceName=`DSH-Plugins-${isApi?'Api-Switcher':isUsage?'Token-Usage':isControl?'DSH-Control':isRepo?'Repo-Manager':isStory?'StoryDeck':'Top-Directive'}-${plugin.version}-Source.zip`;
     const sourcePath=join(destination,sourceName);
@@ -40,11 +44,11 @@ export default async function publish({github,context,core}) {
     const assets=names.map(name=>({name,data:readFileSync(join(plugin.releaseDirectory,name))}));
     assets.push({name:sourceName,data:readFileSync(sourcePath)});
     assets.push({name:'SHA256SUMS.txt',data:Buffer.from(assets.map(item=>`${hash(item.data)}  ${item.name}`).join('\n')+'\n')});
-    const body=isRepo ? '鲸鲸插件仓库 '+plugin.version+'：更名为鲸鲸插件仓库；安装、更新、卸载和启停的二次确认直接显示在对应插件卡片内，不跳转页面；修正故事中控台的工作区说明。保留配置与数据，支持发现仓库新插件。' : isControl ? 'DSH Control Bridge 1.0.0：宿主结构化API与DOM控件树，无截图识别。配合独立Codex插件，提供持久化操作去重、真实回复读取、工作区与插件设置管理、动态Remote契约及流式控制。实际验收与边界见源码VALIDATION.md；Codex端源码与安装包位于ccl4-56-23-5/Codex-Plugins。' : isUsage ? '基于HaoyueQin/dsh-usage-statistics-panel0.3.2的MIT定制版。替换现有使用统计并保留历史数据与设置；保留左上角入口和方块热力图，移除缓存命中率折线、百分比轴与图例，新增透明大肥鱼Logo。详见源码README和VALIDATION；Windows ZIP内含安装器、TGZ、manifest与校验文件。' : isApi ? '按供应商地址、协议和模型适配思考控制：MiMo使用真实开关，已确认GPT/Claude使用实际支持的档位，未知组合不猜测。保留现有配置、自定义映射及凭据，支持添加原生协议来源。65项回归、145种真实宿主请求映射及真实API对照通过；重启加载后的桌面验收待完成。含Windows安装ZIP、TGZ、源码ZIP和SHA-256；实测范围见docs/VALIDATION.md。' : '新增最高指令透明logo和插件图标，右下角使用与Api-Switcher一致的大肥鱼角色。提示词保存与会话桥沿用1.1.1；通过宿主、图片路由和打包检查。下载TGZ与Install-DSH.ps1放在同一目录，退出DSH后运行安装器。真实模型的历史验收范围见源码docs/VALIDATION.md。';
-    const releaseBody=isStory?'故事中控台 StoryDeck '+plugin.version+'：万象星图与世界书统一从右上角绳子和大肥鱼入口进入；星图不分页，展示所有条目与关系，支持滚轮缩放和拖动平移，缩放按钮和画布随窗口尺寸适配。沿用真实世界书、DSH默认模型整理、工作区开关与原有数据。包含Windows ZIP、TGZ、源码和SHA-256，由用户手动更新。':body;
+    const body=isRepo ? '鲸鲸插件仓库 '+plugin.version+' 测试版：新增接收测试版更新开关，默认关闭；稳定版和测试版目录独立缓存，保留已有安装与用户配置。' : isControl ? 'DSH Control Bridge 1.0.0：宿主结构化API与DOM控件树，无截图识别。配合独立Codex插件，提供持久化操作去重、真实回复读取、工作区与插件设置管理、动态Remote契约及流式控制。实际验收与边界见源码VALIDATION.md；Codex端源码与安装包位于ccl4-56-23-5/Codex-Plugins。' : isUsage ? '基于HaoyueQin/dsh-usage-statistics-panel0.3.2的MIT定制版。替换现有使用统计并保留历史数据与设置；保留左上角入口和方块热力图，移除缓存命中率折线、百分比轴与图例，新增透明大肥鱼Logo。详见源码README和VALIDATION；Windows ZIP内含安装器、TGZ、manifest与校验文件。' : isApi ? '按供应商地址、协议和模型适配思考控制：MiMo使用真实开关，已确认GPT/Claude使用实际支持的档位，未知组合不猜测。保留现有配置、自定义映射及凭据，支持添加原生协议来源。65项回归、145种真实宿主请求映射及真实API对照通过；重启加载后的桌面验收待完成。含Windows安装ZIP、TGZ、源码ZIP和SHA-256；实测范围见docs/VALIDATION.md。' : '新增最高指令透明logo和插件图标，右下角使用与Api-Switcher一致的大肥鱼角色。提示词保存与会话桥沿用1.1.1；通过宿主、图片路由和打包检查。下载TGZ与Install-DSH.ps1放在同一目录，退出DSH后运行安装器。真实模型的历史验收范围见源码docs/VALIDATION.md。';
+    const releaseBody=isStory?'故事中控台 StoryDeck '+plugin.version+' 测试版：统一世界书与万象星图的灰蓝界面、导航、控件和布局；保留画布与草稿，加入轻量过渡，优化大量条目的展开与悬停渲染。':body;
     let release;
     try { release=(await github.rest.repos.getReleaseByTag({...scope,tag:plugin.tag})).data; }
-    catch(error) { if(error.status!==404)throw error; release=(await github.rest.repos.createRelease({...scope,tag_name:plugin.tag,target_commitish:context.sha,name:`${plugin.directory}${plugin.version}`,body:releaseBody,draft:true,prerelease:false})).data; }
+    catch(error) { if(error.status!==404)throw error; release=(await github.rest.repos.createRelease({...scope,tag_name:plugin.tag,target_commitish:context.sha,name:`${plugin.directory}${plugin.version}`,body:releaseBody,draft:true,prerelease:true})).data; }
     let existing=await github.paginate(github.rest.repos.listReleaseAssets,{...scope,release_id:release.id,per_page:100});
     for(const asset of assets) {
       const digest='sha256:'+hash(asset.data), previous=existing.find(item=>item.name===asset.name);
@@ -55,21 +59,16 @@ export default async function publish({github,context,core}) {
     }
     existing=await github.paginate(github.rest.repos.listReleaseAssets,{...scope,release_id:release.id,per_page:100});
     for(const asset of assets)assert.ok(existing.some(item=>item.name===asset.name&&item.digest==='sha256:'+hash(asset.data)&&item.size===asset.data.length));
-    await github.rest.repos.updateRelease({...scope,release_id:release.id,name:`${plugin.directory}${plugin.version}`,body:releaseBody,draft:false,prerelease:false,make_latest:isApi?'true':'false'});
+    await github.rest.repos.updateRelease({...scope,release_id:release.id,name:`${plugin.directory}${plugin.version}`,body:releaseBody,draft:false,prerelease:true,make_latest:'false'});
     await verifyDownloads(release);
     core.info(`Published and verified ${plugin.tag}`);
     await core.summary.addHeading(`${plugin.directory}${plugin.version}`).addLink('Release',release.html_url).addRaw('\n').write();
   }
-  // Remove old DSH releases only after BOTH latest releases have verified assets.
-  const oldReleases=await github.paginate(github.rest.repos.listReleases,{...scope,per_page:100});
-  for(const release of oldReleases) {
-    if(!/^(?:api-switcher|top-directive|token-usage|dsh-control|repo-manager|storydeck)-v\d+\.\d+\.\d+$/.test(release.tag_name)||kept.has(release.tag_name))continue;
-    await github.rest.repos.deleteRelease({...scope,release_id:release.id}); core.info(`Removed old release ${release.tag_name}`);
-  }
-  const tags=await github.paginate(github.rest.git.listMatchingRefs,{...scope,ref:'tags/'});
-  for(const tag of tags) {
-    const name=tag.ref.slice('refs/tags/'.length);
-    if(!/^(?:api-switcher|top-directive|token-usage|dsh-control|repo-manager|storydeck)-v\d+\.\d+\.\d+$/.test(name)||kept.has(name))continue;
-    await github.rest.git.deleteRef({...scope,ref:`tags/${name}`}); core.info(`Removed old version tag ${name}`);
+  // Only rotate test releases. Stable replacement requires an explicit promotion.
+  const releases=await github.paginate(github.rest.repos.listReleases,{...scope,per_page:100});
+  for(const old of retentionPlan(releases)){
+    await github.rest.repos.deleteRelease({...scope,release_id:old.id});
+    await github.rest.git.deleteRef({...scope,ref:'tags/'+old.tag_name});
+    core.info('Removed previous test release '+old.tag_name);
   }
 }

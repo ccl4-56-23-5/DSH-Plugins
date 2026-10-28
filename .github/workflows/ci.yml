@@ -4,6 +4,12 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+    inputs:
+      promote_tag:
+        description: 'Explicitly promote an existing test tag to stable; leave empty to publish tests'
+        required: false
+        default: ''
+        type: string
 permissions:
   contents: read
 concurrency:

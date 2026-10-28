@@ -1,0 +1,55 @@
+{
+  "name": "dsh-storydeck",
+  "version": "0.8.0",
+  "description": "故事中控台：工作区世界书、独立剧情进度与万象星图，支持AI整理归档和关系网。",
+  "type": "module",
+  "main": "lib/index.js",
+  "icon": "lib/assets/icon.png",
+  "license": "MIT",
+  "exports": {
+    ".": "./lib/index.js",
+    "./worldbook": "./lib/worldbook.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-slots",
+        "@deepseek-ai/dsh-client-ui-session",
+        "@deepseek-ai/dsh-client-ui-layout"
+      ]
+    }
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "VALIDATION.md",
+    "LICENSE"
+  ],
+  "peerDependencies": {
+    "@deepseek-ai/dsh-tools": "*"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/dsh-tools": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test test/worldbook.test.mjs test/rikka.test.mjs test/workspace.test.mjs test/star-map.test.mjs",
+    "build": "node scripts/build-release.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ccl4-56-23-5/DSH-Plugins.git",
+    "directory": "故事中控台/0.8.0"
+  }
+}
