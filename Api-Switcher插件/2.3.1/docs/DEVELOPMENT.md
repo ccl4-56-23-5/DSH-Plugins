@@ -21,7 +21,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Build-Release.ps1
 脚本支持 `-DshRoot`、`-NodeExe` 和 `-OutputDir`，默认输出到 `dist/`。核对解包文件或实际安装目录可运行：
 
 ```powershell
-node .\Verify-Package.mjs .\dist\dsh-api-switcher-2.3.0.tgz '<解包后的package目录>'
+node .\Verify-Package.mjs .\dist\dsh-api-switcher-2.3.1.tgz '<解包后的package目录>'
 ```
 
 ## 源码结构

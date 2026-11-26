@@ -53,6 +53,11 @@ export function buildRoute(controller) {
       }
       let value
       if (leaf === 'state' && req.method === 'GET') value = await controller.state()
+      else if (leaf === 'credential' && req.method === 'POST') {
+        res.setHeader('cross-origin-resource-policy', 'same-origin')
+        if (!req.headers.origin || req.headers['sec-fetch-site'] !== 'same-origin') throw fault('请在本机DSH设置页查看密钥。', 403, 'FORBIDDEN')
+        value = await controller.revealCredential(await readBody(req))
+      }
       else if (req.method === 'POST' && Object.hasOwn({ sources: 1, activate: 1, test: 1, discover: 1, favorite: 1, preferences: 1, logo: 1, delete: 1, native:1 }, leaf)) {
         const body = await readBody(req)
         const method = { sources: 'save', delete: 'remove' }[leaf] || leaf

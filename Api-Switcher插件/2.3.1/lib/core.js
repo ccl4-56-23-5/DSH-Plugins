@@ -6,7 +6,8 @@ import { dirname, join } from 'node:path'
 import { apiyiCatalog, mimoCatalog, catalogFor, normalizeDiscovered, limitFields, validLimit, limitMode } from './capabilities.js'
 export { apiyiCatalog, mimoCatalog } from './capabilities.js'
 
-export const VERSION = '2.3.0'
+export const VERSION = '2.3.1'
+export const RELEASE_VERSION = VERSION + '+11'
 export const protocols = [
   { id: 'openai-completions', name: 'OpenAI Chat Completions' },
   { id: 'openai-responses', name: 'OpenAI Responses' },
@@ -107,7 +108,7 @@ export function createController(ctx, stateFile, options = {}) {
     try {
       const resolved = await ctx.get('credentials')?.resolve(ref)
       stamps.push([ref, resolved?.source, createHash('sha256').update(resolved?.value || '').digest('hex')])
-      return { configured: !!resolved?.value, ref }
+      return { configured: !!resolved?.value, revealable: resolved?.source === 'file' && !!resolved.value, ref }
     }
     catch { return { configured: false, ref } }
   }
@@ -187,7 +188,7 @@ export function createController(ctx, stateFile, options = {}) {
     }))
     const active = clone(ctx.agentDefaultModel.currentSelection())
     const revision = createHash('sha256').update(JSON.stringify({ namespaces: descriptors.map(v => [v.ns, v.revision]), metadata, active, credentials: credentialStamps.sort((a, b) => a[0].localeCompare(b[0])) })).digest('hex')
-    return { version: VERSION, revision, writable: ctx.settings.writable === true && !!pi, active, sources, protocols, presets,
+    return { version: RELEASE_VERSION, revision, writable: ctx.settings.writable === true && !!pi, active, sources, protocols, presets,
       catalogs: { apiyi: apiyiCatalog, mimo: mimoCatalog },
       ...pi ? {} : { notice: '当前DSH未挂载第三方模型配置服务；现有来源仍可使用。' } }
   }
@@ -200,6 +201,22 @@ export function createController(ctx, stateFile, options = {}) {
     const pi = piView()
     if (!ctx.settings.writable || !pi) throw fault('当前DSH的模型配置不可写。', 503, 'READ_ONLY')
     return pi
+  }
+  async function revealCredential(input) {
+    const id = providerId(input.provider)
+    return serialize(async () => {
+      const providers = requireWritable().value.providers || {}
+      const source = Object.hasOwn(providers, id) ? providers[id] : undefined
+      if (!source || !protocols.some(protocol => protocol.id === source.api)) throw fault('没有可查看密钥的供应商。', 404, 'NOT_FOUND')
+      let resolved
+      try {
+        if (source.apiKeyEnv) resolved = await ctx.get('credentials')?.resolve(source.apiKeyEnv)
+      } catch {
+        throw fault('无法读取本机密钥，请稍后重试。', 503, 'CREDENTIAL_UNAVAILABLE')
+      }
+      if (resolved?.source !== 'file' || !resolved.value) throw fault('此供应商没有可查看的本机密钥。', 404, 'CREDENTIAL_UNAVAILABLE')
+      return { apiKey: resolved.value }
+    })
   }
   async function persistProfiles(pi, ops, metadata) {
     await ctx.settings.mutate(pi.ns, ops, pi.revision)
@@ -566,5 +583,5 @@ export function createController(ctx, stateFile, options = {}) {
       return state();
     });
   }
-  return { initialize, state, save, activate, favorite, preferences, logo, remove, test, discover, withReasoningDefault, native }
+  return { initialize, state, save, activate, favorite, preferences, logo, remove, test, discover, withReasoningDefault, native, revealCredential }
 }

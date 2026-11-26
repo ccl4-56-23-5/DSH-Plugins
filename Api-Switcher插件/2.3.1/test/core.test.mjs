@@ -45,6 +45,21 @@ function fixture() {
   return { controller: createController(ctx, filename, {logos:{cached:()=>undefined,refresh:async()=>undefined,read:()=>undefined}}), keys, providers, ctx, filename, selections, calls, reject: () => { fail = true }, streamMode: v => { streamMode = v } }
 }
 
+test('reveals the current provider’s file credential without exposing it in state or reading environment credentials', async () => {
+  const f = fixture()
+  const value = f.keys.get('EXISTING_KEY')
+  const original = await f.controller.state()
+  assert.equal(original.sources[0].credential.revealable, true)
+  assert.ok(!JSON.stringify(original).includes(value))
+  assert.deepEqual(await f.controller.revealCredential({ provider: 'existing', ref: 'IGNORED' }), { apiKey: value })
+  assert.equal((await f.controller.state()).revision, original.revision)
+  await assert.rejects(f.controller.revealCredential({ provider: 'missing' }), { code: 'NOT_FOUND' })
+  const store = f.ctx.get('credentials')
+  store.resolve = async () => ({ value, source: 'env' })
+  assert.equal((await f.controller.state()).sources[0].credential.revealable, false)
+  await assert.rejects(f.controller.revealCredential({ provider: 'existing' }), { code: 'CREDENTIAL_UNAVAILABLE' })
+})
+
 test('upgrade repairs bundled text defaults once, preserves manual modes, settings, keys and unrelated routes', async () => {
   const f = fixture(), before = structuredClone(f.providers.existing), keys = [...f.keys]
   f.providers.mimo = { baseURL: 'https://api.xiaomimimo.com/v1', api: 'openai-completions', headers: {custom:'keep'}, models: mimoCatalog.models.map(m => ({id:m.id,input:['text'],compat:{supportsStore:false}})) }

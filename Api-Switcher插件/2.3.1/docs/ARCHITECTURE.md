@@ -24,7 +24,7 @@
 
 元数据路径优先使用插件配置`stateFile`，否则使用`DSH_HOME`或用户主目录下`.dsh/api-switcher/state.json`。元数据版本为2，包括`managed`、`favorites`、`providers`和一次性`initialized`标记。`providers`按来源ID保存名称、网站、供应商开关和`enabledModels`白名单。
 
-配置写操作串行化，并检查客户端`expectedRevision`。revision综合DSH设置版本、插件元数据、默认模型与凭据戳；Key本身不返回前端。保存新Key但DSH配置写入失败时，尝试恢复原本机Key；回滚失败会明确报错。元数据损坏时阻止写入并提示恢复备份。
+配置写操作串行化，并检查客户端`expectedRevision`。revision综合DSH设置版本、插件元数据、默认模型与凭据戳；常规状态只返回凭据状态与引用。设置页点击「显示密钥」时，专用同源 POST 从当前供应商绑定的本机凭据读取密钥。保存新Key但DSH配置写入失败时，尝试恢复原本机Key；回滚失败会明确报错。元数据损坏时阻止写入并提示恢复备份。
 
 ## HTTP契约
 
@@ -36,6 +36,7 @@
 | `GET /styles` | CSS |
 | `GET /brand` | 设置界面透明PNG |
 | `GET /logo/<provider>` | 已缓存供应商图标 |
+| `POST /credential` | `provider`，本机同源浏览器请求，读取已保存的供应商密钥，响应禁止缓存 |
 | `POST /sources` | `expectedRevision`、`source`、可选`apiKey`，保存来源 |
 | `POST /preferences` | `expectedRevision`、`provider`、启用/名称/网站/模型白名单 |
 | `POST /activate` | `expectedRevision`、`provider`、`model`、可选会话ID/推理等级 |

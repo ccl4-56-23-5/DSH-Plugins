@@ -44,11 +44,12 @@ export default async function publish({github,context,core}) {
     const assets=names.map(name=>({name,data:readFileSync(join(plugin.releaseDirectory,name))}));
     assets.push({name:sourceName,data:readFileSync(sourcePath)});
     assets.push({name:'SHA256SUMS.txt',data:Buffer.from(assets.map(item=>`${hash(item.data)}  ${item.name}`).join('\n')+'\n')});
-    const body=isRepo ? '鲸鲸插件仓库 '+plugin.version+' 测试版：新增接收测试版更新开关，默认关闭；稳定版和测试版目录独立缓存，保留已有安装与用户配置。' : isControl ? 'DSH Control Bridge 1.0.0：宿主结构化API与DOM控件树，无截图识别。配合独立Codex插件，提供持久化操作去重、真实回复读取、工作区与插件设置管理、动态Remote契约及流式控制。实际验收与边界见源码VALIDATION.md；Codex端源码与安装包位于ccl4-56-23-5/Codex-Plugins。' : isUsage ? '基于HaoyueQin/dsh-usage-statistics-panel0.3.2的MIT定制版。替换现有使用统计并保留历史数据与设置；保留左上角入口和方块热力图，移除缓存命中率折线、百分比轴与图例，新增透明大肥鱼Logo。详见源码README和VALIDATION；Windows ZIP内含安装器、TGZ、manifest与校验文件。' : isApi ? '按供应商地址、协议和模型适配思考控制：MiMo使用真实开关，已确认GPT/Claude使用实际支持的档位，未知组合不猜测。保留现有配置、自定义映射及凭据，支持添加原生协议来源。65项回归、145种真实宿主请求映射及真实API对照通过；重启加载后的桌面验收待完成。含Windows安装ZIP、TGZ、源码ZIP和SHA-256；实测范围见docs/VALIDATION.md。' : '新增最高指令透明logo和插件图标，右下角使用与Api-Switcher一致的大肥鱼角色。提示词保存与会话桥沿用1.1.1；通过宿主、图片路由和打包检查。下载TGZ与Install-DSH.ps1放在同一目录，退出DSH后运行安装器。真实模型的历史验收范围见源码docs/VALIDATION.md。';
+    const body=isRepo ? '鲸鲸插件仓库 '+plugin.version+' 测试版：新增接收测试版更新开关，默认关闭；稳定版和测试版目录独立缓存，保留已有安装与用户配置。' : isControl ? 'DSH Control Bridge 1.0.0：宿主结构化API与DOM控件树，无截图识别。配合独立Codex插件，提供持久化操作去重、真实回复读取、工作区与插件设置管理、动态Remote契约及流式控制。实际验收与边界见源码VALIDATION.md；Codex端源码与安装包位于ccl4-56-23-5/Codex-Plugins。' : isUsage ? '基于HaoyueQin/dsh-usage-statistics-panel0.3.2的MIT定制版。替换现有使用统计并保留历史数据与设置；保留左上角入口和方块热力图，移除缓存命中率折线、百分比轴与图例，新增透明大肥鱼Logo。详见源码README和VALIDATION；Windows ZIP内含安装器、TGZ、manifest与校验文件。' : isApi ? '在供应商的「连接设置」中点击「显示密钥」，可以查看、复制或替换已保存在 DSH 本机凭据库的 API 密钥。密钥默认隐藏，查看后可随时隐藏。留空保存会保留原密钥。提供 DSH 安装 TGZ、Windows ZIP、源码与 SHA-256。' : '新增最高指令透明logo和插件图标，右下角使用与Api-Switcher一致的大肥鱼角色。提示词保存与会话桥沿用1.1.1；通过宿主、图片路由和打包检查。下载TGZ与Install-DSH.ps1放在同一目录，退出DSH后运行安装器。真实模型的历史验收范围见源码docs/VALIDATION.md。';
     const releaseBody=isStory?'故事中控台 StoryDeck '+plugin.version+' 测试版：统一世界书与万象星图的灰蓝界面、导航、控件和布局；保留画布与草稿，加入轻量过渡，优化大量条目的展开与悬停渲染。':body;
+    const releaseName=plugin.directory+(plugin.pkg.releaseVersion||plugin.version);
     let release;
     try { release=(await github.rest.repos.getReleaseByTag({...scope,tag:plugin.tag})).data; }
-    catch(error) { if(error.status!==404)throw error; release=(await github.rest.repos.createRelease({...scope,tag_name:plugin.tag,target_commitish:context.sha,name:`${plugin.directory}${plugin.version}`,body:releaseBody,draft:true,prerelease:true})).data; }
+    catch(error) { if(error.status!==404)throw error; release=(await github.rest.repos.createRelease({...scope,tag_name:plugin.tag,target_commitish:context.sha,name:releaseName,body:releaseBody,draft:true,prerelease:true})).data; }
     let existing=await github.paginate(github.rest.repos.listReleaseAssets,{...scope,release_id:release.id,per_page:100});
     for(const asset of assets) {
       const digest='sha256:'+hash(asset.data), previous=existing.find(item=>item.name===asset.name);
@@ -59,10 +60,10 @@ export default async function publish({github,context,core}) {
     }
     existing=await github.paginate(github.rest.repos.listReleaseAssets,{...scope,release_id:release.id,per_page:100});
     for(const asset of assets)assert.ok(existing.some(item=>item.name===asset.name&&item.digest==='sha256:'+hash(asset.data)&&item.size===asset.data.length));
-    await github.rest.repos.updateRelease({...scope,release_id:release.id,name:`${plugin.directory}${plugin.version}`,body:releaseBody,draft:false,prerelease:true,make_latest:'false'});
+    await github.rest.repos.updateRelease({...scope,release_id:release.id,name:releaseName,body:releaseBody,draft:false,prerelease:true,make_latest:'false'});
     await verifyDownloads(release);
     core.info(`Published and verified ${plugin.tag}`);
-    await core.summary.addHeading(`${plugin.directory}${plugin.version}`).addLink('Release',release.html_url).addRaw('\n').write();
+    await core.summary.addHeading(releaseName).addLink('Release',release.html_url).addRaw('\n').write();
   }
   // Only rotate test releases. Stable replacement requires an explicit promotion.
   const releases=await github.paginate(github.rest.repos.listReleases,{...scope,per_page:100});

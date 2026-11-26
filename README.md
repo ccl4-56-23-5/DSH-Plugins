@@ -4,7 +4,7 @@
 
 | 插件 | 版本 | 功能 | 安装包 |
 | --- | --- | --- | --- |
-| [api-switcher](Api-Switcher插件/2.3.0/README.md) | 2.3.0 | 管理 API 供应商，在会话中搜索和切换模型，配置思考参数 | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/api-switcher-v2.3.0) |
+| [api-switcher](Api-Switcher插件/2.3.1/README.md) | 2.3.1+11 测试版 | 管理 API 供应商、查看已保存的密钥，在会话中搜索和切换模型 | [测试版](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/api-switcher-v2.3.1) · [稳定版](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/api-switcher-v2.3.0) |
 | [最高指令](最高指令插件/1.1.2/README.md) | 1.1.2 | 编辑全局系统提示词，保存原文，随时启停 | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/top-directive-v1.1.2) |
 | [使用统计·大肥鱼定制版](Token用量插件/1.0.0/README.md) | 1.0.0 | 查看 Token 用量、活跃热力图、模型与供应商占比 | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/token-usage-v1.0.0) |
 | [DSH Control Bridge](DSH控制桥插件/1.0.0/README.md) | 1.0.0 | 通过宿主接口和 DOM 控件树管理 DSH | [下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/dsh-control-v1.0.0) |

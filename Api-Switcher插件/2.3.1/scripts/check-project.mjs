@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { resolve, dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { VERSION } from '../lib/core.js'
+import { VERSION, RELEASE_VERSION } from '../lib/core.js'
 
 export const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 export function walk(directory, prefix = '') {
@@ -18,6 +18,7 @@ export function checkProject() {
   assert.equal(manifest.name,'dsh-api-switcher')
   assert.equal(manifest.title,'api-switcher')
   assert.equal(manifest.version,VERSION)
+  assert.equal(manifest.releaseVersion,RELEASE_VERSION)
   assert.match(VERSION,/^\d+\.\d+\.\d+$/)
   assert.ok(!Object.keys(manifest.dependencies || {}).length, 'Unexpected runtime dependencies')
   const screenshots = JSON.parse(readFileSync(join(root,'screenshots.json'),'utf8'))
