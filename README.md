@@ -21,6 +21,6 @@
 
 每个插件按“项目/版本”存放，版本目录包含独立项目源码。默认分支提供当前版本，历史变更可通过 Git 提交查看。
 
-DSH Control Bridge 的 Codex 端配套插件位于 [Codex-Plugins](https://github.com/ccl4-56-23-5/Codex-Plugins)。
+这里发布装到 DSH 内的宿主插件。若要让 Codex 操作 DSH，使用 [CodexBridge 的 DSH 双端组合包与安装指南](https://github.com/ccl4-56-23-5/CodexBridge/tree/main/DSH)。
 
 代码采用 [MIT 许可](LICENSE)。使用统计基于 [HaoyueQin/dsh-usage-statistics-panel](https://github.com/HaoyueQin/dsh-usage-statistics-panel) 定制，依赖与素材来源见各项目的第三方声明。
