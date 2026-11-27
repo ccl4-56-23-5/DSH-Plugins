@@ -4,9 +4,9 @@
 
 在一个设置页管理 API 供应商，在会话输入框旁搜索和切换模型。支持官方 API、兼容接口、聚合供应商和 DSH 原生账号。
 
-当前测试版 **2.3.1+11**。在供应商的「连接设置」中点击「显示密钥」，即可查看已保存的 API 密钥。
+当前版本 **2.3.2+12**，修复在 DSH 桌面内查看已保存 API 密钥时被拦截的问题。在供应商的「连接设置」中点击「显示密钥」，即可查看已保存的 API 密钥。
 
-[下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/api-switcher-v2.3.1) · [安装](docs/INSTALLATION.md) · [使用指南](docs/USER_GUIDE.md) · [更新记录](CHANGELOG.md)
+[下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/api-switcher-v2.3.2) · [安装](docs/INSTALLATION.md) · [使用指南](docs/USER_GUIDE.md) · [更新记录](CHANGELOG.md)
 
 ## 功能
 
@@ -52,7 +52,7 @@
 
 ## 安装
 
-通过 DSH 插件管理添加 Release 中的 `dsh-api-switcher-2.3.1.tgz`。Windows 用户也可下载 ZIP，解压后完成正在运行的 DSH 任务，再运行 `安装.cmd`。安装器校验文件、备份配置并重启 DSH。
+通过 DSH 插件管理添加 Release 中的 `dsh-api-switcher-2.3.2.tgz`。Windows 用户也可下载 ZIP，解压后完成正在运行的 DSH 任务，再运行 `安装.cmd`。安装器校验文件、备份配置并重启 DSH。
 
 默认宿主目录为 `D:\DeepSeekHarness`，配置目录为 `%USERPROFILE%\.dsh`，profile 为 `desktop`。其他位置、升级与恢复见 [安装说明](docs/INSTALLATION.md)。
 

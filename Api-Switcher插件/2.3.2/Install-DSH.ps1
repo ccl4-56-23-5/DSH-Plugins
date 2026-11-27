@@ -2,7 +2,7 @@
   [string]$DshRoot = 'D:\DeepSeekHarness',
   [string]$DshHome = (Join-Path $env:USERPROFILE '.dsh'),
   [string]$Profile = 'desktop',
-  [string]$Package = (Join-Path $PSScriptRoot 'dsh-api-switcher-2.3.1.tgz'),
+  [string]$Package = (Join-Path $PSScriptRoot 'dsh-api-switcher-2.3.2.tgz'),
   [switch]$CloseDsh,
   [switch]$RestartDsh
 )
@@ -11,7 +11,10 @@ if ($Profile -notmatch '^[a-zA-Z0-9_-]+$') { throw 'Invalid profile name.' }
 $profileDir = Join-Path $DshHome ('profiles\' + $Profile)
 $manifestFile = Join-Path $profileDir 'package.json'
 $nodeExe = Join-Path $DshRoot 'resources\runtime\primary-runtime\dependencies\node\bin\node.exe'
-$pnpmFile = Join-Path $DshRoot 'resources\runtime\pnpm\bin\pnpm.mjs'
+$pnpmFile = Join-Path $DshRoot 'resources\runtime\primary-runtime\dependencies\pnpm\bin\pnpm.mjs'
+if (-not (Test-Path -LiteralPath $pnpmFile -PathType Leaf)) {
+  $pnpmFile = Join-Path $DshRoot 'resources\runtime\pnpm\bin\pnpm.mjs'
+}
 $desktopExe = Join-Path $DshRoot 'DeepSeek Harness.exe'
 $verificationScript = Join-Path $PSScriptRoot 'Verify-Package.mjs'
 $workspaceFile = Join-Path $profileDir 'pnpm-workspace.yaml'
@@ -56,7 +59,9 @@ foreach ($file in @($Package, $manifestFile, $nodeExe, $pnpmFile, $desktopExe, $
 $actualHash = (Get-FileHash -LiteralPath $Package -Algorithm SHA256).Hash
 $sumsFile = Join-Path (Split-Path -Parent ([IO.Path]::GetFullPath($Package))) 'SHA256SUMS.txt'
 if (-not (Test-Path -LiteralPath $sumsFile)) { throw 'SHA256SUMS.txt is required.' }
-$hashRow = @(Get-Content -LiteralPath $sumsFile | Where-Object { $_ -match '\s+dsh-api-switcher-2\.3\.0\.tgz$' })
+$packageName = [IO.Path]::GetFileName($Package)
+$escapedPackageName = [regex]::Escape($packageName)
+$hashRow = @(Get-Content -LiteralPath $sumsFile | Where-Object { $_ -match ('^[a-f0-9]{64}\s+' + $escapedPackageName + '$') })
 if ($hashRow.Count -ne 1 -or ($hashRow[0] -split '\s+')[0] -ne $actualHash) { throw 'Package SHA-256 verification failed.' }
 $protectedFiles = @((Join-Path $DshHome '.credentials.yaml'), (Join-Path $DshHome 'top-directive\config.json'))
 $protectedHashes = @{}
@@ -79,7 +84,7 @@ foreach ($relative in @('package.json', 'pnpm-lock.yaml', 'cordis.patch.yml', 'c
   $file = Join-Path $profileDir $relative
   if (Test-Path -LiteralPath $file) { Copy-Item -LiteralPath $file -Destination (Join-Path $backupDir $relative) }
 }
-$targetName = 'dsh-api-switcher-2.3.1-' + $actualHash.Substring(0, 12).ToLowerInvariant() + '.tgz'
+$targetName = 'dsh-api-switcher-2.3.2-' + $actualHash.Substring(0, 12).ToLowerInvariant() + '.tgz'
 $targetPackage = Join-Path $profileDir $targetName
 if (Test-Path -LiteralPath $targetPackage) { Copy-Item -LiteralPath $targetPackage -Destination (Join-Path $backupDir 'previous-package.tgz') }
 $success = $false
@@ -93,7 +98,9 @@ try {
   $manifest = Get-Content -LiteralPath $manifestFile -Raw -Encoding UTF8 | ConvertFrom-Json
   if (-not $manifest.dependencies) { $manifest | Add-Member -NotePropertyName dependencies -NotePropertyValue ([pscustomobject]@{}) }
   $manifest.dependencies | Add-Member -NotePropertyName 'dsh-api-switcher' -NotePropertyValue ('file:./' + $targetName) -Force
-  $manifest.dsh.profile.bundles = @(@($manifest.dsh.profile.bundles | Where-Object { $_ -ne 'dsh-api-switcher' }) + 'dsh-api-switcher')
+  if ('dsh-api-switcher' -notin $manifest.dsh.profile.bundles) {
+    $manifest.dsh.profile.bundles = @($manifest.dsh.profile.bundles) + 'dsh-api-switcher'
+  }
   $json = $manifest | ConvertTo-Json -Depth 60
   [IO.File]::WriteAllText($manifestFile, $json + [Environment]::NewLine, [Text.UTF8Encoding]::new($false))
   Push-Location -LiteralPath $profileDir
@@ -102,7 +109,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "pnpm install exited $LASTEXITCODE" }
   } finally { Pop-Location }
   $installed = Get-Content -LiteralPath (Join-Path $profileDir 'node_modules\dsh-api-switcher\package.json') -Raw | ConvertFrom-Json
-  if ($installed.version -ne '2.3.1') { throw 'Installed version mismatch.' }
+  if ($installed.version -ne '2.3.2') { throw 'Installed version mismatch.' }
   & $nodeExe $verificationScript $Package (Join-Path $profileDir 'node_modules\dsh-api-switcher')
   if ($LASTEXITCODE -ne 0) { throw 'Installed files do not match the package.' }
   foreach ($file in $protectedFiles) {
@@ -123,4 +130,4 @@ try {
   if ($workspaceOriginal) { [IO.File]::WriteAllBytes($workspaceFile, $workspaceOriginal) }
   if ($RestartDsh -and ($success -or $wasRunning)) { Start-Process -FilePath $desktopExe -WindowStyle Hidden }
 }
-[pscustomobject]@{ installed = 'dsh-api-switcher@2.3.1'; packageSHA256 = $actualHash; profile = $profileDir; backup = $backupDir; userCredentialsAndPromptPreserved = $true } | ConvertTo-Json
+[pscustomobject]@{ installed = 'dsh-api-switcher@2.3.2'; packageSHA256 = $actualHash; profile = $profileDir; backup = $backupDir; userCredentialsAndPromptPreserved = $true } | ConvertTo-Json

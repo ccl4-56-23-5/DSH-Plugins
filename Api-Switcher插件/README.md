@@ -1,6 +1,6 @@
 # api-switcher
 
-<p align="center"><img src="2.3.1/lib/assets/logo.png" width="192" alt="api-switcher logo"></p>
+<p align="center"><img src="2.3.2/lib/assets/logo.png" width="192" alt="api-switcher logo"></p>
 
 在一个设置页管理 API 供应商，在会话输入框旁搜索和切换模型。
 
@@ -9,6 +9,6 @@
 - 配置文本与图片输入、上下文容量、输出预算和思考参数。
 - 提供 API 易和小米 MiMo 模板、模型目录同步和连接测试。
 
-当前测试版 **2.3.1+11**，支持在连接设置查看已保存的 API 密钥。
+当前版本 **2.3.2+12**，支持在连接设置查看已保存的 API 密钥。
 
-[测试版](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/api-switcher-v2.3.1) · [稳定版](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/api-switcher-v2.3.0) · [功能与截图](2.3.1/README.md) · [安装](2.3.1/docs/INSTALLATION.md) · [使用指南](2.3.1/docs/USER_GUIDE.md) · [更新记录](2.3.1/CHANGELOG.md)
+[下载](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/api-switcher-v2.3.2) · [功能与截图](2.3.2/README.md) · [安装](2.3.2/docs/INSTALLATION.md) · [使用指南](2.3.2/docs/USER_GUIDE.md) · [更新记录](2.3.2/CHANGELOG.md)

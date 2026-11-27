@@ -6,8 +6,8 @@ import { dirname, join } from 'node:path'
 import { apiyiCatalog, mimoCatalog, catalogFor, normalizeDiscovered, limitFields, validLimit, limitMode } from './capabilities.js'
 export { apiyiCatalog, mimoCatalog } from './capabilities.js'
 
-export const VERSION = '2.3.1'
-export const RELEASE_VERSION = VERSION + '+11'
+export const VERSION = '2.3.2'
+export const RELEASE_VERSION = VERSION + '+12'
 export const protocols = [
   { id: 'openai-completions', name: 'OpenAI Chat Completions' },
   { id: 'openai-responses', name: 'OpenAI Responses' },

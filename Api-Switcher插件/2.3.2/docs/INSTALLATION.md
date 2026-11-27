@@ -11,10 +11,10 @@ Windows安装包包括TGZ、安装器、逐文件校验脚本、文档、logo与
 1. 下载对应版本的Windows ZIP和`SHA256SUMS.txt`，核对ZIP的SHA-256。
 2. 解压全部文件到本地目录，保留TGZ、安装器和清单在同一文件夹。
 3. 结束DSH中正在运行的请求或任务，运行`安装.cmd`。
-4. 安装器退出并重启DSH后，在插件管理确认显示`api-switcher`、版本`2.3.1+11`（插件管理列表使用安装版本 `2.3.1`）；打开模型菜单和设置确认新logo。
+4. 安装器退出并重启DSH后，在插件管理确认 `api-switcher` 的安装版本为 `2.3.2`。打开供应商设置后，右上角显示 `2.3.2+12`。
 
 ```powershell
-Get-FileHash -LiteralPath .\dsh-api-switcher-2.3.1-Windows.zip -Algorithm SHA256
+Get-FileHash -LiteralPath .\dsh-api-switcher-2.3.2-Windows.zip -Algorithm SHA256
 ```
 
 程序与校验清单均从本项目 Release 下载。
@@ -36,7 +36,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Install-DSH.ps1 `
 
 ## 手动导入
 
-可在DSH插件管理中导入`dsh-api-switcher-2.3.1.tgz`。导入后按 DSH 管理器提示完成安装与重启。
+可在DSH插件管理中导入`dsh-api-switcher-2.3.2.tgz`。导入后按 DSH 管理器提示完成安装与重启。
 
 ## 升级与备份
 
@@ -48,7 +48,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Install-DSH.ps1 `
 
 ## 回滚
 
-2.3.1与2.1.0使用相同数据格式。通常结束DSH任务后，运行旧版完整Windows安装包即可回滚，继续保留当前供应商设置和凭据。
+2.3.2与2.1.0使用相同数据格式。通常结束DSH任务后，运行旧版完整Windows安装包即可回滚，继续保留当前供应商设置和凭据。
 
 只有profile或插件元数据损坏时才使用备份恢复：退出DSH，先备份当前配置，再按需恢复备份中的profile文件及`api-switcher-state.json`为原`api-switcher\state.json`，随后运行对应旧版安装包。恢复会回到备份时的配置；不要把凭据文件或最高优先级提示词用旧副本覆盖。跨数据格式版本的回滚需要另行核对迁移兼容性。
 

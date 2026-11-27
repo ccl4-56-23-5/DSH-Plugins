@@ -13,6 +13,17 @@ export function trusted(req) {
   if (origin !== undefined) { try { if (new URL(origin).host !== parsed.host) return false } catch { return false } }
   return true
 }
+function credentialRequest(req) {
+  const address = req.socket?.remoteAddress
+  const { host, origin, 'sec-fetch-site': site, 'x-dsh-api-switcher': marker } = req.headers
+  if (!['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(address) || marker !== '1') return false
+  // DSH desktop supplies its own host session and strips both browser headers
+  // when it forwards requests from its app protocol to the loopback server.
+  if (site !== undefined && site !== 'same-origin') return false
+  if (origin === undefined) return true
+  const scheme = req.socket.encrypted ? 'https' : 'http'
+  return new URL(origin).origin === new URL(`${scheme}://${host}`).origin
+}
 async function readBody(req) {
   if (!((req.headers?.['content-type'] || '').split(';')[0].trim().toLowerCase() === 'application/json')) throw fault('写入请求必须使用application/json。', 415, 'JSON_REQUIRED')
   const chunks = []; let length = 0
@@ -55,7 +66,7 @@ export function buildRoute(controller) {
       if (leaf === 'state' && req.method === 'GET') value = await controller.state()
       else if (leaf === 'credential' && req.method === 'POST') {
         res.setHeader('cross-origin-resource-policy', 'same-origin')
-        if (!req.headers.origin || req.headers['sec-fetch-site'] !== 'same-origin') throw fault('请在本机DSH设置页查看密钥。', 403, 'FORBIDDEN')
+        if (!credentialRequest(req)) throw fault('请在本机DSH设置页查看密钥。', 403, 'FORBIDDEN')
         value = await controller.revealCredential(await readBody(req))
       }
       else if (req.method === 'POST' && Object.hasOwn({ sources: 1, activate: 1, test: 1, discover: 1, favorite: 1, preferences: 1, logo: 1, delete: 1, native:1 }, leaf)) {

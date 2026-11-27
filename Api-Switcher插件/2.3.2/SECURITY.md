@@ -11,7 +11,7 @@
 ## 网络与接口
 
 - HTTP 接口限定本机 Host 与同源请求；写入使用 JSON，请求上限 512 KiB。
-- 查看密钥的专用接口只接受本机同源浏览器的 JSON POST 请求，返回 `Cache-Control: no-store`。启动环境凭据由 DSH 管理。
+- 查看密钥的专用接口要求回环连接以及带 `X-DSH-Api-Switcher: 1` 的 JSON POST。浏览器有来源头时会校验同源。DSH 桌面转发会移除来源头，仍会保留插件请求头。密钥响应使用 `Cache-Control: no-store`，启动环境凭据由 DSH 管理。
 - API 基础地址支持 HTTP/HTTPS，字段中禁止嵌入用户名、密码、查询参数和片段。远程接口建议使用 HTTPS。
 - 图标通过 HTTPS 获取，带有响应大小、重定向、下载时间和解析 IP 检查，并过滤 SVG 可执行内容。图标请求不携带 API 密钥。
 - 本机代理的公开域名 fake-IP 映射有兼容处理。

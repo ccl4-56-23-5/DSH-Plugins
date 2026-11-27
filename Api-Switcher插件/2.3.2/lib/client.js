@@ -4,7 +4,17 @@ window.__ModuleLoader__.load({id:'dsh-api-switcher',factory:require=>{
   const BASE='/api-switcher/api/', listeners=new Set()
   let cached=null,pending=null,publication=0
   function publish(value){publication++;cached=value.state||value;for(const fn of listeners)fn(cached);return cached}
-  async function api(route,body,signal){const r=await fetch(BASE+route,{method:body?'POST':'GET',headers:body?{'content-type':'application/json'}:{},body:body?JSON.stringify(body):undefined,cache:'no-store',signal});const d=await r.json();if(!d.ok)throw new Error(d.error?.message||'操作失败，请重试');return d.value}
+  async function api(route,body,signal) {
+    const headers=body?{'content-type':'application/json'}:{}
+    if (route==='credential') headers['x-dsh-api-switcher']='1'
+    const response=await fetch(BASE+route,{
+      method:body?'POST':'GET',headers,body:body?JSON.stringify(body):undefined,
+      cache:'no-store',signal
+    })
+    const data=await response.json()
+    if (!data.ok) throw new Error(data.error?.message||'操作失败，请重试')
+    return data.value
+  }
   function refresh(){if(!pending){const at=publication;pending=api('state').then(value=>at===publication?publish(value):cached).finally(()=>{pending=null})}return pending}
   function useProviders(){const[state,setState]=useState(cached),[error,setError]=useState('');useEffect(()=>{const accept=value=>{setState(value);setError('')};listeners.add(accept);refresh().catch(e=>setError(e.message));const focus=()=>refresh().catch(()=>{});window.addEventListener('focus',focus);return()=>{listeners.delete(accept);window.removeEventListener('focus',focus)}},[]);const missing=state?.sources.filter(s=>s.website&&!s.logo).map(s=>s.id).join(',')||'';useEffect(()=>{if(!missing)return;const t=setTimeout(()=>refresh().catch(()=>{}),2000);return()=>clearTimeout(t)},[missing]);return[state,error]}
   function scheme(){const html=document.documentElement;if(html.dataset.theme==='dark'||/(?:^|\s)dark(?:\s|$)/.test(html.className))return'dark';if(html.dataset.theme==='light')return'light';const n=getComputedStyle(document.body).backgroundColor.match(/[\d.]+/g)?.map(Number);if(n&&n.length>=3&&(n.length===3||n[3]>0))return(n[0]+n[1]+n[2])/3<100?'dark':'light';return window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}

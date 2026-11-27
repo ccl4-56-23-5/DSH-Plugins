@@ -21,7 +21,7 @@ test('HTTP boundary rejects cross-site writes, wrong content types, malformed JS
   const styles=await fetch(url+'styles');assert.equal(styles.status,200);assert.ok(styles.headers.get('content-type').startsWith('text/css'))
 })
 
-test('the credential route requires same-origin browser POST and disables response caching', async t => {
+test('credential requests support DSH forwarding while rejecting unmarked or foreign requests', async t => {
   const requests = []
   const server = createServer(buildRoute({
     revealCredential: async body => {
@@ -46,14 +46,20 @@ test('the credential route requires same-origin browser POST and disables respon
   assert.equal((await fetch(url)).status, 404)
   assert.equal((await post({ origin })).status, 403)
   assert.equal((await post({ 'sec-fetch-site': 'same-origin' })).status, 403)
-  assert.equal((await post({ origin, 'sec-fetch-site': 'same-site' })).status, 403)
-  assert.equal((await post({ origin: 'https://other.test', 'sec-fetch-site': 'cross-site' })).status, 403)
+  assert.equal((await post({ origin, 'sec-fetch-site': 'same-origin' })).status, 403)
+  const marker = { 'x-dsh-api-switcher': '1' }
+  assert.equal((await post({ ...marker, origin, 'sec-fetch-site': 'same-site' })).status, 403)
+  assert.equal((await post({ ...marker, origin: 'https://other.test', 'sec-fetch-site': 'cross-site' })).status, 403)
+  assert.equal((await post({ ...marker, origin: origin.replace('http:', 'https:') })).status, 403)
+  assert.equal((await post({ ...marker, origin: 'null' })).status, 403)
   assert.equal(requests.length, 0)
 
-  const response = await post({ origin, 'sec-fetch-site': 'same-origin' })
-  assert.equal(response.status, 200)
-  assert.equal(response.headers['cache-control'], 'no-store')
-  assert.equal(response.headers['cross-origin-resource-policy'], 'same-origin')
-  assert.deepEqual(response.body, { ok: true, value: { apiKey: 'fixture-key' } })
-  assert.deepEqual(requests, [{ provider: 'existing' }])
+  for (const headers of [marker, { ...marker, origin, 'sec-fetch-site': 'same-origin' }]) {
+    const response = await post(headers)
+    assert.equal(response.status, 200)
+    assert.equal(response.headers['cache-control'], 'no-store')
+    assert.equal(response.headers['cross-origin-resource-policy'], 'same-origin')
+    assert.deepEqual(response.body, { ok: true, value: { apiKey: 'fixture-key' } })
+  }
+  assert.deepEqual(requests, [{ provider: 'existing' }, { provider: 'existing' }])
 })

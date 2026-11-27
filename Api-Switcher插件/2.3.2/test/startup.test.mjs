@@ -12,7 +12,7 @@ test('startup failure reports 503 instead of pretending migration succeeded and 
   const request={headers:{host:'127.0.0.1'},method:'GET',url:'/api-switcher/api/state'}
   const response=()=>({statusCode:0,setHeader(){},end(body){this.body=JSON.parse(body)}})
   const failed=response();await route.handler(request,failed);assert.equal(failed.statusCode,503);assert.equal(failed.body.error.code,'INITIALIZATION_FAILED')
-  broken=false;const recovered=response();await route.handler(request,recovered);assert.equal(recovered.statusCode,200);assert.equal(recovered.body.value.version,'2.3.1+11')
+  broken=false;const recovered=response();await route.handler(request,recovered);assert.equal(recovered.statusCode,200);assert.equal(recovered.body.value.version,'2.3.2+12')
 })
 
 test('agent request waterfall uses initialized defaults while preserving explicit off and all other request fields',async()=>{

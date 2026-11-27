@@ -36,7 +36,7 @@
 | `GET /styles` | CSS |
 | `GET /brand` | 设置界面透明PNG |
 | `GET /logo/<provider>` | 已缓存供应商图标 |
-| `POST /credential` | `provider`，本机同源浏览器请求，读取已保存的供应商密钥，响应禁止缓存 |
+| `POST /credential` | `provider`，本机浏览器的 JSON 请求，必须包含 `X-DSH-Api-Switcher: 1`，响应禁止缓存 |
 | `POST /sources` | `expectedRevision`、`source`、可选`apiKey`，保存来源 |
 | `POST /preferences` | `expectedRevision`、`provider`、启用/名称/网站/模型白名单 |
 | `POST /activate` | `expectedRevision`、`provider`、`model`、可选会话ID/推理等级 |
