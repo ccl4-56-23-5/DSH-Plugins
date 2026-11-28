@@ -15,7 +15,7 @@
 ## 安装与连接
 
 1. 从 [Release](https://github.com/ccl4-56-23-5/DSH-Plugins/releases/tag/dsh-control-v1.0.1) 下载 TGZ，在 DSH 插件管理中添加；Windows 安装包也提供 `Install-DSH.ps1`。
-2. 在 Codex 安装 [配套插件](https://github.com/ccl4-56-23-5/Codex-Plugins)，重新连接 MCP。
+2. 在 Codex 安装 [配套插件](https://github.com/ccl4-56-23-5/CodexBridge/tree/main/DSH)，重新连接 MCP。
 3. 保持 DSH 运行，调用 `dsh_status` 选择在线 clientId。
 
 适配 DeepSeek Harness Desktop 0.2.3-alpha.2。Codex 端沿用原有连接协议，本机调用继续使用桥接令牌，桌面控件通道沿用 DSH 登录。
