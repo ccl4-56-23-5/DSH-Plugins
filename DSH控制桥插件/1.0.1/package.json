@@ -1,5 +1,5 @@
 {
-  "name": "dsh-control-bridge", "version": "1.0.0", "type": "module",
+  "name": "dsh-control-bridge", "version": "1.0.1", "type": "module", "releaseVersion": "1.0.1+2",
   "description": "DSH结构化控制桥：会话、工作区、模型、插件设置与DOM控件操作，无截图识别。",
   "main": "lib/index.js", "icon": "lib/assets/icon.png", "license": "MIT",
   "exports": {".": "./lib/index.js", "./client": "./lib/client.js", "./package.json": "./package.json"},

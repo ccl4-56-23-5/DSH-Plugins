@@ -1,4 +1,4 @@
-export const VERSION = '1.0.0';
+export const VERSION = '1.0.1';
 const str = {type:'string', minLength:1, maxLength:32768};
 const bool = {type:'boolean'};
 const num = {type:'integer', minimum:0};

@@ -3,8 +3,9 @@ import assert from 'node:assert/strict';
 import {mkdtempSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
+import {createServer} from 'node:http';
 import {createControl} from '../lib/control.js';
-import {trusted,authorized} from '../lib/index.js';
+import {trusted,authorized,route} from '../lib/index.js';
 import {TOOLS,validate} from '../lib/protocol.js';
 function setup(ctx={}){const dir=mkdtempSync(join(tmpdir(),'dsh-control-test-'));return {ctx,file:join(dir,'state.json'),close:()=>rmSync(dir,{recursive:true,force:true})};}
 test('parallel send and restart cannot double-submit; conflicting reuse rejected',async()=>{let count=0;const t=setup({sessionController:{prompt:async()=>{count++;await new Promise(r=>setTimeout(r,20));return {accepted:true};}}});try{const c=createControl(t.ctx,{stateFile:t.file}),p={operationId:'same-id',sessionId:'session-1',text:'hello',mode:'queue'};const values=await Promise.all([c.call('session_send',p),c.call('session_send',p)]);assert.equal(count,1);assert.equal(values[0].status,'completed');assert.deepEqual(values[0],values[1]);const restarted=createControl(t.ctx,{stateFile:t.file});await restarted.call('session_send',p);assert.equal(count,1);await assert.rejects(()=>restarted.call('session_send',{...p,text:'different'}),/different/);}finally{t.close();}});
@@ -19,3 +20,53 @@ test('retained streams bound their buffer and report dropped cursors',async()=>{
 test('native gateway validation failure stays uncertain without private-method fallback',async()=>{let count=0;const t=setup({typert:{local:{get:e=>e==='test/run'?{namespace:'test',method:'run'}:undefined}},typertGateway:{invoke:async()=>{count++;throw new Error('Host policy refused');}}});try{const c=createControl(t.ctx,{stateFile:t.file});const p={operationId:'refused',endpoint:'test/run',arguments:{}};assert.match((await c.call('host_invoke',p)).error,/refused/);await c.call('host_invoke',p);assert.equal(count,1);assert.equal((await c.call('host_invoke',{...p,operationId:'unknown',endpoint:'private/eval'})).status,'uncertain');assert.equal(count,1);}finally{t.close();}});
 
 test('long poll wakes immediately for a desktop command',async()=>{const t=setup();const c=createControl(t.ctx,{stateFile:t.file});try{const p={clientId:'client-long',url:'http://localhost',selection:{}};const waiting=c.poll(p);const pending=c.call('desktop_snapshot',{clientId:p.clientId});const result=await waiting;assert.equal(result.commands.length,1);c.acknowledge({id:result.commands[0].id,clientId:p.clientId,result:{ok:true}});assert.deepEqual(await pending,{ok:true});}finally{c.dispose();t.close();}});
+
+
+test('only loopback MCP status and call use the bridge bearer instead of the DSH session', async () => {
+  const control = {
+    status: () => ({ready: true}),
+    call: async (name, args) => ({name, args}),
+    poll: async () => ({commands: []}),
+    acknowledge: () => ({received: true}),
+  };
+  const bridge = route(control, 'bridge-test-token');
+  const server = createServer((req, res) => {
+    const policy = bridge.auth({method: req.method, url: new URL(req.url, 'http://localhost')});
+    if (policy === 'required' && req.headers.cookie !== 'test-dsh-session=active') {
+      res.writeHead(401).end('unauthorized');
+      return;
+    }
+    void bridge.handler(req, res);
+  });
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  const origin = `http://127.0.0.1:${server.address().port}`;
+  const request = (path, options) => fetch(origin + bridge.path + path, options);
+  const bearer = {authorization: 'Bearer bridge-test-token'};
+  const browserHeaders = {'x-dsh-control-client': '1', 'content-type': 'application/json'};
+  try {
+    assert.equal((await request('/status')).status, 401);
+    assert.equal((await request('/status', {headers: {authorization: 'Bearer wrong-token'}})).status, 401);
+    assert.equal((await request('/status', {headers: {...bearer, origin: 'https://foreign.test'}})).status, 403);
+    const status = await request('/status', {headers: bearer});
+    assert.equal(status.status, 200);
+    assert.deepEqual(await status.json(), {ok: true, value: {ready: true}});
+    const call = await request('/call', {method: 'POST', headers: bearer, body: JSON.stringify({name: 'workspace_list', arguments: {}})});
+    assert.equal(call.status, 200);
+    assert.deepEqual(await call.json(), {ok: true, value: {name: 'workspace_list', args: {}}});
+    assert.equal((await request('/status/extra', {headers: bearer})).status, 401);
+    assert.equal((await request('/call', {headers: bearer})).status, 401);
+    for (const action of ['poll', 'ack']) {
+      const browser = {method: 'POST', headers: {...browserHeaders, ...bearer}, body: '{}'};
+      assert.equal((await request('/client/' + action, browser)).status, 401);
+      assert.equal((await request('/client/' + action, {
+        ...browser, headers: {...browserHeaders, cookie: 'test-dsh-session=active', origin},
+      })).status, 200);
+    }
+    assert.equal((await request('/brand', {headers: bearer})).status, 401);
+    const brand = await request('/brand', {headers: {cookie: 'test-dsh-session=active'}});
+    assert.equal(brand.headers.get('content-type'), 'image/png');
+    await brand.arrayBuffer();
+  } finally {
+    await new Promise((resolve, reject) => server.close(error => error ? reject(error) : resolve()));
+  }
+});
